@@ -4,24 +4,15 @@ import bcrypt from "bcrypt";
 
 const register = express.Router();
 
-register.get("/", (req, res) => {
-  //   const { username, password } = req.body;
-  //   if (!username || !password) {
-  //     return res.status(400).send("Username and password required");
-  //   }
-  //   res.json({ message: "This is registration part" });
-});
-
-// This is an test route
-
+// Registration
 register.post("/", async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(400).send("Username and password required");
+  const { email, password, first_name, last_name } = req.body;
+  if (!email || !password || !first_name || !last_name) {
+    return res.status(400).send("all fields required");
   }
   try {
     // Checking if the username already exists
-    const existedUser = await knex("user").where({ username }).first();
+    const existedUser = await knex("user").where({ email }).first();
     if (existedUser) {
       return res.status(400).send("Username already exists");
     }
@@ -29,8 +20,12 @@ register.post("/", async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     await knex("user").insert({
-      username: username,
-      password: hashedPassword,
+      email: email,
+      first_name: first_name,
+      last_name: last_name,
+      password_hash: hashedPassword,
+      created_at: knex.fn.now(),
+      updated_at: knex.fn.now(),
     });
     res.status(201).send("registered succesfully");
   } catch (error) {
