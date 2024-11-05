@@ -13,7 +13,7 @@
     "start": "node src/index.mjs",
     "format": "npx prettier . --write",
     "check": "npx eslint . --fix",
-    "build": "webpack --config webpack.config.js"
+ 
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
