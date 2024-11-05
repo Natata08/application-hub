@@ -5,8 +5,9 @@ import bcrypt from "bcrypt";
 
 // This router can be deleted once you add your own router
 const login = express.Router();
+const secretKey = process.env.JWT_SECRET;
 
-login.get("/", async (req, res) => {
+login.post("/", async (req, res) => {
   const { username, password } = req.body;
   // Checking if we get the username and password
   if (!username || !password) {
@@ -29,7 +30,7 @@ login.get("/", async (req, res) => {
         username: user.username,
       };
       // creating token for the user
-      const token = jwt.sign({ userId: user.id }, "secret-key", { expiresIn: "1h" });
+      const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: "1h" });
       // Sending user data with token
       res.status(200).json({ user: userInfo, token });
     } else {
