@@ -8,29 +8,32 @@ const login = express.Router();
 const secretKey = process.env.JWT_SECRET;
 
 login.post("/", async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   // Checking if we get the username and password
-  if (!username || !password) {
-    return res.status(400).send("Username and password required");
+  if (!email || !password) {
+    return res.status(400).send("Email and password required");
   }
   try {
-    const user = await knex("user").where({ username }).first();
+    const user = await knex("user").where({ email }).first();
     //Checking if user exist
     if (!user) {
-      return res.status(401).send("Invalid username or password");
+      return res.status(401).send("Invalid email or password");
     }
 
     // Comparing hashed password from db with the provided password
 
-    const isPasswordRight = await bcrypt.compare(password, user.password);
+    const isPasswordRight = await bcrypt.compare(password, user.password_hash);
     if (isPasswordRight) {
       const userInfo = {
         // What we have to send if password is right
-        id: user.id,
-        username: user.username,
+        id: user.user_id,
+        first_name: user.first_name,
+        last_name: user.last_name,
       };
+
       // creating token for the user
-      const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: "1h" });
+      const token = jwt.sign({ userId: user.user_id }, secretKey, { expiresIn: "1h" });
+
       // Sending user data with token
       res.status(200).json({ user: userInfo, token });
     } else {
