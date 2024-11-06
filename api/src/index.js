@@ -8,7 +8,7 @@ import register from "./routers/register.js";
 import login from "./routers/login.js";
 import dashboard from "./routers/dashboard.js";
 import application from "./routers/application.js";
-import document from "./routers/document.js";
+
 import userRoute from "./routers/user.js";
 
 const app = express();
@@ -21,7 +21,7 @@ apiRouter.use("/register", register);
 apiRouter.use("/login", login);
 apiRouter.use("/dashboard", dashboard);
 apiRouter.use("/application", application);
-apiRouter.use("/document", document);
+
 apiRouter.use("/user", userRoute);
 
 apiRouter.get("/", async (req, res) => {
