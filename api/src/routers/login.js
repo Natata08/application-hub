@@ -34,8 +34,8 @@ login.post("/", async (req, res) => {
       // creating token for the user
       const token = jwt.sign({ userId: user.user_id }, secretKey, { expiresIn: "1h" });
 
-      // Sending user data with token
-      res.status(200).json({ user: userInfo, token });
+      // Sending userInfo with token
+      res.status(200).json({ userInfo: userInfo, token });
     } else {
       // Invalid password
       res.status(401).send("Invalid password");
