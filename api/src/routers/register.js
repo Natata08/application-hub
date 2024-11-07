@@ -24,8 +24,6 @@ register.post("/", async (req, res) => {
       first_name: first_name,
       last_name: last_name,
       password_hash: hashedPassword,
-      created_at: knex.fn.now(),
-      updated_at: knex.fn.now(),
     });
     res.status(201).send("registered succesfully");
   } catch (error) {
