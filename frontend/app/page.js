@@ -6,7 +6,7 @@ export default function Home() {
   const theme = useTheme();
   return (
   <> 
-    <Box component="main" sx={{backgroundColor: theme.palette.background.cardYellow}}>
+    <Box component="main">
       <Container>
         <Typography>welcome to the FONA App</Typography>
       </Container>
