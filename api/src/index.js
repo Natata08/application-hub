@@ -6,7 +6,6 @@ import knex from "./database_client.js";
 
 import register from "./routers/register.js";
 import login from "./routers/login.js";
-import application from "./routers/application.js";
 import userRoute from "./routers/user.js";
 
 const app = express();
@@ -17,9 +16,6 @@ const apiRouter = express.Router();
 app.use("/api", apiRouter);
 apiRouter.use("/register", register);
 apiRouter.use("/login", login);
-apiRouter.use("/dashboard", dashboard);
-apiRouter.use("/application", application);
-
 apiRouter.use("/user", userRoute);
 
 apiRouter.get("/", async (req, res) => {
@@ -29,7 +25,6 @@ apiRouter.get("/", async (req, res) => {
 // This code block is for check if database is connected
 apiRouter.get("/check-db", async (req, res) => {
   try {
-    // Attempt to make a query to check the database connection
     await knex.raw("SELECT 1");
     res.status(200).json({ message: "Database connection is successful" });
   } catch (error) {

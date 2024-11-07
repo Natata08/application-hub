@@ -2,7 +2,6 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import knex from "../database_client.js";
 
-// This router can be deleted once you add your own router
 const userRoute = express.Router();
 // JWT's secret Key
 const SECRET_KEY = process.env.JWT_SECRET;
