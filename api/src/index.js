@@ -6,9 +6,7 @@ import knex from "./database_client.js";
 
 import register from "./routers/register.js";
 import login from "./routers/login.js";
-import dashboard from "./routers/dashboard.js";
 import application from "./routers/application.js";
-
 import userRoute from "./routers/user.js";
 
 const app = express();
