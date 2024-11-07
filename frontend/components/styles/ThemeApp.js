@@ -1,16 +1,3 @@
-// const colors = {
-//   green: '#134B48',
-//   darkGreen: '#264240',
-//   lightGreen: '#D2E8D4',
-//   yellow: '#F4F5A7',
-//   lightYellow: '#F9FAD2',
-//   orange: '#BB8266',
-//   white: '#FFFFFF',
-//   black: '#000000',
-// };
-
-
-
 "use client";
 import { createContext, useContext, useState, useEffect } from 'react';
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
