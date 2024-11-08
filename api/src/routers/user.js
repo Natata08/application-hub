@@ -25,15 +25,14 @@ userRoute.get("/:id", authenticateToken, async (req, res) => {
   if (req.userInfo.userId !== requestedId) {
     return res.status(403).json({ message: "Access denied" });
   }
-  console.log(req.userInfo);
-  const userData = await knex("user").select("*");
-  const user = userData.find((u) => u.user_id === requestedId);
+
+  const userData = await knex("user").where({ user_id: requestedId }).first();
 
   //if user not found
-  if (!user) return res.status(404).json({ message: "User not found" });
+  if (!userData) return res.status(404).json({ message: "User not found" });
 
   // If user is found and authenticated then returning the user data
-  return res.status(200).json({ user });
+  return res.status(200).json({ userData });
 });
 
 export default userRoute;
