@@ -1,4 +1,6 @@
 import ThemeApp from "@/components/styles/ThemeApp";
+import NavBar from "@/components/navBar";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "ApplicationHub App",
@@ -10,7 +12,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ThemeApp>
+          <NavBar />
           {children}
+          <Footer />
         </ThemeApp>
       </body>
     </html>
