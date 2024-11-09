@@ -1,7 +1,9 @@
 import React from "react";
 import { Card, CardContent, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const OverviewImageCard = () => {
+  const theme = useTheme();
   return (
     <Card
       style={{
@@ -14,20 +16,24 @@ const OverviewImageCard = () => {
       }}
     >
       <CardContent>
-        <Typography variant="h4" component="p" color="#264240">
+        <Typography
+          variant="h4"
+          component="p"
+          color={theme.palette.background.paperGreen}
+        >
           Overview
         </Typography>
         <div
           style={{
             height: "200px",
-            backgroundColor: "#f0f0f0",
+            backgroundColor: theme.palette.background.default,
             borderRadius: "8px",
             marginTop: "10px",
           }}
         >
           <Typography
             variant="body2"
-            color="#000"
+            color={theme.palette.text.primary}
             style={{ padding: "80px 0" }}
           >
             Placeholder: we will place a picture of how does this app work,

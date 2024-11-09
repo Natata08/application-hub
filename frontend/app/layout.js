@@ -1,5 +1,5 @@
 import ThemeApp from "@/components/styles/ThemeApp";
-import NavBar from "@/components/navBar";
+import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
 export const metadata = {

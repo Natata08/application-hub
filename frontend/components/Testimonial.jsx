@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Card, CardContent, Typography, Avatar } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { useTheme } from "@mui/material/styles";
 
 const testimonials = [
   {
@@ -20,12 +21,13 @@ const testimonials = [
   },
 ];
 
-const TestimonialComponent = () => {
+export default function TestimonialComponent() {
+  const theme = useTheme();
   return (
     <div
       style={{
         width: "100vw",
-        backgroundColor: "#F9FAD2",
+        backgroundColor: theme.palette.background.paperYellow,
         borderRadius: "0 100px 0 0",
         padding: "40px 0",
         color: "white",
@@ -38,7 +40,7 @@ const TestimonialComponent = () => {
         variant="h5"
         component="h2"
         gutterBottom
-        color="#264240"
+        color={theme.palette.text.primary}
         style={{ alignItems: "center" }}
       >
         Testimonials
@@ -60,8 +62,8 @@ const TestimonialComponent = () => {
                 style={{
                   borderRadius: "15px",
                   padding: "20px",
-                  backgroundColor: "#ffffff",
-                  color: "#264240",
+                  backgroundColor: theme.palette.background.default,
+                  color: theme.palette.text.primary,
                 }}
               >
                 <Grid container spacing={2}>
@@ -91,6 +93,4 @@ const TestimonialComponent = () => {
       </Box>
     </div>
   );
-};
-
-export default TestimonialComponent;
+}

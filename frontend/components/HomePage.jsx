@@ -1,11 +1,13 @@
 import React from "react";
-import WhyChooseCard from "./WhyChoosecard";
+import WhyChooseCard from "./WhyChooseCard";
 import Testimonials from "./Testimonial";
 import OverviewImageCard from "./Overview";
 import { Box } from "@mui/material";
 import Introduction from "./Introduction";
+import { useTheme } from "@mui/material/styles";
 
 export default function HomePage() {
+  const theme = useTheme();
   return (
     <Box>
       <Introduction />
@@ -13,7 +15,7 @@ export default function HomePage() {
       <div
         style={{
           width: "100vw",
-          backgroundColor: "#D2E8D4",
+          backgroundColor: theme.palette.background.cardLightGreen,
           borderRadius: "100px 0 0 0",
           padding: "40px 0",
           color: "white",

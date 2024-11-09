@@ -1,7 +1,9 @@
 import React from "react";
 import { Box, Typography, Button, Container } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 export default function Introduction() {
+  const theme = useTheme();
   return (
     <Box
       sx={{
@@ -10,7 +12,7 @@ export default function Introduction() {
         alignItems: "center",
         justifyContent: "center",
         height: "90vh",
-        backgroundColor: "#fff",
+        backgroundColor: theme.palette.background.default,
         textAlign: "center",
         px: 2,
       }}
@@ -24,7 +26,10 @@ export default function Introduction() {
           ApplicationHub
         </Typography>
 
-        <Typography variant="h5" sx={{ color: "#666", mb: 4 }}>
+        <Typography
+          variant="h5"
+          sx={{ color: theme.palette.text.primary, mb: 4 }}
+        >
           Your all-in-one platform to organize and manage your job search. Track
           applications, set reminders, and stay on top of your career goals.
         </Typography>
@@ -34,13 +39,13 @@ export default function Introduction() {
           color="primary"
           href="/register"
           sx={{
-            backgroundColor: "#264240",
-            color: "#fff",
+            backgroundColor: theme.palette.background.paperGreen,
+            color: theme.palette.text.secondary,
             px: 4,
             py: 1.5,
             fontSize: "1rem",
             "&:hover": {
-              backgroundColor: "#555",
+              backgroundColor: theme.palette.background.cardGreen,
             },
           }}
         >
