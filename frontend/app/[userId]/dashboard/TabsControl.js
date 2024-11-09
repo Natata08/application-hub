@@ -1,10 +1,10 @@
 import { Tabs, Tab } from "@mui/material";
 
-export default function TabsControl({ value, onChange }) {
+export default function TabsControl({ tabValue, onTabChange }) {
   return (
     <Tabs
-      value={value}
-      onChange={onChange}
+      value={tabValue}
+      onChange={onTabChange}
       sx={{
         minWidth: 200,
         order: { xs: 2, md: 1 },

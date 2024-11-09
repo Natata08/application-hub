@@ -5,13 +5,7 @@ import SearchField from "./SearchField";
 import SortControl from "./SortControl";
 import TabsControl from "./TabsControl";
 
-export default function ControlPanel() {
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
+export default function ControlPanel({ tabValue, onTabChange }) {
   return (
     <Box
       sx={{
@@ -47,7 +41,7 @@ export default function ControlPanel() {
       </Stack>
 
       {/* Tabs - below for mobile */}
-      <TabsControl value={value} onChange={handleChange} />
+      <TabsControl tabValue={tabValue} onTabChange={onTabChange} />
     </Box>
   );
 }
