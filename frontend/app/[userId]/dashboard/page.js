@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import ApplicationBoard from "./ApplicationBoard";
 import TabPanel from "./TabPanel";
+import MotivationalQuote from "./MotivationalQuote";
 
 export default function DashboardPage({ params }) {
   const userId = params.userId;
@@ -39,6 +40,8 @@ export default function DashboardPage({ params }) {
             <ApplicationBoard isActive={isActive} />
           </TabPanel>
         ))}
+
+        <MotivationalQuote />
       </Container>
     </Box>
   );
