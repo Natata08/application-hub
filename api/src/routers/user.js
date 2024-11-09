@@ -18,8 +18,7 @@ function authenticateToken(req, res, next) {
 }
 // The endpoint is for getting user information in a safe way
 user.get("/me", authenticateToken, async (req, res) => {
-  const requestedId = req.userInfo.userId;
-  const userData = await knex("user").where({ user_id: requestedId }).first();
+  const userData = await knex("user").where({ user_id: req.userInfo.userId }).first();
   //if user not found
   if (!userData) return res.status(404).json({ message: "User not found" });
   return res.status(200).json({ userData });
