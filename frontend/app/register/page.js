@@ -1,7 +1,7 @@
 import { Box, Container } from "@mui/material";
 import SignUpForm from "./SignUpForm";
 
-export const SignUp = () => {
+export const Register = () => {
   return (
     <Box component="main">
       <Container>
@@ -11,4 +11,4 @@ export const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Register;

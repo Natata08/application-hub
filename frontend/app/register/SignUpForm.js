@@ -25,14 +25,14 @@ export default function SignUpForm() {
     watch,
   } = useForm();
 
-  const contactData = watch();
+  const userData = watch();
 
   const handleFormSubmit = async () => {
     setLoading(true);
     setError("");
 
     try {
-      await useSignUp(contactData);
+      await useSignUp(userData);
       router.push("/user");
     } catch (error) {
       setError(error.message);
@@ -118,9 +118,8 @@ export default function SignUpForm() {
 
           <InputField         
             type="password"
-            id="password_hash"
+            id="password"
             label="Password"
-            defaultValue="Password (at least 8 characters)"
             register={register}
             errors={errors}
             required
