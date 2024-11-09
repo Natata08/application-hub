@@ -1,6 +1,7 @@
 "use client";
 
 import Container from "@mui/material/Container";
+import ControlPanel from "./ControlPanel";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
@@ -23,6 +24,7 @@ export default function MealDetailsPage({ params }) {
             smoothly — all in one place.
           </Typography>
         </Box>
+        <ControlPanel />
       </Container>
     </Box>
   );
