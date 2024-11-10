@@ -5,8 +5,9 @@ export default function TabsControl({ tabValue, onTabChange }) {
     <Tabs
       value={tabValue}
       onChange={onTabChange}
+      variant='fullWidth'
       sx={{
-        minWidth: 200,
+        minWidth: 230,
         order: { xs: 2, md: 1 },
         "& .MuiTab-root": {
           textTransform: "none",
