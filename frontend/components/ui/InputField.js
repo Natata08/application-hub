@@ -1,17 +1,28 @@
-import { useState } from "react";
-import { TextField, InputAdornment, IconButton } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useState } from 'react'
+import { TextField, InputAdornment, IconButton } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
-export default function InputField({ errors, id, label, defaultValue, required, minLength, pattern, type = "text", register }) {
-  const [showPassword, setShowPassword] = useState(true);
+export default function InputField({
+  errors,
+  id,
+  label,
+  defaultValue,
+  helperText,
+  required,
+  minLength,
+  pattern,
+  type = 'text',
+  register,
+}) {
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleClickShowPassword = () => {
     setShowPassword((prevShowPassword) => {
-      return !prevShowPassword;
-    });
-  };
+      return !prevShowPassword
+    })
+  }
 
-  const handleMouseDownPassword = (event) => event.preventDefault();
+  const handleMouseDownPassword = (event) => event.preventDefault()
 
   return (
     <TextField
@@ -19,7 +30,7 @@ export default function InputField({ errors, id, label, defaultValue, required, 
       required={required}
       id={id}
       label={label}
-      type={type === "password" && !showPassword ? "password" : "text"}
+      type={type === 'password' && !showPassword ? 'password' : 'text'}
       defaultValue={defaultValue}
       fullWidth
       variant="outlined"
@@ -34,22 +45,22 @@ export default function InputField({ errors, id, label, defaultValue, required, 
         },
         required: required ? `${label} is required` : undefined,
       })}
-      helperText={errors[id] ? errors[id].message : ""}
+      helperText={errors[id] ? errors[id].message : helperText}
       InputProps={{
-        endAdornment: type === "password" && (
+        endAdornment: type === 'password' && (
           <InputAdornment position="end">
             <IconButton
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
               onClick={handleClickShowPassword}
               onMouseDown={handleMouseDownPassword}
               edge="end"
             >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
+              {showPassword ? <Visibility /> : <VisibilityOff />}
             </IconButton>
           </InputAdornment>
         ),
       }}
-      autoComplete={type === "password" ? "current-password" : "off"}
+      autoComplete={type === 'password' ? 'current-password' : 'off'}
     />
-  );
+  )
 }

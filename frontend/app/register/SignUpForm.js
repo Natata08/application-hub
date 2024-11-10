@@ -1,12 +1,12 @@
 'use client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation'
 import { Stack, Typography, Button, Paper, Box, Link } from '@mui/material'
 import InputField from '@/components/ui/InputField'
-import { makeLoginApiCall } from '@/components/fetches/useLogIn'
+import { makeSignUpApiCall } from '@/components/fetches/useSignUp'
+import { useRouter } from 'next/navigation'
 
-export default function LogInForm() {
+export default function SignUpForm() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -18,14 +18,14 @@ export default function LogInForm() {
     watch,
   } = useForm()
 
-  const contactData = watch()
+  const userData = watch()
 
   const handleFormSubmit = async () => {
     setLoading(true)
     setError('')
 
     try {
-      await makeLoginApiCall(contactData)
+      await makeSignUpApiCall(userData)
       router.push('/user')
     } catch (error) {
       setError(error.message)
@@ -62,7 +62,7 @@ export default function LogInForm() {
           component="div"
           textAlign="center"
         >
-          Welcome back to job application manager
+          Welcome to job application manager
         </Typography>
 
         {error && (
@@ -70,6 +70,36 @@ export default function LogInForm() {
             {error}
           </Typography>
         )}
+
+        <InputField
+          id="first_name"
+          label="First name"
+          defaultValue="First name"
+          register={register}
+          errors={errors}
+          required
+          pattern={{
+            value: /^[A-Za-z\s]{2,}$/,
+            message:
+              'First name must contain only letters and be at least 2 characters long',
+          }}
+          minLength={2}
+        />
+
+        <InputField
+          id="last_name"
+          label="Last name"
+          defaultValue="Last name"
+          register={register}
+          errors={errors}
+          required
+          pattern={{
+            value: /^[A-Za-z\s]{2,}$/,
+            message:
+              'First name must contain only letters and be at least 2 characters long',
+          }}
+          minLength={2}
+        />
 
         <InputField
           id="email"
@@ -101,7 +131,7 @@ export default function LogInForm() {
         />
 
         <Button variant="contained" type="submit" fullWidth>
-          {loading ? 'Submitting...' : 'Log in'}
+          {loading ? 'Submitting...' : 'Sign up'}
         </Button>
 
         <Stack
@@ -121,10 +151,10 @@ export default function LogInForm() {
             sx={{ paddingTop: '6px' }}
             textAlign="center"
           >
-            Don&apos;t you have an account?
+            Already using Application Hub?
           </Typography>
-          <Link href={`/register`} display="block">
-            <Button variant="text">Sign up</Button>
+          <Link href={`/login`} display="block">
+            <Button variant="text">Log in</Button>
           </Link>
         </Stack>
       </Paper>
