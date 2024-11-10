@@ -1,5 +1,36 @@
 <img src="./images/hyf.svg" alt="image" width="200px" height="200px">
 
+### Setting Up Custom Git Hooks
+
+To ensure that the custom Git hooks are used in this repository, you need to configure your Git client to point to the `.githooks` directory for hooks. Follow these steps:
+
+1. **Clone the Repository (if you haven't already):**
+   ```bash
+   git clone git@github.com:FurkannOzbek/application-hub.git
+   ```
+
+2. **Configure Git to Use the Custom Hook Directory:**
+   After cloning the repository or pulling the latest changes, run the following command to configure Git to use the `.githooks` directory for Git hooks:
+   ```bash
+   git config core.hooksPath .githooks
+   ```
+
+   This command sets the `core.hooksPath` configuration to the `.githooks` folder, so Git will automatically use the custom hooks, including the pre-commit hook defined in `.githooks/pre-commit`.
+
+3. **Verify the Configuration (Optional):**
+   To verify that the hooks directory is set correctly, you can run:
+   ```bash
+   git config --get core.hooksPath
+   ```
+   This should return `.githooks`.
+
+4. **Running the Pre-Commit Hook:**
+   Now, whenever you make a commit, the `pre-commit` hook stored in the `.githooks` directory will be executed automatically. If any issues are found (such as linting errors or code formatting issues), the commit will be aborted, and you’ll be prompted to fix the issues.
+
+#### Important Notes:
+- If you're setting up this repository on a new machine, don't forget to run the `git config core.hooksPath .githooks` command after cloning the repository.
+
+
 # HackYourFuture project template
 
 This template is meant to be used as part of the meal-sharing and Final Project modules,
@@ -16,7 +47,7 @@ Both packages are as small as possible but feel free to add more tools as you se
 
 This template assumes that there is a database already set up with tables and data.
 
-You can start a MySQL instance using Docker with the below command:  
+You can start a MySQL instance using Docker with the below command:
 `docker run --name mysql -e MYSQL_ROOT_PASSWORD=mysql-root-password -e MYSQL_DATABASE=my-database -d -p 3306:3306 mysql:latest`
 
 Then connect to this instance using any database management tool you prefer, such as MySQL Workbench, to set up your tables and add data.
@@ -55,7 +86,7 @@ You can then open the web app at [http://localhost:3000](http://localhost:3000).
 
 ### Port conflict
 
-If you see the below error when trying to start either the API or the web app, then you have a port conflict.  
+If you see the below error when trying to start either the API or the web app, then you have a port conflict.
 Some other process is already listening on the port you want to use. Either stop that process or use another port by changing the PORT variable in the `.env` file for the package that is facing the conflict (API or web app).
 
 ```
@@ -176,7 +207,7 @@ If it does find a TypeScript config file but that file is invalid or empty you'l
 ✘ [ERROR] Unexpected end of file in JSON
 
     ../../tsconfig.json:1:0:
-      1 │ 
+      1 │
         ╵ ^
 
 failed to load config from /Users/milton/dev/hyf/hyf-project-template/app/vite.config.js
@@ -208,7 +239,7 @@ There are 3 possible solutions:
 
 Before you commit any changes you've made, you can run the command `npm run format` in either package to format the code using [Prettier](https://prettier.io/).
 
-Using a consistent code style makes it easier to read code which improves productivity and avoid bugs.  
+Using a consistent code style makes it easier to read code which improves productivity and avoid bugs.
 When collaborating with other people, a code base should still look like it was written by a single person.
 
 ## Checking for common code problems
@@ -223,5 +254,5 @@ All 3 components (database, API, web app) can be deployed for free at [Render.co
 Sign in using your Github account to make the process smoother.
 When you sign in you can specify which of your repositories you want Render.com to have access to.
 
-[Database and API deployment instructions](./api/README.md#deploying)  
+[Database and API deployment instructions](./api/README.md#deploying)
 [App deployment instructions](./app/README.md#deploying-a-static-web-app)
