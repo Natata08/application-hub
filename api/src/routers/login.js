@@ -11,13 +11,13 @@ login.post("/", async (req, res) => {
   const { email, password } = req.body;
   // Checking if we get the username and password
   if (!email || !password) {
-    return res.status(400).send("Email and password required");
+    return res.status(400).json({ message: "Email and password are required" });
   }
   try {
-    const user = await knex("user").where({ email }).first();
+    const user = await knex("users").where({ email }).first();
     //Checking if user exist
     if (!user) {
-      return res.status(401).send("Invalid email or password");
+      return res.status(401).json({ message: "Invalid email or password" });
     }
 
     // Comparing hashed password from db with the provided password
@@ -38,11 +38,10 @@ login.post("/", async (req, res) => {
       res.status(200).json({ userInfo: userInfo, token });
     } else {
       // Invalid password
-      res.status(401).send("Invalid password");
+      res.status(401).json({ message: "Invalid password" });
     }
   } catch (error) {
-    console.error("Error logging in: ", error);
-    res.status(500).send("Error logging in: " + error.message);
+    res.status(500).json({ error: `Error logging in: ${error.message}` });
   }
 });
 

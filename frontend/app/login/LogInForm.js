@@ -90,9 +90,8 @@ export default function LogInForm() {
 
           <InputField         
             type="password"
-            id="password_hash"
+            id="password"
             label="Password"
-            defaultValue="Password (at least 8 characters)"
             register={register}
             errors={errors}
             required
@@ -126,7 +125,7 @@ export default function LogInForm() {
             >
               Don't you have an account?
             </Typography>
-            <Link href={`/signup`} display="block">
+            <Link href={`/register`} display="block">
               <Button variant="text">Sign up</Button>
             </Link>
           </Stack>

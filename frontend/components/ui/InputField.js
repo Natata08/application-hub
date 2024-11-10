@@ -2,8 +2,8 @@ import { useState } from "react";
 import { TextField, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-export default function InputField({ errors, id, label, defaultValue, required, minLength, pattern, type = "text", register }) {
-  const [showPassword, setShowPassword] = useState(true);
+export default function InputField({ errors, id, label, defaultValue, helperText, required, minLength, pattern, type = "text", register }) {
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword((prevShowPassword) => {
@@ -34,7 +34,7 @@ export default function InputField({ errors, id, label, defaultValue, required, 
         },
         required: required ? `${label} is required` : undefined,
       })}
-      helperText={errors[id] ? errors[id].message : ""}
+      helperText={errors[id] ? errors[id].message : helperText}
       InputProps={{
         endAdornment: type === "password" && (
           <InputAdornment position="end">
@@ -44,7 +44,7 @@ export default function InputField({ errors, id, label, defaultValue, required, 
               onMouseDown={handleMouseDownPassword}
               edge="end"
             >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
+              {showPassword ? <Visibility /> : <VisibilityOff />}
             </IconButton>
           </InputAdornment>
         ),

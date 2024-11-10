@@ -35,17 +35,9 @@ export default function User() {
             Discover the best job application manager.
           </Typography>
         </Paper>
-
-        <Button
-          onClick={handleThemeChange}
-          variant="text"
-          color="primary"
-          sx={{
-            marginTop: 3,
-          }}
-        >
-          Toggle Theme
-        </Button>
+      <Link href={`/register`} >
+        <Button variant="contained"  sx={{ marginTop: 3 }}>Sign up</Button>
+      </Link>
 
         <Button
           onClick={handleThemeChange}
