@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Run Husky hooks for both frontend and api directories
+echo "Running Husky pre-commit hooks for frontend..."
+
+# Navigate to the frontend folder and run the pre-commit hook for changed files with relevant extensions
+(cd frontend && npx eslint --fix --ext .js,.jsx,.ts,.tsx . && npm run format -- --write)
+
+# Check if eslint or prettier modified any files with the relevant extensions in frontend
+if [[ $(git diff --name-only frontend/ | grep -E '\.(js|jsx|ts|tsx)$') ]]; then
+  echo "Files were updated during lint/format in frontend. Aborting commit."
+  exit 1
+fi
+
+if [ $? -ne 0 ]; then
+  echo "Pre-commit check failed in frontend."
+  exit 1
+fi
+
+echo "Running Husky pre-commit hooks for api..."
+
+# Navigate to the api folder and run the pre-commit hook for changed files with relevant extensions
+(cd api && npx eslint --fix --ext .js,.jsx,.ts,.tsx . && npm run format -- --write)
+
+# Check if eslint or prettier modified any files with the relevant extensions in api
+if [[ $(git diff --name-only api/ | grep -E '\.(js|jsx|ts|tsx)$') ]]; then
+  echo "Files were updated during lint/format in api. Aborting commit."
+  exit 1
+fi
+
+if [ $? -ne 0 ]; then
+  echo "Pre-commit check failed in api."
+  exit 1
+fi
+
+echo "All checks passed in both frontend and api!"
+
+# Exit successfully
+exit 0

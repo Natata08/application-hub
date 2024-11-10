@@ -1,19 +1,19 @@
-import React from "react";
-import { Box, Typography, Button, Container } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import React from 'react'
+import { Box, Typography, Button, Container } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 export default function Introduction() {
-  const theme = useTheme();
+  const theme = useTheme()
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "90vh",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '90vh',
         backgroundColor: theme.palette.background.default,
-        textAlign: "center",
+        textAlign: 'center',
         px: 2,
       }}
     >
@@ -21,7 +21,7 @@ export default function Introduction() {
         <Typography
           variant="h2"
           component="h1"
-          sx={{ fontWeight: "bold", mb: 2 }}
+          sx={{ fontWeight: 'bold', mb: 2 }}
         >
           ApplicationHub
         </Typography>
@@ -43,8 +43,8 @@ export default function Introduction() {
             color: theme.palette.text.secondary,
             px: 4,
             py: 1.5,
-            fontSize: "1rem",
-            "&:hover": {
+            fontSize: '1rem',
+            '&:hover': {
               backgroundColor: theme.palette.background.cardGreen,
             },
           }}
@@ -53,5 +53,5 @@ export default function Introduction() {
         </Button>
       </Container>
     </Box>
-  );
+  )
 }

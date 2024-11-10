@@ -1,13 +1,13 @@
-"use client";
+'use client'
 
-import { useTheme } from "@mui/material/styles";
-import HomePage from "../components/HomePage";
+import { useTheme } from '@mui/material/styles'
+import HomePage from '../components/HomePage'
 
 export default function Home() {
-  const theme = useTheme();
+  const theme = useTheme()
   return (
     <>
       <HomePage />
     </>
-  );
+  )
 }

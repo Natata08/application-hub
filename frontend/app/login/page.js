@@ -1,14 +1,14 @@
-import { Box, Container } from "@mui/material";
-import LogInForm from "./LogInForm";
+import { Box, Container } from '@mui/material'
+import LogInForm from './LogInForm'
 
 export const LogIn = () => {
   return (
     <Box component="main">
       <Container>
-        <LogInForm /> 
+        <LogInForm />
       </Container>
     </Box>
-  );
-};
+  )
+}
 
-export default LogIn;
+export default LogIn

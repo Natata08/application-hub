@@ -1,17 +1,17 @@
-import React from "react";
-import { Card, CardContent, Typography, Button } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import React from 'react'
+import { Card, CardContent, Typography, Button } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 export default function WhyChooseCard() {
-  const theme = useTheme();
+  const theme = useTheme()
   return (
     <Card
       style={{
-        maxWidth: "500px",
-        margin: "20px auto",
-        padding: "20px",
-        borderRadius: "15px",
-        boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
+        maxWidth: '500px',
+        margin: '20px auto',
+        padding: '20px',
+        borderRadius: '15px',
+        boxShadow: '0px 4px 12px rgba(0,0,0,0.1)',
       }}
     >
       <CardContent>
@@ -33,5 +33,5 @@ export default function WhyChooseCard() {
         </Typography>
       </CardContent>
     </Card>
-  );
+  )
 }

@@ -1,8 +1,8 @@
-"use client";
-import { createContext, useContext, useState, useEffect } from 'react';
-import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+'use client'
+import { createContext, useContext, useState, useEffect } from 'react'
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
 
-const ThemeContext = createContext();
+const ThemeContext = createContext()
 
 const colors = {
   primary: '#134B48', // Green as primary color
@@ -18,8 +18,8 @@ const colors = {
   paperLight: '#F7F7F7', // Light grayish beige for paper in light theme
   paperDark: '#1A3D3D', // Light greenish shade for paper in dark theme
   footerLight: '#000000', // Black
-  footerDark: '#F9FAD2', //Light Yellow    
-};
+  footerDark: '#F9FAD2', //Light Yellow
+}
 
 const commonStyles = {
   MuiButton: {
@@ -60,7 +60,7 @@ const commonStyles = {
       },
     },
   },
-};
+}
 
 // Light theme
 export const lightTheme = createTheme({
@@ -117,7 +117,7 @@ export const lightTheme = createTheme({
       },
     },
   },
-});
+})
 
 // Dark theme
 export const darkTheme = createTheme({
@@ -173,36 +173,38 @@ export const darkTheme = createTheme({
       },
     },
   },
-});
+})
 
-export const useThemeContext = () => useContext(ThemeContext);
+export const useThemeContext = () => useContext(ThemeContext)
 
 export default function ThemeApp({ children }) {
-  const [isLightMode, setIsLightMode] = useState(true);
+  const [isLightMode, setIsLightMode] = useState(true)
 
   const handleThemeChange = () => {
-    const newTheme = !isLightMode;
-    setIsLightMode(newTheme);
-    localStorage.setItem('modeTheme', JSON.stringify(newTheme));
-  };
+    const newTheme = !isLightMode
+    setIsLightMode(newTheme)
+    localStorage.setItem('modeTheme', JSON.stringify(newTheme))
+  }
 
-  const currentTheme = isLightMode ? lightTheme : darkTheme;
+  const currentTheme = isLightMode ? lightTheme : darkTheme
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('modeTheme');
+    const savedTheme = localStorage.getItem('modeTheme')
     if (savedTheme !== null) {
-      setIsLightMode(JSON.parse(savedTheme));
+      setIsLightMode(JSON.parse(savedTheme))
     } else {
-      setIsLightMode(true);
+      setIsLightMode(true)
     }
-  }, []);
+  }, [])
 
   return (
-    <ThemeContext.Provider value={{ isLightMode, darkTheme, lightTheme, handleThemeChange }}>
+    <ThemeContext.Provider
+      value={{ isLightMode, darkTheme, lightTheme, handleThemeChange }}
+    >
       <ThemeProvider theme={currentTheme}>
         <CssBaseline />
         {children}
       </ThemeProvider>
     </ThemeContext.Provider>
-  );
+  )
 }

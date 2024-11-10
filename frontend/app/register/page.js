@@ -1,14 +1,14 @@
-import { Box, Container } from "@mui/material";
-import SignUpForm from "./SignUpForm";
+import { Box, Container } from '@mui/material'
+import SignUpForm from './SignUpForm'
 
 export const Register = () => {
   return (
     <Box component="main">
       <Container>
-        <SignUpForm /> 
+        <SignUpForm />
       </Container>
     </Box>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

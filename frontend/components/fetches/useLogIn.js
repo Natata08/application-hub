@@ -1,19 +1,24 @@
-export const useLogIn = async (contactData) => {
+import { KeyboardDoubleArrowDown } from '@mui/icons-material'
+
+export const makeLoginApiCall = async (contactData) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
+
     body: JSON.stringify(contactData),
-  });
+  })
 
   if (!response.ok) {
-    let errorData;
+    let errorData
     try {
-      errorData = await response.json();
+      errorData = await response.json()
     } catch {
-      errorData = { message: "Failed to parse error message" };
+      errorData = { message: 'Failed to parse error message' }
     }
-    throw new Error(`Error ${response.status}: ${errorData.message || 'Unknown error'}`);
+    throw new Error(
+      `Error ${response.status}: ${errorData.message || 'Unknown error'}`
+    )
   }
-};
+}
