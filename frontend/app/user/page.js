@@ -43,7 +43,7 @@ export default function User() {
         Toggle Theme
       </Button>
 
-      <Link href={`/signup`} >
+      <Link href={`/register`} >
         <Button variant="contained"  sx={{ marginTop: 3 }}>Sign up</Button>
       </Link>
 
