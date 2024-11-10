@@ -86,19 +86,9 @@ export default function NavBar() {
               LogIn
             </Button>
           </Link>
-          <Link href="/signup" passHref>
-            <Button
-              sx={{
-                backgroundColor: theme.palette.background.cardGreen,
-                color: theme.palette.text.secondary,
-                fontWeight: "bold",
-                margin: "10px",
-                "&:hover": {
-                  backgroundColor: theme.palette.background.paperYellow,
-                },
-              }}
-            >
-              Sign Up
+          <Link href={`/register`}>
+            <Button variant="contained" sx={{ marginTop: 3 }}>
+              Sign up
             </Button>
           </Link>
         </Box>
@@ -147,21 +137,9 @@ export default function NavBar() {
               LogIn
             </Button>
           </Link>
-          <Link href="/register" passHref>
-            <Button
-              sx={{
-                backgroundColor: theme.palette.background.cardGreen,
-                color: theme.palette.text.secondary,
-                fontWeight: "bold",
-                margin: "10px",
-                width: "100%",
-                textAlign: "left",
-                "&:hover": {
-                  backgroundColor: theme.palette.background.paperYellow,
-                },
-              }}
-            >
-              Sign Up
+          <Link href={`/register`}>
+            <Button variant="contained" sx={{ marginTop: 3 }}>
+              Sign up
             </Button>
           </Link>
         </Box>
