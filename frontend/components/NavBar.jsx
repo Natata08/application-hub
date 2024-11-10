@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   AppBar,
   Toolbar,
@@ -9,31 +9,32 @@ import {
   Box,
   Drawer,
   IconButton,
-} from "@mui/material";
-import Link from "next/link";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useTheme } from "@mui/material/styles";
+} from '@mui/material'
+import Image from 'next/image'
+import Link from 'next/link'
+import MenuIcon from '@mui/icons-material/Menu'
+import { useTheme } from '@mui/material/styles'
 
 export default function NavBar() {
-  const theme = useTheme();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const theme = useTheme()
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen);
-  };
+    setDrawerOpen(!drawerOpen)
+  }
 
   return (
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "transparent",
-        boxShadow: "none",
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
         color: theme.palette.text.primary,
       }}
     >
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <img
+          <Image
             src="./transparentLogo.png"
             width={200}
             height={150}
@@ -43,7 +44,7 @@ export default function NavBar() {
 
         <IconButton
           color="inherit"
-          sx={{ display: { xs: "block", sm: "none" } }}
+          sx={{ display: { xs: 'block', sm: 'none' } }}
           onClick={toggleDrawer}
         >
           <MenuIcon />
@@ -51,23 +52,23 @@ export default function NavBar() {
 
         <Box
           sx={{
-            display: { xs: "none", sm: "flex" },
+            display: { xs: 'none', sm: 'flex' },
             gap: 2,
-            justifyContent: "flex-end",
+            justifyContent: 'flex-end',
           }}
         >
           <Link href="/" passHref>
-            <Button color="inherit" sx={{ margin: "10px", color: "black" }}>
+            <Button color="inherit" sx={{ margin: '10px', color: 'black' }}>
               Home
             </Button>
           </Link>
           <Link href="/about" passHref>
-            <Button color="inherit" sx={{ margin: "10px", color: "black" }}>
+            <Button color="inherit" sx={{ margin: '10px', color: 'black' }}>
               About
             </Button>
           </Link>
           <Link href="/signup" passHref>
-            <Button color="inherit" sx={{ margin: "10px", color: "black" }}>
+            <Button color="inherit" sx={{ margin: '10px', color: 'black' }}>
               Dashboard
             </Button>
           </Link>
@@ -76,9 +77,9 @@ export default function NavBar() {
               sx={{
                 backgroundColor: theme.palette.background.buttonSecondary,
                 color: theme.palette.text.primary,
-                fontWeight: "bold",
-                margin: "10px",
-                "&:hover": {
+                fontWeight: 'bold',
+                margin: '10px',
+                '&:hover': {
                   backgroundColor: theme.palette.background.paperYellow,
                 },
               }}
@@ -99,7 +100,7 @@ export default function NavBar() {
           <Link href="/" passHref>
             <Button
               color="inherit"
-              sx={{ margin: "10px", width: "100%", textAlign: "left" }}
+              sx={{ margin: '10px', width: '100%', textAlign: 'left' }}
             >
               Home
             </Button>
@@ -107,7 +108,7 @@ export default function NavBar() {
           <Link href="/about" passHref>
             <Button
               color="inherit"
-              sx={{ margin: "10px", width: "100%", textAlign: "left" }}
+              sx={{ margin: '10px', width: '100%', textAlign: 'left' }}
             >
               About
             </Button>
@@ -115,7 +116,7 @@ export default function NavBar() {
           <Link href="/register" passHref>
             <Button
               color="inherit"
-              sx={{ margin: "10px", width: "100%", textAlign: "left" }}
+              sx={{ margin: '10px', width: '100%', textAlign: 'left' }}
             >
               Dashboard
             </Button>
@@ -125,11 +126,11 @@ export default function NavBar() {
               sx={{
                 backgroundColor: theme.palette.background.buttonSecondary,
                 color: theme.palette.text.primary,
-                fontWeight: "bold",
-                margin: "10px",
-                width: "100%",
-                textAlign: "left",
-                "&:hover": {
+                fontWeight: 'bold',
+                margin: '10px',
+                width: '100%',
+                textAlign: 'left',
+                '&:hover': {
                   backgroundColor: theme.palette.background.paperYellow,
                 },
               }}
@@ -145,5 +146,5 @@ export default function NavBar() {
         </Box>
       </Drawer>
     </AppBar>
-  );
+  )
 }

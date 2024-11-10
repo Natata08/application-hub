@@ -1,14 +1,14 @@
-"use client";
-
-import React from "react";
-import { Box, Typography, Link, IconButton } from "@mui/material";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
-import { useTheme } from "@mui/material/styles";
+'use client'
+import Image from 'next/image'
+import React from 'react'
+import { Box, Typography, Link, IconButton } from '@mui/material'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import FacebookIcon from '@mui/icons-material/Facebook'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import { useTheme } from '@mui/material/styles'
 
 export default function Footer() {
-  const theme = useTheme();
+  const theme = useTheme()
   return (
     <Box
       component="footer"
@@ -21,17 +21,17 @@ export default function Footer() {
     >
       <Box
         sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          flexWrap: "wrap",
-          maxWidth: "1200px",
-          margin: "0 auto",
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          flexWrap: 'wrap',
+          maxWidth: '1200px',
+          margin: '0 auto',
         }}
       >
         <Box sx={{ mb: 2 }}>
-          <Typography variant="h6" sx={{ mb: 1, fontWeight: "bold" }}>
-            <img src="./transparentLogo.png" alt="HUB" width={100} />
+          <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
+            <Image src="./transparentLogo.png" alt="" width={100} />
           </Typography>
           <Typography variant="body2" color={theme.palette.text.secondary}>
             &copy; {new Date().getFullYear()} ApplicationHub
@@ -72,13 +72,13 @@ export default function Footer() {
             Learn
           </Typography>
 
-          <Link href="/blog" color="inherit" sx={{ display: "block", mb: 0.5 }}>
+          <Link href="/blog" color="inherit" sx={{ display: 'block', mb: 0.5 }}>
             Blog
           </Link>
-          <Link href="/demo" color="inherit" sx={{ display: "block", mb: 0.5 }}>
+          <Link href="/demo" color="inherit" sx={{ display: 'block', mb: 0.5 }}>
             Schedule a demo
           </Link>
-          <Link color="inherit" sx={{ display: "block", mb: 0.5 }}>
+          <Link color="inherit" sx={{ display: 'block', mb: 0.5 }}>
             Help Center
           </Link>
         </Box>
@@ -93,14 +93,14 @@ export default function Footer() {
           <Link
             href="/privacy-policy"
             color="inherit"
-            sx={{ display: "block", mb: 0.5 }}
+            sx={{ display: 'block', mb: 0.5 }}
           >
             Privacy Policy
           </Link>
-          <Link color="inherit" sx={{ display: "block", mb: 0.5 }}>
+          <Link color="inherit" sx={{ display: 'block', mb: 0.5 }}>
             User Terms
           </Link>
-          <Link color="inherit" sx={{ display: "block", mb: 0.5 }}>
+          <Link color="inherit" sx={{ display: 'block', mb: 0.5 }}>
             Careers
           </Link>
         </Box>
@@ -124,5 +124,5 @@ export default function Footer() {
         </Box>
       </Box>
     </Box>
-  );
+  )
 }

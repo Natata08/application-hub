@@ -1,19 +1,19 @@
-export const useSignUp = async (userData) => {
+export const makeSignUpApiCall = async (userData) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/register`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(userData),
-  });
+  })
 
   if (!response.ok) {
-    let errorData;
+    let errorData
     try {
-      errorData = await response.json();
+      errorData = await response.json()
     } catch {
-      errorData = { message: response.statusText || "Unknown error" };
+      errorData = { message: response.statusText || 'Unknown error' }
     }
-    throw new Error(`Error ${response.status}: ${errorData.message}`);
+    throw new Error(`Error ${response.status}: ${errorData.message}`)
   }
-};
+}

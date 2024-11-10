@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import {
   Box,
   Typography,
@@ -7,17 +7,17 @@ import {
   Button,
   Link,
   IconButton,
-} from "@mui/material";
-import { useThemeContext } from "@/components/styles/ThemeApp";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
+} from '@mui/material'
+import { useThemeContext } from '@/components/styles/ThemeApp'
+import DarkModeIcon from '@mui/icons-material/DarkMode'
+import LightModeIcon from '@mui/icons-material/LightMode'
 
 export default function User() {
   const { isLightMode, handleThemeChange, darkTheme, lightTheme } =
-    useThemeContext();
-  const theme = isLightMode ? lightTheme : darkTheme;
+    useThemeContext()
+  const theme = isLightMode ? lightTheme : darkTheme
   return (
-    <Box sx={{ minHeight: "100vh", padding: 4 }}>
+    <Box sx={{ minHeight: '100vh', padding: 4 }}>
       <Container>
         <Typography
           variant="h2"
@@ -35,9 +35,11 @@ export default function User() {
             Discover the best job application manager.
           </Typography>
         </Paper>
-      <Link href={`/register`} >
-        <Button variant="contained"  sx={{ marginTop: 3 }}>Sign up</Button>
-      </Link>
+        <Link href={`/register`}>
+          <Button variant="contained" sx={{ marginTop: 3 }}>
+            Sign up
+          </Button>
+        </Link>
 
         <Button
           onClick={handleThemeChange}
@@ -60,5 +62,5 @@ export default function User() {
         </IconButton>
       </Container>
     </Box>
-  );
+  )
 }
