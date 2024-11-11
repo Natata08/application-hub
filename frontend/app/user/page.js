@@ -8,9 +8,9 @@ import { useState } from 'react'
 import ApplicationsBoard from './applications/ApplicationsBoard'
 import TabPanel from './tabs/TabPanel'
 import MotivationalQuote from './MotivationalQuote'
+import DashboardHeader from './DashboardHeader'
 
-export default function DashboardPage({ params }) {
-  const userId = params.userId
+export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
 
   const handleTabChange = (event, newValue) => {
@@ -20,19 +20,7 @@ export default function DashboardPage({ params }) {
   return (
     <Box component="main">
       <Container sx={{ p: 4, maxWidth: '1200px', margin: '0 auto' }}>
-        <Box sx={{ mb: 5 }}>
-          <Typography
-            variant="h4"
-            component="h2"
-            sx={{ fontWeight: 'bold', mb: 1 }}
-          >
-            {`${userId}, welcome to your application tracking!`}
-          </Typography>
-          <Typography variant="body1">
-            Manage your tasks, track your progress, and prepare for interviews
-            smoothly — all in one place.
-          </Typography>
-        </Box>
+        <DashboardHeader name="Name" />
         <ControlPanel tabValue={activeTab} onTabChange={handleTabChange} />
 
         {[true, false].map((isActive, index) => (
