@@ -1,5 +1,9 @@
 <img src="./images/hyf.svg" alt="image" width="200px" height="200px">
 
+### Using Two VS Code Windows for `api/` and `frontend`
+
+Open `api/` and `frontend/` in separate VS Code windows to ensure extensions like ESLint work correctly, as our monorepo setup has individual `package.json` files for each folder.
+
 ### Setting Up Custom Git Hooks
 
 To ensure that the custom Git hooks are used in this repository, you need to configure your Git client to point to the `.githooks` directory for hooks. Follow these steps:
