@@ -1,5 +1,12 @@
 import { Tabs, Tab } from '@mui/material'
 
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  }
+}
+
 export default function TabsControl({ tabValue, onTabChange }) {
   return (
     <Tabs
@@ -31,8 +38,8 @@ export default function TabsControl({ tabValue, onTabChange }) {
         },
       }}
     >
-      <Tab label="In progress" />
-      <Tab label="Done" />
+      <Tab label="In progress" {...a11yProps(0)} />
+      <Tab label="Done" {...a11yProps(1)} />
     </Tabs>
   )
 }
