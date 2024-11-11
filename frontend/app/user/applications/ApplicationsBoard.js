@@ -2,16 +2,13 @@ import { Box } from '@mui/material'
 import StatusColumn from './StatusColumn'
 
 const activeStatuses = [
-  { name: 'SAVED', count: 2 },
-  { name: 'APPLIED', count: 2 },
-  { name: 'INTERVIEW', count: 3 },
-  { name: 'OFFER', count: 0 },
+  { name: 'SAVED' },
+  { name: 'APPLIED' },
+  { name: 'INTERVIEW' },
+  { name: 'OFFER' },
 ]
 
-const inactiveStatuses = [
-  { name: 'REJECTED', count: 2 },
-  { name: 'WITHDRAWN', count: 2 },
-]
+const inactiveStatuses = [{ name: 'REJECTED' }, { name: 'WITHDRAWN' }]
 
 export default function ApplicationsBoard({ isActive }) {
   return (

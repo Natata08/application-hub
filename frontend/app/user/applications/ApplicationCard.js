@@ -1,11 +1,11 @@
-import { Paper, Typography, Box } from '@mui/material'
+import { Card, Typography, Box } from '@mui/material'
 
 export default function ApplicationCard() {
   return (
-    <Paper
+    <Card
       sx={{
         p: 2,
-
+        border: 1,
         borderRadius: 2,
         '&:hover': {
           boxShadow: 3,
@@ -15,11 +15,7 @@ export default function ApplicationCard() {
       <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
         Company
       </Typography>
-      <Typography
-        variant="h6"
-        component="h3"
-        sx={{ color: 'text.primary', mb: 2 }}
-      >
+      <Typography variant="h6" component="h3" sx={{ mb: 2 }}>
         Web Developer
       </Typography>
       <Box
@@ -32,6 +28,6 @@ export default function ApplicationCard() {
           1w
         </Typography>
       </Box>
-    </Paper>
+    </Card>
   )
 }

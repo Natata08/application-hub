@@ -16,7 +16,7 @@ import { useState } from 'react'
 export default function SortControl({ onSortApply }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [selectedSort, setSelectedSort] = useState('Created Date')
-  const [sortDirection, setSortDirection] = useState('asc')
+  const [sortDirection, setSortDirection] = useState('desc')
   const open = Boolean(anchorEl)
 
   const sortOptions = ['Created Date', 'Last Updated', 'Job Title']
@@ -135,7 +135,7 @@ export default function SortControl({ onSortApply }) {
                     size="small"
                     sx={{
                       '&.Mui-checked': {
-                        color: 'primary.main',
+                        color: 'text.primary',
                       },
                     }}
                   />
@@ -146,7 +146,7 @@ export default function SortControl({ onSortApply }) {
                       fontSize: 14,
                       color:
                         sortDirection === option.value
-                          ? 'primary.main'
+                          ? 'text.primary'
                           : 'text.secondary',
                     }}
                   >

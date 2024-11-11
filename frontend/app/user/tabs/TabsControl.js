@@ -11,6 +11,20 @@ export default function TabsControl({ tabValue, onTabChange }) {
         order: { xs: 2, md: 1 },
         '& .MuiTab-root': {
           textTransform: 'none',
+          color: (theme) =>
+            theme.palette.mode === 'dark'
+              ? theme.palette.text.primary
+              : theme.palette.text.secondary,
+          '&.Mui-selected': {
+            color: (theme) =>
+              theme.palette.mode === 'dark'
+                ? theme.palette.secondary.main
+                : theme.palette.primary.main,
+          },
+          '&:hover': {
+            color: 'secondary.main',
+            opacity: 0.8,
+          },
         },
         '& .MuiTabs-indicator': {
           backgroundColor: 'secondary.main',

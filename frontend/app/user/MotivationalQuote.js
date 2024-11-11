@@ -95,7 +95,7 @@ export default function MotivationalQuote() {
           sx={{
             width: 300,
             borderRadius: 4,
-            bgcolor: 'background.paper',
+            bgcolor: 'background.default',
             minHeight: isLoading ? 200 : 'auto',
           }}
         >
@@ -108,10 +108,13 @@ export default function MotivationalQuote() {
                 position: 'absolute',
                 top: 12,
                 left: 12,
-                bgcolor: 'primary.main',
-                color: 'white',
+                bgcolor: (theme) =>
+                  theme.palette.mode === 'dark'
+                    ? 'secondary.main'
+                    : 'primary.main',
+                color: 'background.default',
                 '& .MuiChip-icon': {
-                  color: 'white',
+                  color: 'background.default',
                 },
               }}
             />
@@ -177,7 +180,6 @@ export default function MotivationalQuote() {
                   <FormatQuoteIcon
                     sx={{
                       fontSize: 40,
-                      color: 'primary.main',
                       opacity: 0.2,
                     }}
                   />
@@ -185,7 +187,6 @@ export default function MotivationalQuote() {
                     variant="body1"
                     sx={{
                       fontStyle: 'italic',
-                      color: 'text.primary',
                       lineHeight: 1.6,
                       fontSize: '1.1rem',
                     }}
