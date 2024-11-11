@@ -11,14 +11,18 @@ const activeStatuses = [
 const inactiveStatuses = [{ name: 'REJECTED' }, { name: 'WITHDRAWN' }]
 
 export default function ApplicationsBoard({ isActive }) {
+  const statuses = isActive ? activeStatuses : inactiveStatuses
   return (
     <Box
       sx={{
         display: 'grid',
         gridTemplateColumns: {
-          xs: '1fr',
+          xs: 'repeat(1, 1fr)',
           sm: 'repeat(3, 1fr)',
           md: 'repeat(4, 1fr)',
+        },
+        '@media (min-width: 450px) and (max-width: 600px)': {
+          gridTemplateColumns: 'repeat(2, 1fr)',
         },
         gap: {
           xs: 2,
@@ -27,14 +31,9 @@ export default function ApplicationsBoard({ isActive }) {
         width: '100%',
       }}
     >
-      {isActive &&
-        activeStatuses.map((status) => (
-          <StatusColumn key={status.name} status={status} />
-        ))}
-      {!isActive &&
-        inactiveStatuses.map((status) => (
-          <StatusColumn key={status.name} status={status} />
-        ))}
+      {statuses.map((status) => (
+        <StatusColumn key={status.name} status={status} />
+      ))}
     </Box>
   )
 }
