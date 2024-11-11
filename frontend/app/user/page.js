@@ -1,65 +1,47 @@
 'use client'
-import {
-  Box,
-  Typography,
-  Container,
-  Paper,
-  Button,
-  Link,
-  IconButton,
-} from '@mui/material'
-import { useThemeContext } from '@/components/styles/ThemeApp'
-import DarkModeIcon from '@mui/icons-material/DarkMode'
-import LightModeIcon from '@mui/icons-material/LightMode'
 
-export default function User() {
-  const { isLightMode, handleThemeChange, darkTheme, lightTheme } =
-    useThemeContext()
-  const theme = isLightMode ? lightTheme : darkTheme
+import Container from '@mui/material/Container'
+import ControlPanel from './ControlPanel'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import { useState } from 'react'
+import ApplicationsBoard from './applications/ApplicationsBoard'
+import TabPanel from './tabs/TabPanel'
+import MotivationalQuote from './MotivationalQuote'
+
+export default function DashboardPage({ params }) {
+  const userId = params.userId
+  const [activeTab, setActiveTab] = useState(0)
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue)
+  }
+
   return (
-    <Box sx={{ minHeight: '100vh', padding: 4 }}>
-      <Container>
-        <Typography
-          variant="h2"
-          gutterBottom
-          sx={{ padding: 3, backgroundColor: theme.palette.background.footer }}
-        >
-          Welcome to Application Hub! ONLY EXAMPLE!!!!
-        </Typography>
-
-        <Paper
-          elevation={3}
-          sx={{ padding: 3, color: theme.palette.text.secondary }}
-        >
-          <Typography variant="h6">
-            Discover the best job application manager.
+    <Box component="main">
+      <Container sx={{ p: 4, maxWidth: '1200px', margin: '0 auto' }}>
+        <Box sx={{ mb: 5 }}>
+          <Typography
+            variant="h4"
+            component="h2"
+            sx={{ fontWeight: 'bold', mb: 1 }}
+          >
+            {`${userId}, welcome to your application tracking!`}
           </Typography>
-        </Paper>
-        <Link href={`/register`}>
-          <Button variant="contained" sx={{ marginTop: 3 }}>
-            Sign up
-          </Button>
-        </Link>
+          <Typography variant="body1">
+            Manage your tasks, track your progress, and prepare for interviews
+            smoothly — all in one place.
+          </Typography>
+        </Box>
+        <ControlPanel tabValue={activeTab} onTabChange={handleTabChange} />
 
-        <Button
-          onClick={handleThemeChange}
-          variant="outlined"
-          sx={{
-            marginTop: 3,
-          }}
-        >
-          Toggle Theme
-        </Button>
+        {[true, false].map((isActive, index) => (
+          <TabPanel key={`tab-${index}`} value={activeTab} index={index}>
+            <ApplicationsBoard isActive={isActive} />
+          </TabPanel>
+        ))}
 
-        <Link href={`/register`}>
-          <Button variant="contained" sx={{ marginTop: 3 }}>
-            Sign up
-          </Button>
-        </Link>
-
-        <IconButton onClick={handleThemeChange} color="inherit" size="large">
-          {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
-        </IconButton>
+        <MotivationalQuote />
       </Container>
     </Box>
   )
