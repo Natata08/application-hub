@@ -1,9 +1,9 @@
-import { Box } from "@mui/material";
+import { Box } from '@mui/material'
 
 export default function TabPanel({ children, value, index, ...props }) {
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`applications-tabpanel-${index}`}
       aria-labelledby={`applications-tab-${index}`}
@@ -11,5 +11,5 @@ export default function TabPanel({ children, value, index, ...props }) {
     >
       {value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
     </div>
-  );
+  )
 }

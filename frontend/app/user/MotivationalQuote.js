@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 import {
   Typography,
   Box,
@@ -13,79 +13,79 @@ import {
   Chip,
   Collapse,
   Fab,
-} from "@mui/material";
-import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
-import RefreshIcon from "@mui/icons-material/Refresh";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import CloseIcon from "@mui/icons-material/Close";
-import LightbulbIcon from "@mui/icons-material/Lightbulb";
+} from '@mui/material'
+import FormatQuoteIcon from '@mui/icons-material/FormatQuote'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
+import CloseIcon from '@mui/icons-material/Close'
+import LightbulbIcon from '@mui/icons-material/Lightbulb'
 
 export default function MotivationalQuote() {
-  const [quote, setQuote] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [refresh, setRefresh] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const [quote, setQuote] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [refresh, setRefresh] = useState(0)
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
     const fetchQuote = async () => {
       try {
-        setIsLoading(true);
-        setError(null);
+        setIsLoading(true)
+        setError(null)
         const response = await fetch(
-          "https://api.api-ninjas.com/v1/quotes?category=success",
+          'https://api.api-ninjas.com/v1/quotes?category=success',
           {
             headers: {
-              "X-Api-Key": process.env.NEXT_PUBLIC_API_NINJAS_KEY,
+              'X-Api-Key': process.env.NEXT_PUBLIC_API_NINJAS_KEY,
             },
           }
-        );
+        )
 
         if (!response.ok) {
-          throw new Error("Failed to fetch quote");
+          throw new Error('Failed to fetch quote')
         }
 
-        const data = await response.json();
-        setQuote(data[0]);
+        const data = await response.json()
+        setQuote(data[0])
       } catch (err) {
-        setError(err.message);
+        setError(err.message)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchQuote();
-  }, [refresh]);
+    fetchQuote()
+  }, [refresh])
 
   const handleRefresh = () => {
-    setRefresh((prev) => prev + 1);
-  };
+    setRefresh((prev) => prev + 1)
+  }
 
   const handleClose = () => {
-    setIsVisible(false);
-  };
+    setIsVisible(false)
+  }
 
   const handleShow = () => {
-    setIsVisible(true);
-  };
+    setIsVisible(true)
+  }
 
   return (
     <Box
       sx={{
-        position: "fixed",
+        position: 'fixed',
         bottom: 30,
         right: 30,
-        display: "flex",
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
+        display: 'flex',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
       }}
     >
       <Collapse
         in={isVisible}
-        orientation='horizontal'
+        orientation="horizontal"
         timeout={400}
         sx={{
-          position: "absolute",
+          position: 'absolute',
           right: 0,
           bottom: 0,
         }}
@@ -95,57 +95,57 @@ export default function MotivationalQuote() {
           sx={{
             width: 300,
             borderRadius: 4,
-            bgcolor: "background.paper",
-            minHeight: isLoading ? 200 : "auto",
+            bgcolor: 'background.paper',
+            minHeight: isLoading ? 200 : 'auto',
           }}
         >
-          <CardContent sx={{ position: "relative", p: 3 }}>
+          <CardContent sx={{ position: 'relative', p: 3 }}>
             <Chip
               icon={<AutoAwesomeIcon sx={{ fontSize: 16 }} />}
-              label='Daily Inspiration'
-              size='small'
+              label="Daily Inspiration"
+              size="small"
               sx={{
-                position: "absolute",
+                position: 'absolute',
                 top: 12,
                 left: 12,
-                bgcolor: "primary.main",
-                color: "white",
-                "& .MuiChip-icon": {
-                  color: "white",
+                bgcolor: 'primary.main',
+                color: 'white',
+                '& .MuiChip-icon': {
+                  color: 'white',
                 },
               }}
             />
 
-            <Box sx={{ position: "absolute", top: 8, right: 8 }}>
-              <Tooltip title='Get new quote'>
+            <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
+              <Tooltip title="Get new quote">
                 <IconButton
                   onClick={handleRefresh}
-                  size='small'
+                  size="small"
                   disabled={isLoading}
                   sx={{
                     mr: 1,
-                    "&:hover": {
-                      bgcolor: "secondary.main",
-                      color: "white",
+                    '&:hover': {
+                      bgcolor: 'secondary.main',
+                      color: 'white',
                     },
                   }}
                 >
-                  <RefreshIcon fontSize='small' />
+                  <RefreshIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
 
-              <Tooltip title='Close'>
+              <Tooltip title="Close">
                 <IconButton
                   onClick={handleClose}
-                  size='small'
+                  size="small"
                   sx={{
-                    "&:hover": {
-                      bgcolor: "warning.main",
-                      color: "white",
+                    '&:hover': {
+                      bgcolor: 'warning.main',
+                      color: 'white',
                     },
                   }}
                 >
-                  <CloseIcon fontSize='small' />
+                  <CloseIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
             </Box>
@@ -155,20 +155,20 @@ export default function MotivationalQuote() {
                 mt: 4,
                 mb: 2,
                 minHeight: 100,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: isLoading ? "center" : "flex-start",
-                alignItems: isLoading ? "center" : "flex-start",
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: isLoading ? 'center' : 'flex-start',
+                alignItems: isLoading ? 'center' : 'flex-start',
               }}
             >
               {isLoading ? (
                 <CircularProgress size={24} />
               ) : error ? (
-                <Box sx={{ width: "100%", textAlign: "center" }}>
-                  <Typography color='error' sx={{ mb: 1 }}>
+                <Box sx={{ width: '100%', textAlign: 'center' }}>
+                  <Typography color="error" sx={{ mb: 1 }}>
                     Sorry, no quotes today
                   </Typography>
-                  <Typography variant='caption' color='text.secondary'>
+                  <Typography variant="caption" color="text.secondary">
                     Try refreshing
                   </Typography>
                 </Box>
@@ -177,17 +177,17 @@ export default function MotivationalQuote() {
                   <FormatQuoteIcon
                     sx={{
                       fontSize: 40,
-                      color: "primary.main",
+                      color: 'primary.main',
                       opacity: 0.2,
                     }}
                   />
                   <Typography
-                    variant='body1'
+                    variant="body1"
                     sx={{
-                      fontStyle: "italic",
-                      color: "text.primary",
+                      fontStyle: 'italic',
+                      color: 'text.primary',
                       lineHeight: 1.6,
-                      fontSize: "1.1rem",
+                      fontSize: '1.1rem',
                     }}
                   >
                     {quote?.quote}
@@ -199,18 +199,18 @@ export default function MotivationalQuote() {
             {!isLoading && !error && (
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
+                  display: 'flex',
+                  alignItems: 'center',
                   gap: 1,
                   pt: 2,
-                  borderTop: "1px solid",
-                  borderColor: "divider",
+                  borderTop: '1px solid',
+                  borderColor: 'divider',
                 }}
               >
                 <Typography
-                  variant='subtitle2'
+                  variant="subtitle2"
                   sx={{
-                    color: "text.secondary",
+                    color: 'text.secondary',
                     fontWeight: 600,
                   }}
                 >
@@ -225,21 +225,21 @@ export default function MotivationalQuote() {
       {!isVisible && (
         <Fade in={!isVisible} timeout={400}>
           <Fab
-            color='primary'
-            size='small'
+            color="primary"
+            size="small"
             onClick={handleShow}
             sx={{
-              position: "relative",
+              position: 'relative',
               zIndex: 1,
               boxShadow: 3,
             }}
           >
-            <Tooltip title='Show inspiration'>
+            <Tooltip title="Show inspiration">
               <LightbulbIcon />
             </Tooltip>
           </Fab>
         </Fade>
       )}
     </Box>
-  );
+  )
 }

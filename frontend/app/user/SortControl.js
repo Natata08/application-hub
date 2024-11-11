@@ -8,76 +8,76 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-} from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import CheckIcon from "@mui/icons-material/Check";
-import { useState } from "react";
+} from '@mui/material'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import CheckIcon from '@mui/icons-material/Check'
+import { useState } from 'react'
 
 export default function SortControl({ onSortApply }) {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedSort, setSelectedSort] = useState("Created Date");
-  const [sortDirection, setSortDirection] = useState("asc");
-  const open = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [selectedSort, setSelectedSort] = useState('Created Date')
+  const [sortDirection, setSortDirection] = useState('asc')
+  const open = Boolean(anchorEl)
 
-  const sortOptions = ["Created Date", "Last Updated", "Job Title"];
+  const sortOptions = ['Created Date', 'Last Updated', 'Job Title']
 
   const directionOptions = [
-    { value: "asc", label: "Asc" },
-    { value: "desc", label: "Desc" },
-  ];
+    { value: 'asc', label: 'Asc' },
+    { value: 'desc', label: 'Desc' },
+  ]
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   const handleSortSelect = (value) => {
-    setSelectedSort(value);
-  };
+    setSelectedSort(value)
+  }
 
   const handleDirectionChange = (event) => {
-    setSortDirection(event.target.value);
-  };
+    setSortDirection(event.target.value)
+  }
 
   const handleApply = () => {
-    onSortApply({ field: selectedSort, direction: sortDirection });
-    handleClose();
-  };
+    onSortApply({ field: selectedSort, direction: sortDirection })
+    handleClose()
+  }
 
   return (
     <>
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
         <Typography
-          variant='body2'
+          variant="body2"
           sx={{
-            color: "text.secondary",
+            color: 'text.secondary',
           }}
         >
           Sort By
         </Typography>
         <Button
-          id='sort-button'
-          aria-controls={open ? "sort-menu" : undefined}
-          aria-haspopup='true'
-          aria-expanded={open ? "true" : undefined}
+          id="sort-button"
+          aria-controls={open ? 'sort-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
           endIcon={<KeyboardArrowDownIcon />}
           sx={{
             minWidth: 160,
-            bgcolor: "background.paper",
-            color: "text.primary",
-            textTransform: "none",
+            bgcolor: 'background.paper',
+            color: 'text.primary',
+            textTransform: 'none',
             border: 1,
-            borderColor: "divider",
+            borderColor: 'divider',
             borderRadius: 1,
             px: 1.5,
             py: 0.75,
-            "&:hover": {
-              bgcolor: "background.paper",
-              borderColor: "secondary.main",
+            '&:hover': {
+              bgcolor: 'background.paper',
+              borderColor: 'secondary.main',
             },
           }}
         >
@@ -86,7 +86,7 @@ export default function SortControl({ onSortApply }) {
       </Box>
 
       <Menu
-        id='sort-menu'
+        id="sort-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -96,7 +96,7 @@ export default function SortControl({ onSortApply }) {
             paddingTop: 2,
             paddingBottom: 0,
             borderRadius: 1,
-            bgcolor: "background.paper",
+            bgcolor: 'background.paper',
           },
         }}
       >
@@ -105,14 +105,14 @@ export default function SortControl({ onSortApply }) {
             key={option}
             onClick={() => handleSortSelect(option)}
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
+              display: 'flex',
+              justifyContent: 'space-between',
             }}
           >
             <Typography
               sx={{
                 color:
-                  selectedSort === option ? "text.primary" : "text.secondary",
+                  selectedSort === option ? 'text.primary' : 'text.secondary',
                 fontSize: 14,
               }}
             >
@@ -122,7 +122,7 @@ export default function SortControl({ onSortApply }) {
           </MenuItem>
         ))}
 
-        <Divider sx={{ "&.MuiDivider-root": { marginBottom: 0 } }} />
+        <Divider sx={{ '&.MuiDivider-root': { marginBottom: 0 } }} />
 
         <Box sx={{ px: 2, py: 1 }}>
           <RadioGroup value={sortDirection} onChange={handleDirectionChange}>
@@ -132,10 +132,10 @@ export default function SortControl({ onSortApply }) {
                 value={option.value}
                 control={
                   <Radio
-                    size='small'
+                    size="small"
                     sx={{
-                      "&.Mui-checked": {
-                        color: "primary.main",
+                      '&.Mui-checked': {
+                        color: 'primary.main',
                       },
                     }}
                   />
@@ -146,8 +146,8 @@ export default function SortControl({ onSortApply }) {
                       fontSize: 14,
                       color:
                         sortDirection === option.value
-                          ? "primary.main"
-                          : "text.secondary",
+                          ? 'primary.main'
+                          : 'text.secondary',
                     }}
                   >
                     {option.label}
@@ -160,12 +160,12 @@ export default function SortControl({ onSortApply }) {
 
         <Divider />
 
-        <Box sx={{ display: "flex", justifyContent: "flex-end", px: 2, py: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', px: 2, py: 2 }}>
           <Button
             onClick={handleApply}
-            variant='contained'
+            variant="contained"
             sx={{
-              textTransform: "none",
+              textTransform: 'none',
             }}
           >
             Apply
@@ -173,5 +173,5 @@ export default function SortControl({ onSortApply }) {
         </Box>
       </Menu>
     </>
-  );
+  )
 }
