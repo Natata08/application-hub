@@ -14,7 +14,7 @@ login.post('/', async (req, res) => {
     return res.status(400).json({ message: 'Email and password are required' })
   }
   try {
-    const user = await knex('users').where({ email }).first()
+    const user = await knex('user').where({ email }).first()
     //Checking if user exist
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' })
