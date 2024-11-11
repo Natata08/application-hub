@@ -1,6 +1,6 @@
 import ThemeApp from '@/components/styles/ThemeApp'
-import NavBar from '@/components/NavBar'
-import Footer from '@/components/Footer'
+import NavBar from '@/components/ui/NavBar'
+import Footer from '@/components/ui/Footer'
 
 export const metadata = {
   title: 'ApplicationHub App',
