@@ -25,18 +25,7 @@ export default function TestimonialComponent() {
   const { isLightMode, darkTheme, lightTheme } = useThemeContext()
   const theme = isLightMode ? lightTheme : darkTheme
   return (
-    <div
-      style={{
-        width: '100vw',
-        backgroundColor: theme.palette.background.paperYellow,
-        borderRadius: '0 100px 0 0',
-        padding: '40px 0',
-        color: 'white',
-        display: 'flex',
-        justifyContent: 'center',
-        overflow: 'hidden',
-      }}
-    >
+    <>
       <Typography
         variant="h5"
         component="h2"
@@ -92,6 +81,6 @@ export default function TestimonialComponent() {
           ))}
         </Grid>
       </Box>
-    </div>
+    </>
   )
 }

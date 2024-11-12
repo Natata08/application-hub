@@ -62,17 +62,26 @@ export default function NavBar() {
           }}
         >
           <Link href="/" passHref>
-            <Button color="inherit" sx={{ margin: '10px', color: 'black' }}>
+            <Button
+              color="inherit"
+              sx={{ margin: '10px', color: theme.palette.text.primary }}
+            >
               Home
             </Button>
           </Link>
           <Link href="/about" passHref>
-            <Button color="inherit" sx={{ margin: '10px', color: 'black' }}>
+            <Button
+              color="inherit"
+              sx={{ margin: '10px', color: theme.palette.text.primary }}
+            >
               About
             </Button>
           </Link>
           <Link href="/signup" passHref>
-            <Button color="inherit" sx={{ margin: '10px', color: 'black' }}>
+            <Button
+              color="inherit"
+              sx={{ margin: '10px', color: theme.palette.text.primary }}
+            >
               Dashboard
             </Button>
           </Link>
