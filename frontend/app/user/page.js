@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Container, Box, Button, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import DashboardHeader from './DashboardHeader'
@@ -10,9 +10,16 @@ import SortControl from './SortControl'
 import TabPanel from './tabs/TabPanel'
 import ApplicationsBoard from './applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
+import { getLocalStorageItem } from '@/utils/localStorage'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
+  const [userName, setUserName] = useState('')
+
+  useEffect(() => {
+    const userInfo = getLocalStorageItem('userInfo')
+    setUserName(userInfo?.first_name || '')
+  }, [])
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue)
@@ -21,7 +28,7 @@ export default function DashboardPage() {
   return (
     <Box component="main">
       <Container sx={{ p: 4, maxWidth: '1200px', margin: '0 auto' }}>
-        <DashboardHeader name="Name" />
+        <DashboardHeader name={userName} />
         <Box
           sx={{
             display: 'flex',

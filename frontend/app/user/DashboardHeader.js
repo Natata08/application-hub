@@ -9,7 +9,7 @@ export default function DashboardHeader({ name }) {
         component="h2"
         sx={{ fontWeight: 'bold', mb: 1 }}
       >
-        {`${name}, welcome to your application tracking!`}
+        {`${name ? `${name}, ` : ''}welcome to your application tracking!`}
       </Typography>
       <Typography variant="body1">
         Manage your tasks, track your progress, and prepare for interviews
