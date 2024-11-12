@@ -1,33 +1,48 @@
+import Link from 'next/link'
 import { Card, Typography, Box } from '@mui/material'
+import formatRelativeTime from '@/utils/formatDate'
 
-export default function ApplicationCard() {
+export default function ApplicationCard({ application }) {
   return (
-    <Card
-      sx={{
-        p: 2,
-        border: 1,
-        borderRadius: 2,
-        '&:hover': {
-          boxShadow: 3,
-        },
-      }}
+    <Link
+      href={`/applications/${application.application_id}`}
+      passHref
+      style={{ textDecoration: 'none', display: 'block' }}
     >
-      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
-        Company
-      </Typography>
-      <Typography variant="h6" component="h3" sx={{ mb: 2 }}>
-        Web Developer
-      </Typography>
-      <Box
+      <Card
         sx={{
+          p: 1.5,
+          border: 1,
           display: 'flex',
-          justifyContent: 'flex-end',
+          flexDirection: 'column',
+          gap: 1,
+          borderRadius: 2,
+          '&:hover': {
+            boxShadow: 3,
+          },
         }}
       >
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          1w
+        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+          {application.company_name.toUpperCase()}
         </Typography>
-      </Box>
-    </Card>
+        <Typography
+          variant="subtitle1"
+          component="h3"
+          sx={{ fontWeight: '600', lineHeight: '1.5' }}
+        >
+          {application.job_title}
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+            {formatRelativeTime(application.created_at)}
+          </Typography>
+        </Box>
+      </Card>
+    </Link>
   )
 }

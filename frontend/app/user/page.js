@@ -11,10 +11,12 @@ import TabPanel from './tabs/TabPanel'
 import ApplicationsBoard from './applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
+import { useApplications } from '../hooks/useApplications'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [userName, setUserName] = useState('')
+  const { applications, isLoading, error } = useApplications()
 
   useEffect(() => {
     const userInfo = getLocalStorageItem('userInfo')
@@ -68,7 +70,12 @@ export default function DashboardPage() {
         </Box>
         {[true, false].map((isActive, index) => (
           <TabPanel key={`tab-${index}`} value={activeTab} index={index}>
-            <ApplicationsBoard isActive={isActive} />
+            <ApplicationsBoard
+              isActive={isActive}
+              applications={applications}
+              isLoading={isLoading}
+              error={error}
+            />
           </TabPanel>
         ))}
 

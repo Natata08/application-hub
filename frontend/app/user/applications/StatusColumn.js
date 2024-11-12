@@ -1,7 +1,7 @@
 import { Box, Typography, Paper } from '@mui/material'
 import ApplicationCard from './ApplicationCard'
 
-export default function StatusColumn({ status }) {
+export default function StatusColumn({ status, applications }) {
   return (
     <Box
       sx={{
@@ -32,14 +32,14 @@ export default function StatusColumn({ status }) {
             letterSpacing: 2,
           }}
         >
-          {status.name}
+          {status.name.toUpperCase()}
         </Typography>
       </Paper>
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <ApplicationCard />
-        <ApplicationCard />
-        <ApplicationCard />
+        {applications.map((application) => (
+          <ApplicationCard key={application.id} application={application} />
+        ))}
       </Box>
     </Box>
   )

@@ -1,17 +1,43 @@
-import { Box } from '@mui/material'
+import { Box, CircularProgress, Alert } from '@mui/material'
 import StatusColumn from './StatusColumn'
 
 const activeStatuses = [
-  { name: 'SAVED' },
-  { name: 'APPLIED' },
-  { name: 'INTERVIEW' },
-  { name: 'OFFER' },
+  { name: 'saved' },
+  { name: 'applied' },
+  { name: 'interview' },
+  { name: 'offer' },
 ]
 
-const inactiveStatuses = [{ name: 'REJECTED' }, { name: 'WITHDRAWN' }]
+const inactiveStatuses = [{ name: 'rejected' }, { name: 'withdrawn' }]
 
-export default function ApplicationsBoard({ isActive }) {
+export default function ApplicationsBoard({
+  isActive,
+  applications,
+  isLoading,
+  error,
+}) {
   const statuses = isActive ? activeStatuses : inactiveStatuses
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+
+  if (error) {
+    return (
+      <Alert severity="error" sx={{ m: 4 }}>
+        {error}
+      </Alert>
+    )
+  }
+
+  const filterApplicationsByStatus = (status) => {
+    return applications.filter((app) => app.status === status.name)
+  }
+
   return (
     <Box
       sx={{
@@ -32,7 +58,11 @@ export default function ApplicationsBoard({ isActive }) {
       }}
     >
       {statuses.map((status) => (
-        <StatusColumn key={status.name} status={status} />
+        <StatusColumn
+          key={status.name}
+          status={status}
+          applications={filterApplicationsByStatus(status)}
+        />
       ))}
     </Box>
   )
