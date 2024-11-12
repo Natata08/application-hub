@@ -12,16 +12,24 @@ import ApplicationsBoard from './applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
+import AddAppForm from '@/components/ui/AppAddForm'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [userName, setUserName] = useState('')
+  const [openModal, setOpenModal] = useState(false)
   const { applications, isLoading, error } = useApplications()
 
   useEffect(() => {
     const userInfo = getLocalStorageItem('userInfo')
     setUserName(userInfo?.first_name || '')
   }, [])
+  const handleOpenModal = () => {
+    setOpenModal(true)
+  }
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue)
@@ -59,12 +67,14 @@ export default function DashboardPage() {
             <Button
               variant="contained"
               startIcon={<AddIcon />}
+              onClick={handleOpenModal}
               sx={{
                 textTransform: 'none',
               }}
             >
               Add a job
             </Button>
+            <AddAppForm openModal={openModal} onClose={handleCloseModal} />
           </Stack>
           <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
         </Box>
