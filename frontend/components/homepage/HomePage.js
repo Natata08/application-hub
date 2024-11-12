@@ -28,11 +28,11 @@ export default function HomePage() {
           justifyContent="center"
           style={{ maxWidth: '1200px', margin: '0 auto' }}
         >
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={4}>
             <WhyChooseCard />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid xs={12} sm={6} md={4}>
             <OverviewImageCard />
           </Grid>
         </Grid>
