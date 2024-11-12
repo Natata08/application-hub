@@ -19,6 +19,7 @@ import RefreshIcon from '@mui/icons-material/Refresh'
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import CloseIcon from '@mui/icons-material/Close'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
+import { fetchQuote } from '@/utils/api'
 
 export default function MotivationalQuote() {
   const [quote, setQuote] = useState(null)
@@ -28,33 +29,7 @@ export default function MotivationalQuote() {
   const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
-    const fetchQuote = async () => {
-      try {
-        setIsLoading(true)
-        setError(null)
-        const response = await fetch(
-          'https://api.api-ninjas.com/v1/quotes?category=success',
-          {
-            headers: {
-              'X-Api-Key': process.env.NEXT_PUBLIC_API_NINJAS_KEY,
-            },
-          }
-        )
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch quote')
-        }
-
-        const data = await response.json()
-        setQuote(data[0])
-      } catch (err) {
-        setError(err.message)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchQuote()
+    fetchQuote(setQuote, setIsLoading, setError)
   }, [refresh])
 
   const handleRefresh = () => {
@@ -121,20 +96,22 @@ export default function MotivationalQuote() {
 
             <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
               <Tooltip title="Get new quote">
-                <IconButton
-                  onClick={handleRefresh}
-                  size="small"
-                  disabled={isLoading}
-                  sx={{
-                    mr: 1,
-                    '&:hover': {
-                      bgcolor: 'secondary.main',
-                      color: 'white',
-                    },
-                  }}
-                >
-                  <RefreshIcon fontSize="small" />
-                </IconButton>
+                <span>
+                  <IconButton
+                    onClick={handleRefresh}
+                    size="small"
+                    disabled={isLoading}
+                    sx={{
+                      mr: 1,
+                      '&:hover': {
+                        bgcolor: 'secondary.main',
+                        color: 'white',
+                      },
+                    }}
+                  >
+                    <RefreshIcon fontSize="small" />
+                  </IconButton>
+                </span>
               </Tooltip>
 
               <Tooltip title="Close">
