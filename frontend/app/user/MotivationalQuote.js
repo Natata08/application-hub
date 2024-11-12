@@ -21,6 +21,75 @@ import CloseIcon from '@mui/icons-material/Close'
 import LightbulbIcon from '@mui/icons-material/Lightbulb'
 import { fetchQuote } from '@/utils/api'
 
+// Loading Component
+const Loading = () => (
+  <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: 100,
+    }}
+  >
+    <CircularProgress size={24} />
+  </Box>
+)
+
+// Error Component
+const ErrorMessage = () => (
+  <Box sx={{ width: '100%', textAlign: 'center' }}>
+    <Typography color="error" sx={{ mb: 1 }}>
+      Sorry, no quotes today
+    </Typography>
+    <Typography variant="caption" color="text.secondary">
+      Try refreshing
+    </Typography>
+  </Box>
+)
+
+// Quote Component
+const QuoteDisplay = ({ quote }) => (
+  <>
+    <FormatQuoteIcon
+      sx={{
+        fontSize: 40,
+        opacity: 0.2,
+      }}
+    />
+    <Typography
+      variant="body1"
+      sx={{
+        fontStyle: 'italic',
+        lineHeight: 1.6,
+        fontSize: '1.1rem',
+      }}
+    >
+      {quote?.quote}
+    </Typography>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1,
+        pt: 2,
+        borderTop: '1px solid',
+        borderColor: 'divider',
+        width: '100%',
+      }}
+    >
+      <Typography
+        variant="subtitle2"
+        sx={{
+          color: 'text.secondary',
+          fontWeight: 600,
+        }}
+      >
+        — {quote?.author}
+      </Typography>
+    </Box>
+  </>
+)
+
 export default function MotivationalQuote() {
   const [quote, setQuote] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -75,6 +144,7 @@ export default function MotivationalQuote() {
           }}
         >
           <CardContent sx={{ position: 'relative', p: 3 }}>
+            {/* Daily Inspiration Chip */}
             <Chip
               icon={<AutoAwesomeIcon sx={{ fontSize: 16 }} />}
               label="Daily Inspiration"
@@ -94,6 +164,7 @@ export default function MotivationalQuote() {
               }}
             />
 
+            {/* Update icon */}
             <Box sx={{ position: 'absolute', top: 8, right: 8 }}>
               <Tooltip title="Get new quote">
                 <span>
@@ -114,6 +185,7 @@ export default function MotivationalQuote() {
                 </span>
               </Tooltip>
 
+              {/* Close icon */}
               <Tooltip title="Close">
                 <IconButton
                   onClick={handleClose}
@@ -133,7 +205,7 @@ export default function MotivationalQuote() {
             <Box
               sx={{
                 mt: 4,
-                mb: 2,
+                gap: 2,
                 minHeight: 100,
                 display: 'flex',
                 flexDirection: 'column',
@@ -141,61 +213,10 @@ export default function MotivationalQuote() {
                 alignItems: isLoading ? 'center' : 'flex-start',
               }}
             >
-              {isLoading ? (
-                <CircularProgress size={24} />
-              ) : error ? (
-                <Box sx={{ width: '100%', textAlign: 'center' }}>
-                  <Typography color="error" sx={{ mb: 1 }}>
-                    Sorry, no quotes today
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    Try refreshing
-                  </Typography>
-                </Box>
-              ) : (
-                <>
-                  <FormatQuoteIcon
-                    sx={{
-                      fontSize: 40,
-                      opacity: 0.2,
-                    }}
-                  />
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontStyle: 'italic',
-                      lineHeight: 1.6,
-                      fontSize: '1.1rem',
-                    }}
-                  >
-                    {quote?.quote}
-                  </Typography>
-                </>
-              )}
+              {isLoading && <Loading />}
+              {error && <ErrorMessage />}
+              {!isLoading && !error && <QuoteDisplay quote={quote} />}
             </Box>
-
-            {!isLoading && !error && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                  pt: 2,
-                  borderTop: '1px solid',
-                  borderColor: 'divider',
-                }}
-              >
-                <Typography
-                  variant="subtitle2"
-                  sx={{
-                    color: 'text.secondary',
-                    fontWeight: 600,
-                  }}
-                >
-                  — {quote?.author}
-                </Typography>
-              </Box>
-            )}
           </CardContent>
         </Card>
       </Collapse>
