@@ -20,7 +20,7 @@ export default function AddAppForm({ openModal, onClose }) {
   } = useForm()
   const AppFormData = watch()
 
-  // Open the modal when `openModal` is true
+  // Open the modal when `openModal` is true - where we get the value from parent component
   useEffect(() => {
     if (openModal) {
       setIsAppFormOpen(true)
