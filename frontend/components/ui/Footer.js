@@ -1,20 +1,23 @@
 'use client'
-import Image from 'next/image'
+
 import React from 'react'
 import { Box, Typography, Link, IconButton } from '@mui/material'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import TwitterIcon from '@mui/icons-material/Twitter'
-import { useTheme } from '@mui/material/styles'
+import Logo from './Logo'
+import { useThemeContext } from '@/components/styles/ThemeApp'
 
 export default function Footer() {
-  const theme = useTheme()
+  const { isLightMode, handleThemeChange, darkTheme, lightTheme } =
+    useThemeContext()
+  const theme = isLightMode ? lightTheme : darkTheme
   return (
     <Box
       component="footer"
       sx={{
-        backgroundColor: theme.palette.background.paperGreen,
-        color: theme.palette.text.secondary,
+        backgroundColor: theme.palette.background.footer,
+        color: theme.palette.text.primary,
         py: 4,
         px: { xs: 2, sm: 8 },
       }}
@@ -30,10 +33,8 @@ export default function Footer() {
         }}
       >
         <Box sx={{ mb: 2 }}>
-          <Typography variant="h6" sx={{ mb: 1, fontWeight: 'bold' }}>
-            <Image src="./transparentLogo.png" alt="" width={100} />
-          </Typography>
-          <Typography variant="body2" color={theme.palette.text.secondary}>
+          <Logo />
+          <Typography variant="body2" color={theme.palette.text.primary}>
             &copy; {new Date().getFullYear()} ApplicationHub
           </Typography>
           <Box sx={{ mt: 1 }}>
@@ -67,18 +68,30 @@ export default function Footer() {
         <Box sx={{ mb: 2 }}>
           <Typography
             variant="h6"
-            sx={{ color: theme.palette.text.secondary, mb: 1 }}
+            sx={{ color: theme.palette.text.primary, mb: 1 }}
           >
             Learn
           </Typography>
 
-          <Link href="/blog" color="inherit" sx={{ display: 'block', mb: 0.5 }}>
+          <Link
+            color="inherit"
+            sx={{ display: 'block', mb: 0.5 }}
+            underline="none"
+          >
             Blog
           </Link>
-          <Link href="/demo" color="inherit" sx={{ display: 'block', mb: 0.5 }}>
+          <Link
+            color="inherit"
+            sx={{ display: 'block', mb: 0.5 }}
+            underline="none"
+          >
             Schedule a demo
           </Link>
-          <Link color="inherit" sx={{ display: 'block', mb: 0.5 }}>
+          <Link
+            color="inherit"
+            sx={{ display: 'block', mb: 0.5 }}
+            underline="none"
+          >
             Help Center
           </Link>
         </Box>
@@ -86,21 +99,29 @@ export default function Footer() {
         <Box sx={{ mb: 2 }}>
           <Typography
             variant="h6"
-            sx={{ color: theme.palette.text.secondary, mb: 1 }}
+            sx={{ color: theme.palette.text.primary, mb: 1 }}
           >
             Our company
           </Typography>
           <Link
-            href="/privacy-policy"
             color="inherit"
             sx={{ display: 'block', mb: 0.5 }}
+            underline="none"
           >
             Privacy Policy
           </Link>
-          <Link color="inherit" sx={{ display: 'block', mb: 0.5 }}>
+          <Link
+            color="inherit"
+            sx={{ display: 'block', mb: 0.5 }}
+            underline="none"
+          >
             User Terms
           </Link>
-          <Link color="inherit" sx={{ display: 'block', mb: 0.5 }}>
+          <Link
+            color="inherit"
+            sx={{ display: 'block', mb: 0.5 }}
+            underline="none"
+          >
             Careers
           </Link>
         </Box>
@@ -108,16 +129,17 @@ export default function Footer() {
         <Box sx={{ mb: 2 }}>
           <Typography
             variant="h6"
-            sx={{ color: theme.palette.text.secondary, mb: 1 }}
+            sx={{ color: theme.palette.text.primary, mb: 1 }}
           >
-            Get in touch
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 0.5 }}>
             Contact us
           </Typography>
 
           <Typography variant="body2">
-            <Link href="mailto:support@applicationhub.com" color="inherit">
+            <Link
+              href="mailto:support@applicationhub.com"
+              color="inherit"
+              underline="none"
+            >
               support@applicationhub.com
             </Link>
           </Typography>

@@ -17,8 +17,8 @@ const colors = {
   error: '#D32F2F', // Red for error
   paperLight: '#F7F7F7', // Light grayish beige for paper in light theme
   paperDark: '#1A3D3D', // Light greenish shade for paper in dark theme
-  footerLight: '#000000', // Black
-  footerDark: '#F9FAD2', //Light Yellow
+  footerDark: '#000000', // Black
+  footerLight: '#F9FAD2', //Light Yellow
 }
 
 const commonStyles = {
@@ -139,6 +139,7 @@ export const darkTheme = createTheme({
     background: {
       default: colors.neutralDark,
       paper: colors.paperDark,
+      footer: colors.footerDark,
     },
   },
   components: {
