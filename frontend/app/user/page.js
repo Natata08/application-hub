@@ -1,65 +1,85 @@
 'use client'
-import {
-  Box,
-  Typography,
-  Container,
-  Paper,
-  Button,
-  Link,
-  IconButton,
-} from '@mui/material'
-import { useThemeContext } from '@/components/styles/ThemeApp'
-import DarkModeIcon from '@mui/icons-material/DarkMode'
-import LightModeIcon from '@mui/icons-material/LightMode'
 
-export default function User() {
-  const { isLightMode, handleThemeChange, darkTheme, lightTheme } =
-    useThemeContext()
-  const theme = isLightMode ? lightTheme : darkTheme
+import { useState, useEffect } from 'react'
+import { Container, Box, Button, Stack } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
+import DashboardHeader from './DashboardHeader'
+import TabsControl from './tabs/TabsControl'
+import SearchField from './SearchField'
+import SortControl from './SortControl'
+import TabPanel from './tabs/TabPanel'
+import ApplicationsBoard from './applications/ApplicationsBoard'
+import MotivationalQuote from './MotivationalQuote'
+import { getLocalStorageItem } from '@/utils/localStorage'
+import { useApplications } from '../hooks/useApplications'
+
+export default function DashboardPage() {
+  const [activeTab, setActiveTab] = useState(0)
+  const [userName, setUserName] = useState('')
+  const { applications, isLoading, error } = useApplications()
+
+  useEffect(() => {
+    const userInfo = getLocalStorageItem('userInfo')
+    setUserName(userInfo?.first_name || '')
+  }, [])
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue)
+  }
+
   return (
-    <Box sx={{ minHeight: '100vh', padding: 4 }}>
-      <Container>
-        <Typography
-          variant="h2"
-          gutterBottom
-          sx={{ padding: 3, backgroundColor: theme.palette.background.footer }}
-        >
-          Welcome to Application Hub! ONLY EXAMPLE!!!!
-        </Typography>
-
-        <Paper
-          elevation={3}
-          sx={{ padding: 3, color: theme.palette.text.secondary }}
-        >
-          <Typography variant="h6">
-            Discover the best job application manager.
-          </Typography>
-        </Paper>
-        <Link href={`/register`}>
-          <Button variant="contained" sx={{ marginTop: 3 }}>
-            Sign up
-          </Button>
-        </Link>
-
-        <Button
-          onClick={handleThemeChange}
-          variant="outlined"
+    <Box component="main">
+      <Container sx={{ p: 4, maxWidth: '1200px', margin: '0 auto' }}>
+        <DashboardHeader name={userName} />
+        <Box
           sx={{
-            marginTop: 3,
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            gap: { xs: 2, md: 0 },
+            width: '100%',
           }}
         >
-          Toggle Theme
-        </Button>
+          <Stack
+            direction="row"
+            alignItems="center"
+            sx={{
+              width: '100%',
+              order: { xs: 1, md: 2 },
+              justifyContent: {
+                xs: 'flex-start',
+                sm: 'center',
+                md: 'flex-end',
+              },
+              flexWrap: 'wrap',
+              gap: 2,
+            }}
+          >
+            <SearchField />
+            <SortControl />
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              sx={{
+                textTransform: 'none',
+              }}
+            >
+              Add a job
+            </Button>
+          </Stack>
+          <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
+        </Box>
+        {[true, false].map((isActive, index) => (
+          <TabPanel key={`tab-${index}`} value={activeTab} index={index}>
+            <ApplicationsBoard
+              isActive={isActive}
+              applications={applications}
+              isLoading={isLoading}
+              error={error}
+            />
+          </TabPanel>
+        ))}
 
-        <Link href={`/register`}>
-          <Button variant="contained" sx={{ marginTop: 3 }}>
-            Sign up
-          </Button>
-        </Link>
-
-        <IconButton onClick={handleThemeChange} color="inherit" size="large">
-          {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
-        </IconButton>
+        <MotivationalQuote />
       </Container>
     </Box>
   )
