@@ -12,7 +12,7 @@ import ApplicationsBoard from './applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
-import AddAppForm from '@/components/ui/AppAddForm'
+import AddAppForm from './AppAddForm'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
