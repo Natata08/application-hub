@@ -11,7 +11,7 @@ import {
   Drawer,
   IconButton,
 } from '@mui/material'
-import Image from 'next/image'
+import Logo from './Logo'
 import Link from 'next/link'
 import MenuIcon from '@mui/icons-material/Menu'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
@@ -32,18 +32,14 @@ export default function NavBar() {
       position="static"
       sx={{
         backgroundColor: 'transparent',
-        boxShadow: 'none',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
         color: theme.palette.text.primary,
       }}
     >
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <Image
-            // src="./transparentLogo.png"
-            width={200}
-            height={150}
-            alt="logo"
-          />
+          <Logo />
         </Typography>
 
         <IconButton
