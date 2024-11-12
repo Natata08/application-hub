@@ -1,5 +1,3 @@
-import { KeyboardDoubleArrowDown } from '@mui/icons-material'
-
 export const makeLoginApiCall = async (contactData) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
     method: 'POST',
@@ -21,4 +19,6 @@ export const makeLoginApiCall = async (contactData) => {
       `Error ${response.status}: ${errorData.message || 'Unknown error'}`
     )
   }
+
+  return await response.json()
 }
