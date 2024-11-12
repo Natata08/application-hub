@@ -35,6 +35,7 @@ export default function NavBar() {
         borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
         color: theme.palette.text.primary,
+        width: '100%',
       }}
     >
       <Toolbar>
@@ -53,8 +54,11 @@ export default function NavBar() {
         <Box
           sx={{
             display: { xs: 'none', sm: 'flex' },
-            gap: 2,
+            gap: 1.5,
             justifyContent: 'flex-end',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            width: '100%',
           }}
         >
           <Link href="/" passHref>

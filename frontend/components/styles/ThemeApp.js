@@ -19,6 +19,7 @@ const colors = {
   paperDark: '#1A3D3D', // Light greenish shade for paper in dark theme
   footerDark: '#000000', // Black
   footerLight: '#F9FAD2', //Light Yellow
+  cardBlue: '#d2e8d4', //Light blue color
 }
 
 const commonStyles = {
@@ -83,6 +84,7 @@ export const lightTheme = createTheme({
       default: colors.neutralLight,
       paper: colors.paperLight,
       footer: colors.footerLight,
+      card: colors.cardBlue,
     },
   },
   components: {
@@ -139,7 +141,8 @@ export const darkTheme = createTheme({
     background: {
       default: colors.neutralDark,
       paper: colors.paperDark,
-      footer: colors.footerDark,
+      footer: colors.paperDark,
+      card: colors.paperDark,
     },
   },
   components: {

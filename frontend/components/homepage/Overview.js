@@ -1,13 +1,15 @@
 import React from 'react'
 import { Card, CardContent, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import { useThemeContext } from '@/components/styles/ThemeApp'
 
 const OverviewImageCard = () => {
-  const theme = useTheme()
+  const { isLightMode, darkTheme, lightTheme } = useThemeContext()
+  const theme = isLightMode ? lightTheme : darkTheme
   return (
     <Card
       style={{
         maxWidth: '500px',
+        maxHeight: '500px',
         margin: '20px auto',
         padding: '20px',
         borderRadius: '15px',
@@ -19,7 +21,7 @@ const OverviewImageCard = () => {
         <Typography
           variant="h4"
           component="p"
-          color={theme.palette.background.paperGreen}
+          color={theme.palette.background.primary}
         >
           Overview
         </Typography>

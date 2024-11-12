@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Card, CardContent, Typography, Avatar } from '@mui/material'
 import Grid from '@mui/material/Grid2'
-import { useTheme } from '@mui/material/styles'
+import { useThemeContext } from '@/components/styles/ThemeApp'
 
 const testimonials = [
   {
@@ -22,7 +22,8 @@ const testimonials = [
 ]
 
 export default function TestimonialComponent() {
-  const theme = useTheme()
+  const { isLightMode, darkTheme, lightTheme } = useThemeContext()
+  const theme = isLightMode ? lightTheme : darkTheme
   return (
     <div
       style={{

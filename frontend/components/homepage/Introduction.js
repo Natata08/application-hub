@@ -23,7 +23,7 @@ export default function Introduction() {
           component="h1"
           sx={{ fontWeight: 'bold', mb: 2 }}
         >
-          ApplicationHub
+          Application Hub
         </Typography>
 
         <Typography
@@ -39,14 +39,9 @@ export default function Introduction() {
           color="primary"
           href="/register"
           sx={{
-            backgroundColor: theme.palette.background.paperGreen,
-            color: theme.palette.text.secondary,
             px: 4,
             py: 1.5,
             fontSize: '1rem',
-            '&:hover': {
-              backgroundColor: theme.palette.background.cardGreen,
-            },
           }}
         >
           Sign Up
