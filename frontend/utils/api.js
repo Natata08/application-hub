@@ -28,11 +28,7 @@ export const fetchQuote = async (setQuote, setIsLoading, setError) => {
   }
 }
 
-export const fetchApplications = async (
-  setApplications,
-  setIsLoading,
-  setError
-) => {
+export const fetchApplications = async () => {
   try {
     const authToken = getLocalStorageItem('authToken')
 
@@ -40,8 +36,6 @@ export const fetchApplications = async (
       throw new Error('Authentication token not found')
     }
 
-    setIsLoading(true)
-    setError(null)
     const response = await fetch(`${API_URL}/user/applications`, {
       method: 'GET',
       headers: {
@@ -50,16 +44,17 @@ export const fetchApplications = async (
         Accept: 'application/json',
       },
     })
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch applications')
+    // For unauthorized
+    if (response.status === 401) {
+      throw new Error('Session expired. Please login again.')
     }
 
-    const data = await response.json()
-    setApplications(data)
+    if (!response.ok) {
+      throw new Error(`API error: ${response.statusText}`, response.status)
+    }
+
+    return await response.json()
   } catch (err) {
-    setError(err.message)
-  } finally {
-    setIsLoading(false)
+    throw new Error('Failed to fetch applications')
   }
 }
