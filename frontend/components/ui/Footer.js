@@ -20,6 +20,8 @@ export default function Footer() {
         color: theme.palette.text.primary,
         py: 4,
         px: { xs: 2, sm: 8 },
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.9)',
+        width: '100vw',
       }}
     >
       <Box
