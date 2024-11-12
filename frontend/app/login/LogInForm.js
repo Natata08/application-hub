@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { Stack, Typography, Button, Paper, Box, Link } from '@mui/material'
 import InputField from '@/components/ui/InputField'
-import { makeLoginApiCall } from '@/components/fetches/useLogIn'
+import { makeLoginApiCall } from '@/components/fetches/makeLoginApiCall'
 
 export default function LogInForm() {
   const router = useRouter()
@@ -25,7 +25,11 @@ export default function LogInForm() {
     setError('')
 
     try {
-      await makeLoginApiCall(contactData)
+      const data = await makeLoginApiCall(contactData)
+      // Save token to localStorage
+      localStorage.setItem('authToken', data.token)
+      // Save user info
+      localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
       router.push('/user')
     } catch (error) {
       setError(error.message)
