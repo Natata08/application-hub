@@ -26,14 +26,6 @@ export default function AddAppForm({ openModal, onClose }) {
   const [statuses, setStatuses] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  // const statuses = [
-  //   { value: 'withdrawn', label: 'Withdrawn' },
-  //   { value: 'interview', label: 'Interview' },
-  //   { value: 'offer', label: 'Offer' },
-  //   { value: 'rejected', label: 'Rejected' },
-  //   { value: 'applied', label: 'Applied' },
-  //   { value: 'saved', label: 'Saved' },
-  // ]
 
   const {
     register,
