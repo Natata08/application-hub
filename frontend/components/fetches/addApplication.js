@@ -8,7 +8,7 @@ export const addApplication = async (dataToSend) => {
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`, // Sending token for verification
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(dataToSend),

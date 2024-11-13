@@ -69,7 +69,7 @@ export const postUserApplications = async (req, res) => {
         .returning('company_id') // Get the inserted company's ID
       company_id = newCompany.company_id
     }
-
+    // Insert the data for the new application
     await knex('application').insert({
       user_id: user_id,
       job_title: appData.job_title,

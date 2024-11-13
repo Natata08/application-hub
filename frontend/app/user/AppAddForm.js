@@ -32,8 +32,9 @@ export default function AddAppForm({ openModal, onClose }) {
     control,
     watch,
   } = useForm()
+  // All inputs are saved in appData object
   const appData = watch()
-
+  // Getting user_id from the token saved on localstorage
   const userInfo = getLocalStorageItem('userInfo')
   const user_id = userInfo && userInfo.id ? userInfo.id : null
 
@@ -41,8 +42,8 @@ export default function AddAppForm({ openModal, onClose }) {
     appData: appData,
     user_id: user_id,
   }
-  console.log(dataToSend)
-  // Open the modal when `openModal` is true - where we get the value from parent component
+
+  // Open and close the modal depending on  `openModal` value - openModal value comes from parent component
   useEffect(() => {
     if (openModal) {
       setIsAppFormOpen(true)
@@ -50,7 +51,7 @@ export default function AddAppForm({ openModal, onClose }) {
       setIsAppFormOpen(false)
     }
   }, [openModal])
-
+  // Handle Submit
   const handleAppFormSubmit = async () => {
     setLoading(true)
     try {
@@ -161,9 +162,9 @@ export default function AddAppForm({ openModal, onClose }) {
                     {...field}
                     TextFieldComponent={(params) => (
                       <InputField
-                        {...params} // Spread the params here
-                        errors={errors} // Pass errors to your custom InputField
-                        id="application_date" // Pass id or other props
+                        {...params}
+                        errors={errors}
+                        id="application_date"
                       />
                     )}
                   />
@@ -179,9 +180,9 @@ export default function AddAppForm({ openModal, onClose }) {
                     {...field}
                     TextFieldComponent={(params) => (
                       <InputField
-                        {...params} // Pass inputProps and inputRef correctly
-                        errors={errors} // Pass errors to InputField
-                        id="deadline_date" // Provide an id or other props
+                        {...params}
+                        errors={errors}
+                        id="deadline_date"
                       />
                     )}
                   />
@@ -236,12 +237,14 @@ export default function AddAppForm({ openModal, onClose }) {
               * You can upload the documents or customize all the details after
               creating the application.
             </Typography>
+            {/* Submit Button */}
             <Button variant="contained" type="submit" fullWidth>
               {loading ? 'Submitting...' : 'Add Application'}
             </Button>
           </Paper>
         </LocalizationProvider>
       </Modal>
+      {/* Confirmation Modal*/}
       <Modal
         open={isConfirmOpen}
         onClose={handleConfirmClose}
