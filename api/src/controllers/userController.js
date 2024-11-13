@@ -24,7 +24,6 @@ export const getUserApplications = async (req, res) => {
 
     res.json(applications)
   } catch (error) {
-    console.error(error)
     res.status(500).json({ error: 'Error fetching applications' })
   }
 }
@@ -50,13 +49,36 @@ export const getUserApplicationsById = async (req, res) => {
 }
 export const postUserApplications = async (req, res) => {
   try {
-    const { appData, user_id, company_id, status } = req.body
+    const { appData, user_id } = req.body
+
+    // Check if the company name already exists
+    const existingCompany = await knex('company')
+      .where({ name: appData.company_name })
+      .first()
+
+    let company_id
+    if (existingCompany) {
+      company_id = existingCompany.company_id
+    } else {
+      // Insert the company and fetch the company ID immediately
+
+      const [newCompany] = await knex('company')
+        .insert({
+          name: appData.company_name,
+        })
+        .returning('company_id') // Get the inserted company's ID
+      company_id = newCompany.company_id
+    }
+
     await knex('application').insert({
       user_id: user_id,
       job_title: appData.job_title,
       company_id: company_id,
-      status: status,
+      status: appData.status,
+      applied_date: appData.applied_date,
+      deadline_date: appData.deadline_date,
     })
+
     res.status(201).json({ message: 'Registration was successful' })
   } catch (error) {
     res.status(500).json({ error: `Registration error: ${error.message}` })
