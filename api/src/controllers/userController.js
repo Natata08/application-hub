@@ -75,6 +75,8 @@ export const postUserApplications = async (req, res) => {
       job_title: appData.job_title,
       company_id: company_id,
       status: appData.status,
+      job_description: appData.job_description,
+      job_link: appData.job_link,
       applied_date: appData.applied_date,
       deadline_date: appData.deadline_date,
     })
