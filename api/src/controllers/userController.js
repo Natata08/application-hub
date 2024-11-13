@@ -36,7 +36,9 @@ export const getUserApplicationsById = async (req, res) => {
       return res.status(400).json({ message: 'Invalid application ID' })
     }
     const application = await knex('application')
-      .where({ application_id: id })
+      .select(['application.*', 'company.*'])
+      .leftJoin('company', 'application.company_id', 'company.company_id')
+      .where({ application_id: id, user_id: req.userInfo.userId })
       .first()
     if (!application) {
       return res.status(404).json({ message: "Application can't find" })
