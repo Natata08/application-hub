@@ -6,7 +6,7 @@ export function useApplicationById(id) {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const getApplicationsById = async (id) => {
+  const getApplicationById = async (id) => {
     if (!id) {
       setError('No application ID provided')
       setIsLoading(false)
@@ -31,7 +31,7 @@ export function useApplicationById(id) {
   }
 
   useEffect(() => {
-    getApplicationsById(id)
+    getApplicationById(id)
   }, [id])
 
   return { application, isLoading, error }
