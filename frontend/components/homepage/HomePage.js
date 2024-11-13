@@ -1,5 +1,5 @@
 import React from 'react'
-import WhyChooseCard from './WhyChoosecard'
+import WhyChooseCard from './WhyChooseCard'
 import TestimonialComponent from './Testimonial'
 import OverviewImageCard from './Overview'
 import { Box } from '@mui/material'
