@@ -15,7 +15,7 @@ import { useState, useEffect } from 'react'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
-import { addApplication } from '@/components/fetches/addApplication'
+import { addApplication } from '@/utils/api'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { fetchStatuses } from '@/utils/api'
 

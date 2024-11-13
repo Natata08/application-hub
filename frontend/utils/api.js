@@ -58,6 +58,33 @@ export const fetchApplications = async () => {
     throw new Error('Failed to fetch applications')
   }
 }
+
+export const addApplication = async (dataToSend) => {
+  const token = getLocalStorageItem('authToken')
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/applications`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`, // Sending token for verification
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend),
+    }
+  )
+
+  if (!response.ok) {
+    let errorData
+    try {
+      errorData = await response.json()
+    } catch {
+      errorData = { message: response.json() || 'Unknown' }
+    }
+    throw new Error(`Error ${response.status}: ${errorData.message}`)
+  }
+}
+
 export const fetchStatuses = async () => {
   try {
     const response = await fetch(`${API_URL}/user/application/status`, {
