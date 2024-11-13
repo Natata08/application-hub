@@ -31,17 +31,18 @@ export const getUserApplications = async (req, res) => {
 
 export const getUserApplicationsById = async (req, res) => {
   try {
-    const { id } = req.params
-    console.log(`Fetching application with ID: ${id}`)
+    const id = parseInt(req.params.id)
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ message: 'Invalid application ID' })
+    }
     const application = await knex('application')
       .where({ application_id: id })
       .first()
-    if (application) {
-      res.json(application)
-    } else {
-      res.status(404).json({ message: "Application can't find" })
+    if (!application) {
+      return res.status(404).json({ message: "Application can't find" })
     }
+    return res.json(application)
   } catch (error) {
-    res.status(500).json({ error: error.message })
+    return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
