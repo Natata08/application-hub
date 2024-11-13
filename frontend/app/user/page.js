@@ -96,6 +96,7 @@ export default function DashboardPage() {
               applications={getFilteredApplications()}
               isLoading={isLoading}
               error={error}
+              searchQuery={searchQuery}
             />
           </TabPanel>
         ))}

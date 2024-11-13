@@ -1,5 +1,6 @@
 import { Box, CircularProgress, Alert } from '@mui/material'
 import StatusColumn from './StatusColumn'
+import EmptyState from './EmptyState'
 
 const activeStatuses = [
   { name: 'saved' },
@@ -15,6 +16,7 @@ export default function ApplicationsBoard({
   applications,
   isLoading,
   error,
+  searchQuery,
 }) {
   const statuses = isActive ? activeStatuses : inactiveStatuses
 
@@ -34,8 +36,11 @@ export default function ApplicationsBoard({
     )
   }
 
-  const filterApplicationsByStatus = (status) => {
-    return applications.filter((app) => app.status === status.name)
+  // Check if there are any applications
+  const hasApplications = applications.length > 0
+
+  if (!hasApplications) {
+    return <EmptyState searchQuery={searchQuery} />
   }
 
   return (
@@ -61,7 +66,9 @@ export default function ApplicationsBoard({
         <StatusColumn
           key={status.name}
           status={status}
-          applications={filterApplicationsByStatus(status)}
+          applications={applications.filter(
+            (app) => app.status === status.name
+          )}
         />
       ))}
     </Box>
