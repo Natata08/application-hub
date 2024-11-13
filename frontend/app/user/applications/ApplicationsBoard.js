@@ -36,7 +36,6 @@ export default function ApplicationsBoard({
     )
   }
 
-  // Check if there are any applications
   const hasApplications = applications.length > 0
 
   if (!hasApplications) {

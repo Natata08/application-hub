@@ -95,7 +95,7 @@ export default function MotivationalQuote() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [refresh, setRefresh] = useState(0)
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     fetchQuote(setQuote, setIsLoading, setError)
