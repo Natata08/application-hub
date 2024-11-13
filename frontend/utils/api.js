@@ -59,7 +59,7 @@ export const fetchApplications = async () => {
   }
 }
 
-export const fetchApplicationsById = async (id) => {
+export const fetchApplicationById = async (id) => {
   try {
     const authToken = getLocalStorageItem('authToken')
 

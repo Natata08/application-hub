@@ -1,30 +1,38 @@
-export const fetchApplicationById = async (id) => {
-  try {
-    const authToken = getLocalStorageItem('authToken')
+import { useState, useEffect } from 'react'
+import { fetchApplicationById } from '@/utils/api'
 
-    if (!authToken) {
-      throw new Error('Authentication token not found')
+export function useApplicationById(id) {
+  const [application, setApplication] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  const getApplicationsById = async (id) => {
+    if (!id) {
+      setError('No application ID provided')
+      setIsLoading(false)
+      return
     }
 
-    const response = await fetch(`${API_URL}/user/applications/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    })
-    // For unauthorized
-    if (response.status === 401) {
-      throw new Error('Session expired. Please login again.')
+    try {
+      setIsLoading(true)
+      setError(null)
+      const data = await fetchApplicationById(id)
+      setApplication(data)
+      console.log(data)
+    } catch (err) {
+      setError(
+        err.status === 401
+          ? 'Please login to view your application.'
+          : `We're having trouble loading your application with ${id}. Please try again later.`
+      )
+    } finally {
+      setIsLoading(false)
     }
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.statusText}`, response.status)
-    }
-
-    return await response.json()
-  } catch (err) {
-    throw new Error('Failed to fetch applications')
   }
+
+  useEffect(() => {
+    getApplicationsById(id)
+  }, [id])
+
+  return { application, isLoading, error }
 }
