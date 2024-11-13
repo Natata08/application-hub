@@ -48,3 +48,17 @@ export const getUserApplicationsById = async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' })
   }
 }
+export const postUserApplications = async (req, res) => {
+  try {
+    const { appData, user_id, company_id, status } = req.body
+    await knex('application').insert({
+      user_id: user_id,
+      job_title: appData.job_title,
+      company_id: company_id,
+      status: status,
+    })
+    res.status(201).json({ message: 'Registration was successful' })
+  } catch (error) {
+    res.status(500).json({ error: `Registration error: ${error.message}` })
+  }
+}
