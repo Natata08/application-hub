@@ -1,14 +1,28 @@
-import { Typography, Button, Paper, Box, Modal } from '@mui/material'
+import {
+  Typography,
+  Button,
+  Paper,
+  Box,
+  Modal,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
+} from '@mui/material'
 import InputField from '@/components/ui/InputField'
 import { useForm, Controller } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
+import { addApplication } from '@/components/fetches/addApplication'
+import { getLocalStorageItem } from '@/utils/localStorage'
 
 export default function AddAppForm({ openModal, onClose }) {
   const theme = useTheme()
   const [isAppFormOpen, setIsAppFormOpen] = useState(false)
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const {
@@ -18,24 +32,50 @@ export default function AddAppForm({ openModal, onClose }) {
     control,
     watch,
   } = useForm()
-  const AppFormData = watch()
+  const appData = watch()
 
+  const userInfo = getLocalStorageItem('userInfo')
+  const user_id = userInfo && userInfo.id ? userInfo.id : null
+
+  const dataToSend = {
+    appData: appData,
+    user_id: user_id,
+  }
+  console.log(dataToSend)
   // Open the modal when `openModal` is true - where we get the value from parent component
   useEffect(() => {
     if (openModal) {
       setIsAppFormOpen(true)
+    } else {
+      setIsAppFormOpen(false)
     }
   }, [openModal])
 
   const handleAppFormSubmit = async () => {
-    console.log(AppFormData)
+    setLoading(true)
+    try {
+      await addApplication(dataToSend)
+      setIsConfirmOpen(true)
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   // Handle modal close
   const handleCloseModal = () => {
     setIsAppFormOpen(false)
     if (onClose) {
-      onClose() // Notify parent to reset the state
+      onClose() // Notify parent to reset the state Parent component is : app/user/page.js
+    }
+  }
+  // Handle confirmation modal close
+  const handleConfirmClose = () => {
+    setIsConfirmOpen(false)
+    setIsAppFormOpen(false)
+    if (onClose) {
+      onClose()
     }
   }
 
@@ -84,28 +124,26 @@ export default function AddAppForm({ openModal, onClose }) {
             <InputField
               id="job_title"
               label="Job Title"
-              defaultValue="Job Title"
               register={register}
               errors={errors}
               required
               minLength={2}
+            />
+            <InputField
+              id="company_name"
+              label="Company Name"
+              register={register}
+              required
+              errors={errors}
             />
             <InputField
               id="job_link"
-              label="Job Link"
-              defaultValue="Job link"
+              label="Job Link (Optional)"
               register={register}
               errors={errors}
-              required
               minLength={2}
             />
-            <InputField
-              id="salary"
-              label="Salary Gross Monthly - DKK (optional)"
-              defaultValue="Expected Salary"
-              register={register}
-              errors={errors}
-            />
+            {/* Date Picker Wrapper */}
             <Box
               sx={{
                 display: 'flex',
@@ -114,12 +152,12 @@ export default function AddAppForm({ openModal, onClose }) {
               }}
             >
               <Controller
-                name="application_date"
+                name="applied_date"
                 control={control}
                 defaultValue={null}
                 render={({ field }) => (
                   <DatePicker
-                    label="Application Date"
+                    label="Application Date (Optional)"
                     {...field}
                     TextFieldComponent={(params) => (
                       <InputField
@@ -137,7 +175,7 @@ export default function AddAppForm({ openModal, onClose }) {
                 defaultValue={null}
                 render={({ field }) => (
                   <DatePicker
-                    label="Deadline Date"
+                    label="Deadline Date (Optional)"
                     {...field}
                     TextFieldComponent={(params) => (
                       <InputField
@@ -150,10 +188,37 @@ export default function AddAppForm({ openModal, onClose }) {
                 )}
               />
             </Box>
+            {/* Status Select Field */}
+            <FormControl
+              fullWidth
+              margin="normal"
+              required
+              error={!!errors.status}
+            >
+              <InputLabel id="status-label">Application Status</InputLabel>
+              <Controller
+                name="status"
+                control={control}
+                defaultValue="applied"
+                render={({ field }) => (
+                  <Select
+                    labelId="status-label"
+                    label="Application Status"
+                    {...field}
+                  >
+                    <MenuItem value="withdrawn">Withdrawn</MenuItem>
+                    <MenuItem value="interview">Interview</MenuItem>
+                    <MenuItem value="offer">Offer</MenuItem>
+                    <MenuItem value="rejected">Rejected</MenuItem>
+                    <MenuItem value="applied">Applied</MenuItem>
+                    <MenuItem value="saved">Saved</MenuItem>
+                  </Select>
+                )}
+              />
+            </FormControl>
             <InputField
               id="job_description"
               label="Job Description (Optional)"
-              defaultValue="Job Description"
               register={register}
               errors={errors}
               multiline
@@ -172,10 +237,45 @@ export default function AddAppForm({ openModal, onClose }) {
               creating the application.
             </Typography>
             <Button variant="contained" type="submit" fullWidth>
-              Add Application
+              {loading ? 'Submitting...' : 'Add Application'}
             </Button>
           </Paper>
         </LocalizationProvider>
+      </Modal>
+      <Modal
+        open={isConfirmOpen}
+        onClose={handleConfirmClose}
+        aria-labelledby="confirm-modal-title"
+        aria-describedby="confirm-modal-description"
+      >
+        <Paper
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography
+            variant="h6"
+            gutterBottom
+            sx={{ textAlign: 'center', fontSize: '1.5rem' }}
+          >
+            Application Added Successfully!
+          </Typography>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleConfirmClose}
+            sx={{ mt: 2 }}
+          >
+            Close
+          </Button>
+        </Paper>
       </Modal>
     </>
   )
