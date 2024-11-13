@@ -28,3 +28,23 @@ export const getUserApplications = async (req, res) => {
     res.status(500).json({ error: 'Error fetching applications' })
   }
 }
+
+export const getUserApplicationsById = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id)
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ message: 'Invalid application ID' })
+    }
+    const application = await knex('application')
+      .select(['application.*', 'company.*'])
+      .leftJoin('company', 'application.company_id', 'company.company_id')
+      .where({ application_id: id, user_id: req.userInfo.userId })
+      .first()
+    if (!application) {
+      return res.status(404).json({ message: "Application can't find" })
+    }
+    return res.json(application)
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
