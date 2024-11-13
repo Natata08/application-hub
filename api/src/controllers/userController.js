@@ -28,3 +28,20 @@ export const getUserApplications = async (req, res) => {
     res.status(500).json({ error: 'Error fetching applications' })
   }
 }
+
+export const getUserApplicationsById = async (req, res) => {
+  try {
+    const { id } = req.params
+    console.log(`Fetching application with ID: ${id}`)
+    const application = await knex('application')
+      .where({ application_id: id })
+      .first()
+    if (application) {
+      res.json(application)
+    } else {
+      res.status(404).json({ message: "Application can't find" })
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
