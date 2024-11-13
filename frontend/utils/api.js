@@ -58,3 +58,26 @@ export const fetchApplications = async () => {
     throw new Error('Failed to fetch applications')
   }
 }
+export const fetchStatuses = async () => {
+  try {
+    const response = await fetch(`${API_URL}/user/application/status`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+
+    // Check if the response is successful (status code 200)
+    if (!response.ok) {
+      throw new Error('Failed to fetch statuses')
+    }
+
+    // Parse the response JSON and return it
+    const statuses = await response.json()
+    return statuses
+  } catch (error) {
+    console.error(error)
+    throw new Error('Failed to fetch statuses')
+  }
+}

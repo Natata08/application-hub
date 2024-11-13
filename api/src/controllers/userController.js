@@ -79,8 +79,31 @@ export const postUserApplications = async (req, res) => {
       deadline_date: appData.deadline_date,
     })
 
-    res.status(201).json({ message: 'Registration was successful' })
+    res.status(201).json({ message: 'Application added successfully' })
   } catch (error) {
-    res.status(500).json({ error: `Registration error: ${error.message}` })
+    res
+      .status(500)
+      .json({ error: `Error on adding application : ${error.message}` })
+  }
+}
+
+export const getApplicationStatuses = async (req, res) => {
+  try {
+    // Fetch distinct statuses
+    const rows = await knex('application').distinct('status')
+
+    // Mapping the raw statuses to the format will be used in frontend
+    const statuses = rows.map((row) => ({
+      value: row.status,
+      label: row.status.charAt(0).toUpperCase() + row.status.slice(1), // Capitalizing the first letter for the label
+    }))
+
+    // Returning the response with the statuses array
+    res.json(statuses)
+  } catch (error) {
+    console.error(error)
+    res
+      .status(500)
+      .json({ message: 'An error occurred while fetching statuses' })
   }
 }

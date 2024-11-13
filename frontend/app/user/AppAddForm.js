@@ -17,13 +17,23 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/components/fetches/addApplication'
 import { getLocalStorageItem } from '@/utils/localStorage'
+import { fetchStatuses } from '@/utils/api'
 
 export default function AddAppForm({ openModal, onClose }) {
   const theme = useTheme()
   const [isAppFormOpen, setIsAppFormOpen] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+  const [statuses, setStatuses] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  // const statuses = [
+  //   { value: 'withdrawn', label: 'Withdrawn' },
+  //   { value: 'interview', label: 'Interview' },
+  //   { value: 'offer', label: 'Offer' },
+  //   { value: 'rejected', label: 'Rejected' },
+  //   { value: 'applied', label: 'Applied' },
+  //   { value: 'saved', label: 'Saved' },
+  // ]
 
   const {
     register,
@@ -45,6 +55,16 @@ export default function AddAppForm({ openModal, onClose }) {
 
   // Open and close the modal depending on  `openModal` value - openModal value comes from parent component
   useEffect(() => {
+    const fetchStatus = async () => {
+      try {
+        const statusData = await fetchStatuses()
+        setStatuses(statusData) // Set statuses to state
+      } catch (err) {
+        setError('Failed to fetch statuses')
+      }
+    }
+    fetchStatus()
+
     if (openModal) {
       setIsAppFormOpen(true)
     } else {
@@ -200,19 +220,18 @@ export default function AddAppForm({ openModal, onClose }) {
               <Controller
                 name="status"
                 control={control}
-                defaultValue="applied"
+                defaultValue={statuses.length > 0 ? statuses[4].value : ''}
                 render={({ field }) => (
                   <Select
                     labelId="status-label"
                     label="Application Status"
                     {...field}
                   >
-                    <MenuItem value="withdrawn">Withdrawn</MenuItem>
-                    <MenuItem value="interview">Interview</MenuItem>
-                    <MenuItem value="offer">Offer</MenuItem>
-                    <MenuItem value="rejected">Rejected</MenuItem>
-                    <MenuItem value="applied">Applied</MenuItem>
-                    <MenuItem value="saved">Saved</MenuItem>
+                    {statuses.map((status) => (
+                      <MenuItem key={status.value} value={status.value}>
+                        {status.label}
+                      </MenuItem>
+                    ))}
                   </Select>
                 )}
               />
