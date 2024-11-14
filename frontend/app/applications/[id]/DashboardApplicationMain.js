@@ -24,14 +24,14 @@ const menuItems = [
 ]
 
 const components = {
-  Overview: <Overview />,
-  Edit: <Edit />,
-  Notes: <Notes />,
-  Interview: <Interview />,
-  Documents: <Documents />,
+  Overview: Overview,
+  Edit: Edit,
+  Notes: Notes,
+  Interview: Interview,
+  Documents: Documents,
 }
 
-export default function DashboardApplicationMain() {
+export default function DashboardApplicationMain({ application }) {
   const [activeComponent, setActiveComponent] = useState(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -39,6 +39,8 @@ export default function DashboardApplicationMain() {
     setActiveComponent(component)
     setDrawerOpen(false)
   }
+
+  const CurrentComponent = components[activeComponent] || Overview
 
   return (
     <Box sx={{ width: '100%', minHeight: '100vh' }}>
@@ -72,7 +74,7 @@ export default function DashboardApplicationMain() {
           handleButtonClick={handleButtonClick}
         />
         <Box sx={{ flexGrow: 1, transition: 'margin-left 0.3s ease' }}>
-          {components[activeComponent] || <Overview />}
+          <CurrentComponent application={application} />
         </Box>
       </Box>
     </Box>
