@@ -1,5 +1,5 @@
 import React from 'react'
-import WhyChooseCard from './WhyChoosecard'
+import WhyChooseCard from './WhyChooseCard'
 import TestimonialComponent from './Testimonial'
 import OverviewImageCard from './Overview'
 import { Box } from '@mui/material'
@@ -7,18 +7,15 @@ import Grid from '@mui/material/Grid2'
 import Introduction from './Introduction'
 import CardLeftCurve from '../ui/CardLeftCurve'
 import CardRightCurve from '../ui/CardRightCurve'
-import { useThemeContext } from '@/components/styles/ThemeApp'
 
 export default function HomePage() {
-  const { isLightMode, darkTheme, lightTheme } = useThemeContext()
-  const theme = isLightMode ? lightTheme : darkTheme
   return (
     <Box>
       <Introduction />
 
       <CardLeftCurve
         width="100vw"
-        backgroundColor={theme.palette.background.footer}
+        backgroundColor="background.cardYellow"
         padding="40px 0"
         margin="20px 0"
       >

@@ -17,9 +17,12 @@ const colors = {
   error: '#D32F2F', // Red for error
   paperLight: '#F7F7F7', // Light grayish beige for paper in light theme
   paperDark: '#1A3D3D', // Light greenish shade for paper in dark theme
-  footerDark: '#000000', // Black
+  footerDark: '#D9A020', //
   footerLight: '#F9FAD2', //Light Yellow
-  cardBlue: '#d2e8d4', //Light blue color
+  cardBlue: '#d2e8d4', //Light blue color for card
+  cardYellow: '#FFFFE0', // Light yellow for card
+  cardYellowDark: '#A7D08B',
+  cardBlueDark: '#86B3A5',
 }
 
 const commonStyles = {
@@ -79,12 +82,14 @@ export const lightTheme = createTheme({
     text: {
       primary: colors.textPrimaryLight,
       secondary: colors.textSecondaryLight,
+      footer: colors.textPrimaryLight,
     },
     background: {
       default: colors.neutralLight,
       paper: colors.paperLight,
       footer: colors.footerLight,
-      card: colors.cardBlue,
+      cardYellow: colors.cardYellow,
+      cardBlue: colors.cardBlue,
     },
   },
   components: {
@@ -137,12 +142,14 @@ export const darkTheme = createTheme({
     text: {
       primary: colors.textPrimaryDark,
       secondary: colors.textSecondaryDark,
+      footer: colors.textPrimaryLight,
     },
     background: {
       default: colors.neutralDark,
       paper: colors.paperDark,
-      footer: colors.paperDark,
-      card: colors.paperDark,
+      footer: colors.cardYellowDark,
+      cardYellow: colors.cardYellowDark,
+      cardBlue: colors.cardBlueDark,
     },
   },
   components: {
