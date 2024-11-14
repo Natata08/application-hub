@@ -1,31 +1,4 @@
-// 'use client'
-// import { useParams } from 'next/navigation'
-// import { Box, Container } from '@mui/material'
-// import DashboardApplicationMain from './DashboardApplicationMain'
-// import DashboardApplicationHeader from './DashboardApplicationHeader'
-// import { useApplicationById } from '@/app/hooks/useApplicationById';
-
-// export default function Application() {
-//   const params = useParams()
-//   const id = params.id
-
-//   const { application, isLoading, error } = useApplicationById(id);
-
-//   if (isLoading) return <p>Loading...</p>;
-//   if (error) return <p>{error}</p>;
-
-//   return (
-//     <Box component="main" sx={{ p: 2 }}>
-//       <Container maxWidth="xl">
-//         <DashboardApplicationHeader />
-//         <DashboardApplicationMain />
-//       </Container>
-//     </Box>
-//   )
-// }
-
 'use client'
-
 import { useParams } from 'next/navigation'
 import {
   Box,
