@@ -103,7 +103,7 @@ export const addApplication = async (appData) => {
       body: JSON.stringify(appData),
     }
   )
-  console.log(response)
+
   if (!response.ok) {
     let errorData
     try {

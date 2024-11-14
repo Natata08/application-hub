@@ -58,7 +58,7 @@ export default function AddAppForm({ openModal, onClose }) {
   // Handle Submit
   const handleAppFormSubmit = async () => {
     setLoading(true)
-    console.log(appData)
+
     try {
       await addApplication(appData)
 
