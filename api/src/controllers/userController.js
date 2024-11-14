@@ -69,10 +69,15 @@ export const getUserApplicationsById = async (req, res) => {
 export const postUserApplications = async (req, res) => {
   try {
     const appData = req.body
-    const company_id = await getOrCreateCompanyId(appData)
-    console.log(req.userInfo)
+    let company_id
+    try {
+      company_id = await getOrCreateCompanyId(appData)
+    } catch (error) {
+      return res.status(500).json({
+        error: ' Error on getting or creating company ID' + error.message,
+      })
+    }
     const user_id = req.userInfo.userId
-
     // Insert the data for the new application
     await knex('application').insert({
       user_id: user_id,
