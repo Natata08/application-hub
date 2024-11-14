@@ -5,7 +5,7 @@ import formatRelativeTime from '@/utils/formatDate'
 export default function ApplicationCard({ application }) {
   return (
     <Link
-      href={`user/applications/${application.application_id}`}
+      href={`/applications/${application.application_id}`}
       passHref
       style={{ textDecoration: 'none', display: 'block' }}
     >
