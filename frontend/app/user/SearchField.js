@@ -1,7 +1,16 @@
-import { InputBase, Box } from '@mui/material'
+import { InputBase, Box, CircularProgress, IconButton } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
+import ClearIcon from '@mui/icons-material/Clear'
 
-export default function SearchField() {
+export default function SearchField({ value, onChange, isSearching }) {
+  const handleChange = (event) => {
+    onChange(event.target.value)
+  }
+
+  const handleClear = () => {
+    onChange('')
+  }
+
   return (
     <Box
       sx={{
@@ -28,8 +37,11 @@ export default function SearchField() {
         }}
       />
       <InputBase
+        value={value}
+        onChange={handleChange}
         placeholder="Search"
         sx={{
+          maxWidth: 100,
           '& .MuiInputBase-input': {
             padding: '8px 0',
             fontSize: 14,
@@ -40,6 +52,23 @@ export default function SearchField() {
           },
         }}
       />
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 40,
+          visibility: value ? 'visible' : 'hidden',
+        }}
+      >
+        {isSearching ? (
+          <CircularProgress size={20} color="primary.main" />
+        ) : (
+          <IconButton size="small" onClick={handleClear}>
+            <ClearIcon fontSize="small" />
+          </IconButton>
+        )}
+      </Box>
     </Box>
   )
 }
