@@ -5,7 +5,7 @@ export const getApplicationStatuses = async (req, res) => {
     // Fetch predefined values for status
     const rows = await knex('application').distinct('status')
 
-    // Mapping the raw statuses to the format will be used in frontend
+    // Mapping the raw statuses to the format that will be used in frontend
     const statuses = rows.map((row) => ({
       value: row.status,
       label: row.status.charAt(0).toUpperCase() + row.status.slice(1), // Capitalizing the first letter for the label
