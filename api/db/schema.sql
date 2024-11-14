@@ -1,3 +1,5 @@
+CREATE DATABASE app_hub_db_local;
+
 CREATE TABLE IF NOT EXISTS "user" (
     user_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     password_hash VARCHAR(255) NOT NULL,
