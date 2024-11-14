@@ -11,7 +11,7 @@ import {
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 
-export default function DashboardApplicationHeader() {
+export default function DashboardApplicationHeader({ application }) {
   return (
     <>
       <Stack
@@ -20,10 +20,10 @@ export default function DashboardApplicationHeader() {
       >
         <Stack direction="column">
           <Typography variant="h4" component="h4" sx={{ pb: 2 }}>
-            job_title
+            {application.job_title}
           </Typography>
           <Typography variant="h5" component="h5" sx={{ pb: 2 }}>
-            name
+            {application.name.toLocaleUpperCase()}
           </Typography>
         </Stack>
 
@@ -32,11 +32,13 @@ export default function DashboardApplicationHeader() {
           direction="row"
           sx={{ justifyContent: 'space-between', alignItems: 'center' }}
         >
-          <Typography sx={{ color: '#F4A261' }}>APPLIED</Typography>
-          <IconButton size="large" sx={{ color: '#F4A261' }}>
+          <Typography sx={{ color: 'accent.main' }}>
+            {application.status.toLocaleUpperCase()}
+          </Typography>
+          <IconButton size="large" sx={{ color: 'accent.main' }}>
             <DeleteRoundedIcon />
           </IconButton>
-          <IconButton size="large" sx={{ color: '#F4A261' }}>
+          <IconButton size="large" sx={{ color: 'accent.main' }}>
             <CancelRoundedIcon />
           </IconButton>
         </Stack>
