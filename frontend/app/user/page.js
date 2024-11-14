@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useDebounce } from 'use-debounce'
+import { useDebounce } from 'react-use'
 import { Container, Box, Button, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import DashboardHeader from './DashboardHeader'
@@ -18,8 +18,16 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [userName, setUserName] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
-  const [debouncedSearchQuery] = useDebounce(searchQuery, 300)
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const { applications, isLoading, error } = useApplications()
+
+  useDebounce(
+    () => {
+      setDebouncedSearchQuery(searchQuery)
+    },
+    300,
+    [searchQuery]
+  )
 
   useEffect(() => {
     const userInfo = getLocalStorageItem('userInfo')
@@ -96,7 +104,7 @@ export default function DashboardPage() {
               applications={getFilteredApplications()}
               isLoading={isLoading}
               error={error}
-              searchQuery={searchQuery}
+              searchQuery={debouncedSearchQuery}
             />
           </TabPanel>
         ))}

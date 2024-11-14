@@ -32,8 +32,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",
-    "styled-components": "^6.1.13",
-    "use-debounce": "^10.0.4"
+    "react-use": "^17.5.1",
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
