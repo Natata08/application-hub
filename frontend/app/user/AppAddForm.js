@@ -36,14 +36,6 @@ export default function AddAppForm({ openModal, onClose }) {
   } = useForm()
   // All inputs are saved in appData object
   const appData = watch()
-  // Getting user_id from the token saved on localstorage
-  const userInfo = getLocalStorageItem('userInfo')
-  const user_id = userInfo && userInfo.id ? userInfo.id : null
-
-  const dataToSend = {
-    appData: appData,
-    user_id: user_id,
-  }
 
   // Open and close the modal depending on  `openModal` value - openModal value comes from parent component
   useEffect(() => {
@@ -66,8 +58,10 @@ export default function AddAppForm({ openModal, onClose }) {
   // Handle Submit
   const handleAppFormSubmit = async () => {
     setLoading(true)
+    console.log(appData)
     try {
-      await addApplication(dataToSend)
+      await addApplication(appData)
+
       setIsConfirmOpen(true)
     } catch (error) {
       setError(error.message)

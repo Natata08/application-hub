@@ -68,8 +68,11 @@ export const getUserApplicationsById = async (req, res) => {
 }
 export const postUserApplications = async (req, res) => {
   try {
-    const { appData, user_id } = req.body
+    const appData = req.body
     const company_id = await getOrCreateCompanyId(appData)
+    console.log(req.userInfo)
+    const user_id = req.userInfo.userId
+
     // Insert the data for the new application
     await knex('application').insert({
       user_id: user_id,

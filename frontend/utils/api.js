@@ -90,9 +90,8 @@ export const fetchApplicationById = async (id) => {
   }
 }
 
-export const addApplication = async (dataToSend) => {
+export const addApplication = async (appData) => {
   const token = getLocalStorageItem('authToken')
-
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/applications`,
     {
@@ -101,10 +100,10 @@ export const addApplication = async (dataToSend) => {
         Authorization: `Bearer ${token}`, // Sending token for verification
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(dataToSend),
+      body: JSON.stringify(appData),
     }
   )
-
+  console.log(response)
   if (!response.ok) {
     let errorData
     try {
