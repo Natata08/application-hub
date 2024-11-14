@@ -1,5 +1,6 @@
 'use client'
 
+import { SORT_FIELDS, SORT_DIRECTIONS } from '@/constants/sort'
 import { useState, useEffect } from 'react'
 import { useDebounce } from 'react-use'
 import { Container, Box, Button, Stack } from '@mui/material'
@@ -21,8 +22,8 @@ export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const [sortConfig, setSortConfig] = useState({
-    field: 'Created Date',
-    direction: 'desc',
+    field: SORT_FIELDS.CREATED_DATE,
+    direction: SORT_DIRECTIONS.DESC,
   })
   const { applications, isLoading, error } = useApplications()
 
