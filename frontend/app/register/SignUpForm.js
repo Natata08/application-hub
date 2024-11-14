@@ -1,10 +1,20 @@
 'use client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Stack, Typography, Button, Paper, Box, Link } from '@mui/material'
+import {
+  Stack,
+  Typography,
+  Button,
+  Paper,
+  Box,
+  Link,
+  Alert,
+} from '@mui/material'
 import InputField from '@/components/ui/InputField'
-import { makeSignUpApiCall } from '@/components/fetches/useSignUp'
+import { makeSignUpApiCall } from '@/utils/makeSignUpApiCall'
 import { useRouter } from 'next/navigation'
+import LoadingButton from '@mui/lab/LoadingButton'
+import SaveIcon from '@mui/icons-material/Save'
 
 export default function SignUpForm() {
   const router = useRouter()
@@ -25,7 +35,11 @@ export default function SignUpForm() {
     setError('')
 
     try {
-      await makeSignUpApiCall(userData)
+      const data = await makeSignUpApiCall(userData)
+      // Save token to localStorage
+      localStorage.setItem('authToken', data.token)
+      // Save user info
+      localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
       router.push('/user')
     } catch (error) {
       setError(error.message)
@@ -66,22 +80,20 @@ export default function SignUpForm() {
         </Typography>
 
         {error && (
-          <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
+          <Alert sx={{ mb: 2 }} severity="error">
             {error}
-          </Typography>
+          </Alert>
         )}
 
         <InputField
           id="first_name"
           label="First name"
-          defaultValue="First name"
           register={register}
           errors={errors}
           required
           pattern={{
-            value: /^[A-Za-z\s]{2,}$/,
-            message:
-              'First name must contain only letters and be at least 2 characters long',
+            value: /^.{2,}$/,
+            message: 'First name must contain at least 2 characters long',
           }}
           minLength={2}
         />
@@ -89,14 +101,12 @@ export default function SignUpForm() {
         <InputField
           id="last_name"
           label="Last name"
-          defaultValue="Last name"
           register={register}
           errors={errors}
           required
           pattern={{
-            value: /^[A-Za-z\s]{2,}$/,
-            message:
-              'First name must contain only letters and be at least 2 characters long',
+            value: /^.{2,}$/,
+            message: 'Last name must contain at least 2 characters long',
           }}
           minLength={2}
         />
@@ -104,7 +114,6 @@ export default function SignUpForm() {
         <InputField
           id="email"
           label="E-mail"
-          defaultValue="you@yourmail.com"
           register={register}
           errors={errors}
           required
@@ -129,10 +138,21 @@ export default function SignUpForm() {
           }}
           minLength={8}
         />
-
-        <Button variant="contained" type="submit" fullWidth>
-          {loading ? 'Submitting...' : 'Sign up'}
-        </Button>
+        {loading ? (
+          <LoadingButton
+            loading
+            loadingPosition="start"
+            startIcon={<SaveIcon />}
+            variant="contained"
+            fullWidth
+          >
+            Submitting...
+          </LoadingButton>
+        ) : (
+          <Button variant="contained" type="submit" fullWidth>
+            Sign up
+          </Button>
+        )}
 
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
