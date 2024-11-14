@@ -5,7 +5,6 @@ import {
   getUserApplications,
   getUserApplicationsById,
   postUserApplications,
-  getApplicationStatuses,
 } from '../controllers/userController.js'
 
 const user = express.Router()
@@ -28,6 +27,5 @@ user.get('/me', authenticateToken, getUserProfile)
 user.get('/applications', authenticateToken, getUserApplications)
 user.get('/applications/:id', authenticateToken, getUserApplicationsById)
 user.post('/applications', authenticateToken, postUserApplications)
-user.get('/application/status', getApplicationStatuses)
 
 export default user

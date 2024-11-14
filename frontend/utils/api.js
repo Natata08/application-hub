@@ -91,6 +91,7 @@ export const fetchApplicationById = async (id) => {
 
 export const addApplication = async (appData) => {
   const token = getLocalStorageItem('authToken')
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/applications`,
     {

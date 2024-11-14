@@ -1,23 +1,6 @@
 import knex from '../database_client.js'
-async function getOrCreateCompanyId(appData) {
-  const existingCompany = await knex('company')
-    .where({ name: appData.company_name })
-    .first()
-  let company_id
-  if (existingCompany) {
-    company_id = existingCompany.company_id
-    return company_id
-  } else {
-    // Insert the company and fetch the company ID immediately
-    const [newCompany] = await knex('company')
-      .insert({
-        name: appData.company_name,
-      })
-      .returning('company_id') // Get the inserted company's ID
-    company_id = newCompany.company_id
-    return company_id
-  }
-}
+import { getOrCreateCompanyId } from '../utils/getOrCreateCompanyId.js'
+
 export const getUserProfile = async (req, res) => {
   try {
     const userData = await knex('user')
@@ -94,26 +77,5 @@ export const postUserApplications = async (req, res) => {
     res
       .status(500)
       .json({ error: `Error on adding application : ${error.message}` })
-  }
-}
-
-export const getApplicationStatuses = async (req, res) => {
-  try {
-    // Fetch distinct statuses
-    const rows = await knex('application').distinct('status')
-
-    // Mapping the raw statuses to the format will be used in frontend
-    const statuses = rows.map((row) => ({
-      value: row.status,
-      label: row.status.charAt(0).toUpperCase() + row.status.slice(1), // Capitalizing the first letter for the label
-    }))
-
-    // Returning the response with the statuses array
-    res.json(statuses)
-  } catch (error) {
-    console.error(error)
-    res
-      .status(500)
-      .json({ message: 'An error occurred while fetching statuses' })
   }
 }
