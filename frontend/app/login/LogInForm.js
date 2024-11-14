@@ -2,9 +2,19 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
-import { Stack, Typography, Button, Paper, Box, Link } from '@mui/material'
+import {
+  Stack,
+  Typography,
+  Button,
+  Paper,
+  Box,
+  Link,
+  Alert,
+} from '@mui/material'
 import InputField from '@/components/ui/InputField'
-import { makeLoginApiCall } from '@/components/fetches/makeLoginApiCall'
+import { makeLoginApiCall } from '@/utils/makeLoginApiCall'
+import LoadingButton from '@mui/lab/LoadingButton'
+import SaveIcon from '@mui/icons-material/Save'
 
 export default function LogInForm() {
   const router = useRouter()
@@ -70,15 +80,14 @@ export default function LogInForm() {
         </Typography>
 
         {error && (
-          <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
+          <Alert sx={{ mb: 2 }} severity="error">
             {error}
-          </Typography>
+          </Alert>
         )}
 
         <InputField
           id="email"
           label="E-mail"
-          defaultValue="you@yourmail.com"
           register={register}
           errors={errors}
           required
@@ -104,9 +113,21 @@ export default function LogInForm() {
           minLength={8}
         />
 
-        <Button variant="contained" type="submit" fullWidth>
-          {loading ? 'Submitting...' : 'Log in'}
-        </Button>
+        {loading ? (
+          <LoadingButton
+            loading
+            loadingPosition="start"
+            startIcon={<SaveIcon />}
+            variant="contained"
+            fullWidth
+          >
+            Submitting...
+          </LoadingButton>
+        ) : (
+          <Button variant="contained" type="submit" fullWidth>
+            Log in
+          </Button>
+        )}
 
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
