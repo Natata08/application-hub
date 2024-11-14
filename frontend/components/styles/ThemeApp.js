@@ -5,21 +5,29 @@ import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
 const ThemeContext = createContext()
 
 const colors = {
-  primary: '#134B48', // Green as primary color
-  secondary: '#BB8266', // Orange as secondary accent color
-  accent: '#F4A261', // A warmer orange shade
-  neutralLight: '#FFFFFF', // White as light background
-  neutralDark: '#264240', // Dark green as dark background
-  textPrimaryLight: '#134B48', // Green text for light mode
-  textSecondaryLight: '#757575', // Lighter text for light mode
-  textPrimaryDark: '#FFFFFF', // White text for dark mode
-  textSecondaryDark: '#F4A261', // A warmer orange shade text for dark mode
-  error: '#D32F2F', // Red for error
-  paperLight: '#F7F7F7', // Light grayish beige for paper in light theme
-  paperDark: '#1A3D3D', // Light greenish shade for paper in dark theme
-  footerDark: '#000000', // Black
-  footerLight: '#F9FAD2', //Light Yellow
+  primary: '#126C62', // Rich green as the primary color
+  secondary: '#E07A5F', // Bright orange for accents
+  accent: '#FF8F5C', // Slightly warmer accent shade
+  neutralLight: '#FFFFFF', // White for light background
+  neutralDark: '#1F3A3A', // Softened dark green for dark background
+  textPrimaryLight: '#126C62', // Primary text in light theme
+  textSecondaryLight: '#6B6B6B', // Secondary text in light theme
+  textPrimaryDark: '#FFFFFF', // Primary text in dark theme
+  textSecondaryDark: '#FFB384', // Accent text in dark theme
+  paperLight: '#F9F9F9', // Light gray for paper in light theme
+  paperDark: '#213D3D', // Softer green for paper in dark theme
+  footerLight: '#000000', // Black for light footer
+  footerDark: '#F9FAD2', // Light yellow for dark footer
   cardBlue: '#d2e8d4', //Light blue color
+  dashboard: '#C5D5D4', // Dashboard background
+}
+
+const sharedColors = {
+  primary: { main: '#134B48' },
+  secondary: { main: '#BB8266' },
+  accent: { main: '#F4A261' },
+  paperCommon: { main: '#F7F7F7' },
+  dashboard: { main: '#C5D5D4' },
 }
 
 const commonStyles = {
@@ -30,6 +38,13 @@ const commonStyles = {
         '&:hover': {
           backgroundColor: colors.secondary,
         },
+      },
+    },
+  },
+  MuiTextField: {
+    styleOverrides: {
+      root: {
+        margin: '12px 0',
       },
     },
   },
@@ -63,19 +78,10 @@ const commonStyles = {
   },
 }
 
-// Light theme
 export const lightTheme = createTheme({
   palette: {
     mode: 'light',
-    primary: {
-      main: colors.primary,
-    },
-    secondary: {
-      main: colors.secondary,
-    },
-    error: {
-      main: colors.error,
-    },
+    ...sharedColors,
     text: {
       primary: colors.textPrimaryLight,
       secondary: colors.textSecondaryLight,
@@ -95,9 +101,9 @@ export const lightTheme = createTheme({
           borderRadius: 16,
         },
         text: {
-          color: colors.primary,
+          color: colors.accent,
           '&:hover': {
-            backgroundColor: colors.accent,
+            backgroundColor: colors.primary,
           },
         },
         outlined: {
@@ -121,19 +127,10 @@ export const lightTheme = createTheme({
   },
 })
 
-// Dark theme
 export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
-    primary: {
-      main: colors.primary,
-    },
-    secondary: {
-      main: colors.secondary,
-    },
-    error: {
-      main: colors.error,
-    },
+    ...sharedColors,
     text: {
       primary: colors.textPrimaryDark,
       secondary: colors.textSecondaryDark,
@@ -183,27 +180,22 @@ export const useThemeContext = () => useContext(ThemeContext)
 
 export default function ThemeApp({ children }) {
   const [isLightMode, setIsLightMode] = useState(true)
-
   const handleThemeChange = () => {
     const newTheme = !isLightMode
     setIsLightMode(newTheme)
     localStorage.setItem('modeTheme', JSON.stringify(newTheme))
   }
-
   const currentTheme = isLightMode ? lightTheme : darkTheme
-
   useEffect(() => {
     const savedTheme = localStorage.getItem('modeTheme')
     if (savedTheme !== null) {
       setIsLightMode(JSON.parse(savedTheme))
-    } else {
-      setIsLightMode(true)
     }
   }, [])
 
   return (
     <ThemeContext.Provider
-      value={{ isLightMode, darkTheme, lightTheme, handleThemeChange }}
+      value={{ isLightMode, lightTheme, darkTheme, handleThemeChange }}
     >
       <ThemeProvider theme={currentTheme}>
         <CssBaseline />
