@@ -1,4 +1,5 @@
 import knex from '../database_client.js'
+import { getOrCreateCompanyId } from '../utils/getOrCreateCompanyId.js'
 
 export const getUserProfile = async (req, res) => {
   try {
@@ -46,5 +47,35 @@ export const getUserApplicationsById = async (req, res) => {
     return res.json(application)
   } catch (error) {
     return res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
+export const postUserApplications = async (req, res) => {
+  try {
+    const appData = req.body
+    let company_id
+    try {
+      company_id = await getOrCreateCompanyId(appData)
+    } catch (error) {
+      return res.status(500).json({
+        error: ' Error on getting or creating company ID' + error.message,
+      })
+    }
+    const user_id = req.userInfo.userId
+    // Insert the data for the new application
+    await knex('application').insert({
+      user_id: user_id,
+      job_title: appData.job_title,
+      company_id: company_id,
+      status: appData.status,
+      job_description: appData.job_description,
+      job_link: appData.job_link,
+      applied_date: appData.applied_date,
+      deadline_date: appData.deadline_date,
+    })
+    res.status(201).json({ message: 'Application added successfully' })
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: `Error on adding application : ${error.message}` })
   }
 }

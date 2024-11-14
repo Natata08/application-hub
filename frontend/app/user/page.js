@@ -13,10 +13,12 @@ import ApplicationsBoard from '../applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
+import AddApplicationForm from './ApplicationAddForm'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [userName, setUserName] = useState('')
+  const [openModal, setOpenModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const { applications, isLoading, error } = useApplications()
@@ -33,6 +35,12 @@ export default function DashboardPage() {
     const userInfo = getLocalStorageItem('userInfo')
     setUserName(userInfo?.first_name || '')
   }, [])
+  const handleOpenModal = () => {
+    setOpenModal(true)
+  }
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
 
   const getFilteredApplications = () => {
     if (!debouncedSearchQuery.trim()) return applications
@@ -88,12 +96,17 @@ export default function DashboardPage() {
             <Button
               variant="contained"
               startIcon={<AddIcon />}
+              onClick={handleOpenModal}
               sx={{
                 textTransform: 'none',
               }}
             >
               Add a job
             </Button>
+            <AddApplicationForm
+              openModal={openModal}
+              onClose={handleCloseModal}
+            />
           </Stack>
           <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
         </Box>
