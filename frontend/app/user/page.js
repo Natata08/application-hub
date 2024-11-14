@@ -13,12 +13,17 @@ import ApplicationsBoard from './applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
+import { sortApplications } from '@/utils/sortApplications'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [userName, setUserName] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
+  const [sortConfig, setSortConfig] = useState({
+    field: 'Created Date',
+    direction: 'desc',
+  })
   const { applications, isLoading, error } = useApplications()
 
   useDebounce(
@@ -46,6 +51,12 @@ export default function DashboardPage() {
         companyName.includes(searchKeyword) || jobTitle.includes(searchKeyword)
       )
     })
+  }
+
+  // Process applications: first search, then sort
+  const processApplications = () => {
+    const searchedApplications = getFilteredApplications(applications)
+    return sortApplications(searchedApplications, sortConfig)
   }
 
   const handleTabChange = (event, newValue) => {
@@ -84,7 +95,7 @@ export default function DashboardPage() {
               onChange={setSearchQuery}
               isSearching={searchQuery !== debouncedSearchQuery}
             />
-            <SortControl />
+            <SortControl onSortApply={setSortConfig} />
             <Button
               variant="contained"
               startIcon={<AddIcon />}
@@ -101,7 +112,7 @@ export default function DashboardPage() {
           <TabPanel key={`tab-${index}`} value={activeTab} index={index}>
             <ApplicationsBoard
               isActive={isActive}
-              applications={getFilteredApplications()}
+              applications={processApplications()}
               isLoading={isLoading}
               error={error}
               searchQuery={debouncedSearchQuery}
