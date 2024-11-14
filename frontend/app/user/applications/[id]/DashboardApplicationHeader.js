@@ -10,28 +10,8 @@ import {
 } from '@mui/material'
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
-//import { useApplicationById } from '@/app/hooks/useApplicationById'
 
 export default function DashboardApplicationHeader() {
-  // const params = useParams()
-  // const id = params.id
-  // const { application, isLoading, error } = useApplicationById(id)
-  // if (isLoading) {
-  //   return (
-  //     <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
-  //       <CircularProgress />
-  //     </Box>
-  //   )
-  // }
-  // if (error) {
-  //   return (
-  //     <Alert severity="error" sx={{ m: 4 }}>
-  //       {error}
-  //     </Alert>
-  //   )
-  // }
-  // if (!application) return <Typography>No data available.</Typography>
-
   return (
     <>
       <Stack

@@ -15,33 +15,11 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material'
-//import { useApplicationById } from '@/app/hooks/useApplicationById'
 
 const Overview = () => {
   const params = useParams()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  // const id = params.id
-  // const { application, isLoading, error } = useApplicationById(id)
-  // if (isLoading) {
-  //   return (
-  //     <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
-  //       <CircularProgress />
-  //     </Box>
-  //   )
-  // }
-  // if (error) {
-  //   return (
-  //     <Alert severity="error" sx={{ m: 4 }}>
-  //       {error}
-  //     </Alert>
-  //   )
-  // }
-  // if (!application) return <Typography>No data available.</Typography>
-
-  // if (!application) {
-  //   return <Typography>No application data available</Typography>
-  // }
 
   return (
     <Box
@@ -97,7 +75,6 @@ const Overview = () => {
               {
                 title: 'The expected salary',
                 content: 'salary',
-                //application.salary === 0 ? 'Unpaid' : application.salary,
               },
               {
                 title: 'Applied date',
