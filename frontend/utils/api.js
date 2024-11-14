@@ -83,7 +83,7 @@ export const fetchApplicationById = async (id) => {
     if (!response.ok) {
       throw new Error(`API error: ${response.statusText}`, response.status)
     }
-
+    git
     return await response.json()
   } catch (err) {
     throw new Error('Failed to fetch applications')

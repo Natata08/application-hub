@@ -18,7 +18,6 @@ export function useApplicationById(id) {
       setError(null)
       const data = await fetchApplicationById(id)
       setApplication(data)
-      console.log(data)
     } catch (err) {
       setError(
         err.status === 401

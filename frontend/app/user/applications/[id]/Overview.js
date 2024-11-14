@@ -15,16 +15,37 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material'
+import { useApplicationById } from '@/app/hooks/useApplicationById'
 
 const Overview = () => {
   const params = useParams()
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const id = params.id
+  const { application, isLoading, error } = useApplicationById(id)
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+  if (error) {
+    return (
+      <Alert severity="error" sx={{ m: 4 }}>
+        {error}
+      </Alert>
+    )
+  }
+
+  if (!application) {
+    return <Typography>No application data available</Typography>
+  }
 
   return (
     <Box
       sx={{
-        backgroundColor: '#C5D5D4',
+        backgroundColor: 'dashboard.main',
         padding: isMobile ? 1 : 2,
       }}
     >
@@ -43,7 +64,7 @@ const Overview = () => {
       <TableContainer
         component={Paper}
         sx={{
-          backgroundColor: '#F7F7F7',
+          backgroundColor: 'paperCommon.main',
           boxShadow: '0px 2px 6px primary.main33',
           overflowX: 'auto',
         }}
@@ -53,7 +74,7 @@ const Overview = () => {
             {[
               {
                 title: 'Lob description',
-                content: 'job_description',
+                content: application.job_description,
               },
               {
                 title: 'Job link',
@@ -68,21 +89,22 @@ const Overview = () => {
                       wordBreak: 'break-word',
                     }}
                   >
-                    job_link
+                    {application.job_link}
                   </Link>
                 ),
               },
               {
                 title: 'The expected salary',
-                content: 'salary',
+                content:
+                  application.salary === 0 ? 'Unpaid' : application.salary,
               },
               {
                 title: 'Applied date',
-                content: 'applied_date',
+                content: application.applied_date,
               },
               {
                 title: 'Deadline for applying',
-                content: 'deadline_date',
+                content: application.deadline_date,
               },
               {
                 title: 'Website company',
@@ -91,30 +113,30 @@ const Overview = () => {
                     href="https://www.lego.com"
                     target="_blank"
                     sx={{
-                      color: theme.palette.primary.main,
+                      color: 'primary.main',
                       textDecoration: 'none',
                       '&:hover': { textDecoration: 'underline' },
                       wordBreak: 'break-word',
                     }}
                   >
-                    website
+                    {application.website}
                   </Link>
                 ),
               },
               {
                 title: 'Location company',
-                content: 'location',
+                content: application.location,
               },
               {
                 title: 'Contact name',
-                content: 'contact_name',
+                content: application.contact_name,
               },
               {
                 title: 'Contact details',
                 content: (
                   <>
-                    <Typography>Phone: contact_phone</Typography>
-                    <Typography>Email: contact_email</Typography>
+                    <Typography>Phone: {application.contact_phone}</Typography>
+                    <Typography>Email: {application.contact_email}</Typography>
                   </>
                 ),
               },
@@ -124,7 +146,7 @@ const Overview = () => {
                 sx={{
                   display: isMobile ? 'block' : 'table-row',
                   padding: isMobile ? '8px 0' : 0,
-                  borderBottom: isMobile ? '1px solid #C5D5D4' : 'none',
+                  borderBottom: isMobile ? '1px solid dashboard.main' : 'none',
                 }}
               >
                 <TableCell
