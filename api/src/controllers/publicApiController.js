@@ -2,7 +2,7 @@ import knex from '../database_client.js'
 
 export const getApplicationStatuses = async (req, res) => {
   try {
-    // Fetch distinct statuses
+    // Fetch predefined values for status
     const rows = await knex('application').distinct('status')
 
     // Mapping the raw statuses to the format will be used in frontend
