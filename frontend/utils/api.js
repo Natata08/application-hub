@@ -117,7 +117,7 @@ export const addApplication = async (appData) => {
 
 export const fetchStatuses = async () => {
   try {
-    const response = await fetch(`${API_URL}/user/application/status`, {
+    const response = await fetch(`${API_URL}/publicApi/application/status`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
