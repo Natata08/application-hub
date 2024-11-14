@@ -1,4 +1,17 @@
-CREATE DATABASE app_hub_db_local;
+-- Create application_status type if it doesn't exist
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'application_status') THEN
+        CREATE TYPE application_status AS ENUM (
+            'saved',
+            'applied',
+            'interview',
+            'offer',
+            'rejected',
+            'withdrawn'
+        );
+    END IF;
+END $$;
 
 CREATE TABLE IF NOT EXISTS "user" (
     user_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -17,15 +30,6 @@ CREATE TABLE IF NOT EXISTS "company" (
     location VARCHAR(255),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TYPE IF NOT EXISTS application_status AS ENUM(
-    'saved',
-    'applied',
-    'interview',
-    'offer',
-    'rejected',
-    'withdrawn'
 );
 
 CREATE TABLE IF NOT EXISTS "application" (
@@ -71,11 +75,17 @@ CREATE TABLE IF NOT EXISTS "application_note" (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TYPE IF NOT EXISTS document_type AS ENUM(
-    'resume',
-    'cover_letter',
-    'other'
-);
+-- Create document_type type if it doesn't exist
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'document_type') THEN
+        CREATE TYPE document_type AS ENUM (
+            'resume',
+            'cover_letter',
+            'other'
+        );
+    END IF;
+END $$;
 
 CREATE TABLE IF NOT EXISTS "document" (
     document_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
