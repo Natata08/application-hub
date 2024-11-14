@@ -12,7 +12,7 @@ import ApplicationsBoard from './applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
-import AddAppForm from './AppAddForm'
+import AddApplicationForm from './ApplicationAddForm'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
@@ -74,7 +74,10 @@ export default function DashboardPage() {
             >
               Add a job
             </Button>
-            <AddAppForm openModal={openModal} onClose={handleCloseModal} />
+            <AddApplicationForm
+              openModal={openModal}
+              onClose={handleCloseModal}
+            />
           </Stack>
           <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
         </Box>

@@ -19,7 +19,7 @@ import { addApplication } from '@/utils/api'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { fetchStatuses } from '@/utils/api'
 
-export default function AddAppForm({ openModal, onClose }) {
+export default function AddApplicationForm({ openModal, onClose }) {
   const theme = useTheme()
   const [isAppFormOpen, setIsAppFormOpen] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
