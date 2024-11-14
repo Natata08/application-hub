@@ -1,4 +1,5 @@
 import knex from '../database_client.js'
+import { getOrCreateCompanyId } from '../utils/getOrCreateCompanyId.js'
 
 export const getUserProfile = async (req, res) => {
   try {
@@ -26,5 +27,55 @@ export const getUserApplications = async (req, res) => {
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Error fetching applications' })
+  }
+}
+
+export const getUserApplicationsById = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id)
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ message: 'Invalid application ID' })
+    }
+    const application = await knex('application')
+      .select(['application.*', 'company.*'])
+      .leftJoin('company', 'application.company_id', 'company.company_id')
+      .where({ application_id: id, user_id: req.userInfo.userId })
+      .first()
+    if (!application) {
+      return res.status(404).json({ message: "Application can't find" })
+    }
+    return res.json(application)
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
+export const postUserApplications = async (req, res) => {
+  try {
+    const appData = req.body
+    let company_id
+    try {
+      company_id = await getOrCreateCompanyId(appData)
+    } catch (error) {
+      return res.status(500).json({
+        error: ' Error on getting or creating company ID' + error.message,
+      })
+    }
+    const user_id = req.userInfo.userId
+    // Insert the data for the new application
+    await knex('application').insert({
+      user_id: user_id,
+      job_title: appData.job_title,
+      company_id: company_id,
+      status: appData.status,
+      job_description: appData.job_description,
+      job_link: appData.job_link,
+      applied_date: appData.applied_date,
+      deadline_date: appData.deadline_date,
+    })
+    res.status(201).json({ message: 'Application added successfully' })
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: `Error on adding application : ${error.message}` })
   }
 }

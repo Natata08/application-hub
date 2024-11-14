@@ -10,6 +10,8 @@ export default function InputField({
   helperText,
   required,
   minLength,
+  multiline,
+  rows,
   pattern,
   type = 'text',
   register,
@@ -32,6 +34,8 @@ export default function InputField({
       label={label}
       type={type === 'password' && !showPassword ? 'password' : 'text'}
       defaultValue={defaultValue}
+      multiline={multiline}
+      rows={rows}
       fullWidth
       variant="outlined"
       {...register(id, {
