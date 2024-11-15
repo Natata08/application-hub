@@ -1,18 +1,17 @@
 import React from 'react'
 import { Box, Card, CardContent, Typography, Avatar } from '@mui/material'
 import Grid from '@mui/material/Grid2'
-import { useThemeContext } from '@/components/styles/ThemeApp'
 
 const testimonials = [
   {
     name: 'Alex Thompson',
     position: 'Computer Science Graduate',
-    content: `"Application Hub has been a game-changer for me! Keeping track of job applications can be so overwhelming, especially when applying to multiple companies at once. With this tool, I can easily see the status of each application and make sure I don’t miss any important updates. It’s made my job search so much more organized!"`,
+    content: `"Application Hub has been a game-changer for me! Keeping track of job applications can be so overwhelming, especially when applying to multiple companies at once. With this tool, I can easily see the status of each application and make sure I don’t miss any important updates."`,
   },
   {
     name: 'Priya Mehta',
     position: 'Marketing Student',
-    content: `"Thanks to Application Hub, I no longer lose track of where I’ve applied and what stage I’m in. I can quickly see which jobs need follow-ups, which interviews are coming up, and which positions I’m still waiting to hear back from. It’s really helped me stay on top of things and feel more confident in my job search."`,
+    content: `"Thanks to Application Hub, I no longer lose track of where I’ve applied and what stage I’m in. I can quickly see which jobs need follow-ups, which interviews are coming up, and which positions I am still waiting to hear back from."`,
   },
   {
     name: 'John Williams',
@@ -22,16 +21,17 @@ const testimonials = [
 ]
 
 export default function TestimonialComponent() {
-  const { isLightMode, darkTheme, lightTheme } = useThemeContext()
-  const theme = isLightMode ? lightTheme : darkTheme
   return (
     <>
       <Typography
         variant="h5"
         component="h2"
         gutterBottom
-        color={theme.palette.text.primary}
-        style={{ alignItems: 'center' }}
+        color="text.primary"
+        sx={{
+          textAlign: 'center',
+          marginBottom: 4,
+        }}
       >
         Testimonials
       </Typography>
@@ -49,30 +49,32 @@ export default function TestimonialComponent() {
               style={{ minWidth: '300px', maxWidth: '350px' }}
             >
               <Card
-                style={{
+                sx={{
+                  width: '100%',
+                  maxWidth: '350px',
+                  minHeight: '350px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
                   borderRadius: '15px',
                   padding: '20px',
-                  backgroundColor: theme.palette.background.default,
-                  color: theme.palette.text.primary,
+                  backgroundColor: 'background.default',
+                  color: 'text.primary',
                 }}
               >
                 <Grid container spacing={2}>
                   <Grid>
                     <Avatar src={testimonial.photo} alt={testimonial.name} />
                   </Grid>
-                  <Grid>
+                  <Box>
                     <Typography variant="h6">{testimonial.name}</Typography>
                     <Typography variant="body2">
                       {testimonial.position}
                     </Typography>
-                  </Grid>
+                  </Box>
                 </Grid>
                 <CardContent>
-                  <Typography
-                    variant="body1"
-                    component="p"
-                    style={{ marginTop: '10px' }}
-                  >
+                  <Typography variant="body1" component="p">
                     {testimonial.content}
                   </Typography>
                 </CardContent>

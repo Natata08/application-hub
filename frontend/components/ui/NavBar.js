@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useThemeContext } from '@/components/styles/ThemeApp'
 import {
   AppBar,
   Toolbar,
@@ -14,17 +13,23 @@ import {
 import Logo from './Logo'
 import Link from 'next/link'
 import MenuIcon from '@mui/icons-material/Menu'
+import { useThemeContext } from '@/components/styles/ThemeApp'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
 
 export default function NavBar() {
-  const { isLightMode, handleThemeChange, darkTheme, lightTheme } =
+  const { isLightMode, darkTheme, handleThemeChange, lightTheme } =
     useThemeContext()
   const theme = isLightMode ? lightTheme : darkTheme
+
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen)
+  }
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false)
   }
 
   return (
@@ -34,7 +39,7 @@ export default function NavBar() {
         backgroundColor: 'transparent',
         borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        color: theme.palette.text.primary,
+        color: 'text.primary',
         width: '100%',
       }}
     >
@@ -64,7 +69,7 @@ export default function NavBar() {
           <Link href="/" passHref>
             <Button
               color="inherit"
-              sx={{ margin: '10px', color: theme.palette.text.primary }}
+              sx={{ margin: '10px', color: 'text.primary' }}
             >
               Home
             </Button>
@@ -72,15 +77,15 @@ export default function NavBar() {
           <Link href="/about" passHref>
             <Button
               color="inherit"
-              sx={{ margin: '10px', color: theme.palette.text.primary }}
+              sx={{ margin: '10px', color: 'text.primary' }}
             >
               About
             </Button>
           </Link>
-          <Link href="/signup" passHref>
+          <Link href="/register" passHref>
             <Button
               color="inherit"
-              sx={{ margin: '10px', color: theme.palette.text.primary }}
+              sx={{ margin: '10px', color: 'text.primary' }}
             >
               Dashboard
             </Button>
@@ -102,11 +107,15 @@ export default function NavBar() {
       </Toolbar>
 
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
-        <Box sx={{ width: 250 }} role="presentation">
+        <Box
+          sx={{ width: 250 }}
+          role="presentation"
+          onClick={handleCloseDrawer}
+        >
           <Link href="/" passHref>
             <Button
               color="inherit"
-              sx={{ margin: '10px', width: '100%', textAlign: 'left' }}
+              sx={{ margin: '10px', width: '80%', textAlign: 'left' }}
             >
               Home
             </Button>
@@ -114,7 +123,7 @@ export default function NavBar() {
           <Link href="/about" passHref>
             <Button
               color="inherit"
-              sx={{ margin: '10px', width: '100%', textAlign: 'left' }}
+              sx={{ margin: '10px', width: '80%', textAlign: 'left' }}
             >
               About
             </Button>
@@ -122,22 +131,33 @@ export default function NavBar() {
           <Link href="/register" passHref>
             <Button
               color="inherit"
-              sx={{ margin: '10px', width: '100%', textAlign: 'left' }}
+              sx={{ margin: '10px', width: '80%', textAlign: 'left' }}
             >
               Dashboard
             </Button>
           </Link>
-          <IconButton onClick={handleThemeChange} color="inherit" size="large">
+          <IconButton
+            onClick={handleThemeChange}
+            color="inherit"
+            size="large"
+            sx={{ margin: '10px', width: '80%', textAlign: 'left' }}
+          >
             {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
           </IconButton>
           <Link href={`/login`}>
-            <Button variant="contained" sx={{ marginTop: 1 }}>
+            <Button
+              variant="contained"
+              sx={{ margin: '10px', width: '80%', textAlign: 'left' }}
+            >
               LogIn
             </Button>
           </Link>
 
           <Link href={`/register`}>
-            <Button variant="contained" sx={{ marginTop: 1 }}>
+            <Button
+              variant="contained"
+              sx={{ margin: '10px', width: '80%', textAlign: 'left' }}
+            >
               Sign up
             </Button>
           </Link>

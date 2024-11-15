@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
 const ThemeContext = createContext()
 
 const colors = {
+
   primary: '#126C62', // Rich green as the primary color
   secondary: '#E07A5F', // Bright orange for accents
   accent: '#FF8F5C', // Slightly warmer accent shade
@@ -28,6 +29,7 @@ const sharedColors = {
   accent: { main: '#F4A261' },
   paperCommon: { main: '#F7F7F7' },
   dashboard: { main: '#C5D5D4' },
+
 }
 
 const commonStyles = {
@@ -85,12 +87,14 @@ export const lightTheme = createTheme({
     text: {
       primary: colors.textPrimaryLight,
       secondary: colors.textSecondaryLight,
+      footer: colors.textPrimaryLight,
     },
     background: {
       default: colors.neutralLight,
       paper: colors.paperLight,
       footer: colors.footerLight,
-      card: colors.cardBlue,
+      cardYellow: colors.cardYellow,
+      cardBlue: colors.cardBlue,
     },
   },
   components: {
@@ -134,12 +138,14 @@ export const darkTheme = createTheme({
     text: {
       primary: colors.textPrimaryDark,
       secondary: colors.textSecondaryDark,
+      footer: colors.textPrimaryLight,
     },
     background: {
       default: colors.neutralDark,
       paper: colors.paperDark,
-      footer: colors.paperDark,
-      card: colors.paperDark,
+      footer: colors.cardYellowDark,
+      cardYellow: colors.cardYellowDark,
+      cardBlue: colors.cardBlueDark,
     },
   },
   components: {
