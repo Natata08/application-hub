@@ -1,9 +1,7 @@
 import React from 'react'
 import { Box, Typography, Button, Container } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 
 export default function Introduction() {
-  const theme = useTheme()
   return (
     <Box
       sx={{
@@ -12,7 +10,7 @@ export default function Introduction() {
         alignItems: 'center',
         justifyContent: 'center',
         height: '90vh',
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: 'background.default',
         textAlign: 'center',
         px: 2,
       }}
@@ -21,14 +19,22 @@ export default function Introduction() {
         <Typography
           variant="h2"
           component="h1"
-          sx={{ fontWeight: 'bold', mb: 2 }}
+          sx={{
+            fontWeight: 'bold',
+            mb: 2,
+            fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+          }}
         >
           Application Hub
         </Typography>
 
         <Typography
           variant="h5"
-          sx={{ color: theme.palette.text.primary, mb: 4 }}
+          sx={{
+            color: 'text.primary',
+            mb: 4,
+            fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' },
+          }}
         >
           Your all-in-one platform to organize and manage your job search. Track
           applications, set reminders, and stay on top of your career goals.
@@ -41,7 +47,7 @@ export default function Introduction() {
           sx={{
             px: 4,
             py: 1.5,
-            fontSize: '1rem',
+            fontSize: { xs: '0.875rem', sm: '1rem' },
           }}
         >
           Sign Up

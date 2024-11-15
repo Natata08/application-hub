@@ -206,7 +206,7 @@ export default function AddApplicationForm({ openModal, onClose }) {
               <Controller
                 name="status"
                 control={control}
-                defaultValue={statuses.length > 0 ? statuses[4].value : ''}
+                defaultValue={statuses.length > 0 ? statuses[0].value : ''}
                 render={({ field }) => (
                   <Select
                     labelId="status-label"

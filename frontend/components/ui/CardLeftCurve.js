@@ -1,4 +1,3 @@
-import { useThemeContext } from '@/components/styles/ThemeApp'
 import { Box } from '@mui/material'
 
 export default function CardLeftCurve({
@@ -8,16 +7,14 @@ export default function CardLeftCurve({
   margin,
   children,
 }) {
-  const { isLightMode, darkTheme, lightTheme } = useThemeContext()
-  const theme = isLightMode ? lightTheme : darkTheme
   return (
     <Box
       sx={{
         width,
-        backgroundColor: backgroundColor || theme.palette.background.footer,
+        backgroundColor: backgroundColor || 'background.cardYellow',
         borderRadius: '100px 0 0 0',
         padding,
-        color: theme.palette.text.secondary,
+        color: 'text.secondary',
         display: 'flex',
         justifyContent: 'center',
         overflow: 'hidden',

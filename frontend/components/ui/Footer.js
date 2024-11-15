@@ -6,40 +6,44 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import Logo from './Logo'
-import { useThemeContext } from '@/components/styles/ThemeApp'
 
 export default function Footer() {
-  const { isLightMode, handleThemeChange, darkTheme, lightTheme } =
-    useThemeContext()
-  const theme = isLightMode ? lightTheme : darkTheme
   return (
     <Box
       component="footer"
       sx={{
-        backgroundColor: theme.palette.background.footer,
-        color: theme.palette.text.primary,
+        backgroundColor: 'background.footer',
+        color: 'text.footer',
         py: 4,
         px: { xs: 2, sm: 8 },
-        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.9)',
+        boxShadow: '0px -1px 6px rgba(0, 0, 0, 0.4)',
         width: '100vw',
       }}
     >
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
+          justifyContent: { xs: 'center', sm: 'space-between' },
+          alignItems: { xs: 'center', sm: 'flex-start' },
+          flexDirection: { xs: 'column', sm: 'row' },
           flexWrap: 'wrap',
           maxWidth: '1200px',
           margin: '0 auto',
+          textAlign: { xs: 'center', sm: 'left' },
         }}
       >
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: { xs: 3, sm: 2 } }}>
           <Logo />
-          <Typography variant="body2" color={theme.palette.text.primary}>
+          <Typography variant="body2" color="text.footer">
             &copy; {new Date().getFullYear()} ApplicationHub
           </Typography>
-          <Box sx={{ mt: 1 }}>
+          <Box
+            sx={{
+              mt: 1,
+              display: 'flex',
+              justifyContent: { xs: 'center', sm: 'flex-start' },
+            }}
+          >
             <IconButton
               href="https://www.linkedin.com"
               target="_blank"
@@ -67,21 +71,11 @@ export default function Footer() {
           </Box>
         </Box>
 
-        <Box sx={{ mb: 2 }}>
-          <Typography
-            variant="h6"
-            sx={{ color: theme.palette.text.primary, mb: 1 }}
-          >
+        <Box sx={{ mb: { xs: 3, sm: 2 } }}>
+          <Typography variant="h6" sx={{ color: 'text.footer', mb: 1 }}>
             Learn
           </Typography>
 
-          <Link
-            color="inherit"
-            sx={{ display: 'block', mb: 0.5 }}
-            underline="none"
-          >
-            Blog
-          </Link>
           <Link
             color="inherit"
             sx={{ display: 'block', mb: 0.5 }}
@@ -98,11 +92,8 @@ export default function Footer() {
           </Link>
         </Box>
 
-        <Box sx={{ mb: 2 }}>
-          <Typography
-            variant="h6"
-            sx={{ color: theme.palette.text.primary, mb: 1 }}
-          >
+        <Box sx={{ mb: { xs: 3, sm: 2 } }}>
+          <Typography variant="h6" sx={{ color: 'text.footer', mb: 1 }}>
             Our company
           </Typography>
           <Link
@@ -128,11 +119,8 @@ export default function Footer() {
           </Link>
         </Box>
 
-        <Box sx={{ mb: 2 }}>
-          <Typography
-            variant="h6"
-            sx={{ color: theme.palette.text.primary, mb: 1 }}
-          >
+        <Box sx={{ mb: { xs: 3, sm: 2 } }}>
+          <Typography variant="h6" sx={{ color: 'text.footer', mb: 1 }}>
             Contact us
           </Typography>
 
