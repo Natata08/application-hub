@@ -54,7 +54,7 @@ export const postUserApplications = async (req, res) => {
     const appData = req.body
     let company_id
     try {
-      company_id = await getOrCreateCompanyId(appData)
+      company_id = await getOrCreateCompanyId(appData.company_name)
     } catch (error) {
       return res.status(500).json({
         error: ' Error on getting or creating company ID' + error.message,

@@ -8,6 +8,7 @@ const register = express.Router()
 register.post('/', async (req, res) => {
   const { email, password, first_name, last_name } = req.body
   if (!email || !password || !first_name || !last_name) {
+    console.error('Some fields from the frontend are invalid')
     return res.status(400).json({ message: 'All fields are required' })
   }
   try {
@@ -28,6 +29,7 @@ register.post('/', async (req, res) => {
     res.status(201).json({ message: 'Registration was successful' })
   } catch (error) {
     res.status(500).json({ error: `Registration error: ${error.message}` })
+    console.log(error)
   }
 })
 
