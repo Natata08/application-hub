@@ -10,15 +10,17 @@ import TabsControl from './tabs/TabsControl'
 import SearchField from './SearchField'
 import SortControl from './SortControl'
 import TabPanel from './tabs/TabPanel'
-import ApplicationsBoard from './applications/ApplicationsBoard'
+import ApplicationsBoard from '../applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
 import { sortApplications } from '@/utils/sortApplications'
+import AddApplicationForm from './ApplicationAddForm'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [userName, setUserName] = useState('')
+  const [openModal, setOpenModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const [sortConfig, setSortConfig] = useState({
@@ -39,6 +41,12 @@ export default function DashboardPage() {
     const userInfo = getLocalStorageItem('userInfo')
     setUserName(userInfo?.first_name || '')
   }, [])
+  const handleOpenModal = () => {
+    setOpenModal(true)
+  }
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
 
   const getFilteredApplications = () => {
     if (!debouncedSearchQuery.trim()) return applications
@@ -100,12 +108,17 @@ export default function DashboardPage() {
             <Button
               variant="contained"
               startIcon={<AddIcon />}
+              onClick={handleOpenModal}
               sx={{
                 textTransform: 'none',
               }}
             >
               Add a job
             </Button>
+            <AddApplicationForm
+              openModal={openModal}
+              onClose={handleCloseModal}
+            />
           </Stack>
           <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
         </Box>

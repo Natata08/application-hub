@@ -18,12 +18,11 @@ export function useApplicationById(id) {
       setError(null)
       const data = await fetchApplicationById(id)
       setApplication(data)
-      console.log(data)
     } catch (err) {
       setError(
         err.status === 401
           ? 'Please login to view your application.'
-          : `We're having trouble loading your application with ${id}. Please try again later.`
+          : `We're having trouble loading your application with ID ${id}. Please try again later.`
       )
     } finally {
       setIsLoading(false)
