@@ -15,8 +15,10 @@ import InputField from '@/components/ui/InputField'
 import { makeLoginApiCall } from '@/utils/makeLoginApiCall'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SaveIcon from '@mui/icons-material/Save'
+import { useAuth } from '@/components/Context/Authentication'
 
 export default function LogInForm() {
+  const { login } = useAuth()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -40,6 +42,7 @@ export default function LogInForm() {
       localStorage.setItem('authToken', data.token)
       // Save user info
       localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
+      login(data.userInfo, data.token)
       router.push('/user')
     } catch (error) {
       setError(error.message)
