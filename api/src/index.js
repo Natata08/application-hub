@@ -35,6 +35,7 @@ apiRouter.get('/check-db', async (req, res) => {
       message: 'Failed to connect to the database',
       error: error.message,
     })
+    console.error('Database connection error :', error)
   }
 })
 app.listen(process.env.PORT, () => {
