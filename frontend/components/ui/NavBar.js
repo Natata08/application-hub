@@ -16,30 +16,12 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { useThemeContext } from '@/components/styles/ThemeApp'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
+import { useAuth } from '../Context/Authentication'
 
 export default function NavBar() {
   const { isLightMode, handleThemeChange } = useThemeContext()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { isLoggedIn, userInfo, logout } = useAuth()
   const [drawerOpen, setDrawerOpen] = useState(false)
-  const [userInfo, setUserInfo] = useState(null)
-
-  useEffect(() => {
-    const token = localStorage.getItem('authToken')
-    const user = localStorage.getItem('userInfo')
-    if (token) {
-      setIsLoggedIn(true)
-      setUserInfo(user ? JSON.parse(user) : null)
-    } else {
-      setIsLoggedIn(false)
-      setUserInfo(null)
-    }
-  }, [])
-
-  const handleLogout = () => {
-    localStorage.removeItem('authToken')
-    localStorage.removeItem('userInfo')
-    setIsLoggedIn(false)
-  }
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen)
@@ -130,7 +112,7 @@ export default function NavBar() {
               </IconButton>
               <Link href={`/login`}>
                 <Button
-                  onClick={handleLogout}
+                  onClick={logout}
                   variant="contained"
                   sx={{ marginTop: 1 }}
                 >
@@ -217,7 +199,7 @@ export default function NavBar() {
               </IconButton>
               <Link href={`/login`}>
                 <Button
-                  onClick={handleLogout}
+                  onClick={logout}
                   variant="contained"
                   sx={{ margin: '10px', width: '80%', textAlign: 'left' }}
                 >
