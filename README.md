@@ -1,3 +1,10 @@
+# Application Hub Project
+
+It consists of two packages:
+
+- `api` which is a NodeJS project using Express for the API
+- `frontend` which is Next.js project for building the web application
+
 ### Using Two VS Code Windows for `api/` and `frontend`
 
 Open `api/` and `frontend/` in separate VS Code windows to ensure extensions like ESLint work correctly, as our monorepo setup has individual `package.json` files for each folder.
@@ -37,18 +44,6 @@ To ensure that the custom Git hooks are used in this repository, you need to con
 
 - If you're setting up this repository on a new machine, don't forget to run the `git config core.hooksPath .githooks` command after cloning the repository.
 
-# HackYourFuture project template
-
-This template is meant to be used as part of the meal-sharing and Final Project modules,
-but can work as a starting point for any full stack project.
-
-It consists of two packages:
-
-- `api` which is a NodeJS project using Express for the API
-- `app` which is Vite project using React for the web app
-
-Both packages are as small as possible but feel free to add more tools as you see fit.
-
 ## Prerequisites
 
 This project assumes that there is a database already set up with tables and data.
@@ -87,7 +82,7 @@ Execute the SQL script to set up the database schema:
 
 `docker exec -it my-postgres psql -U postgres -d app_hub_db_local -f /schema.sql`
 
-4. Verify the Setup:
+5. Verify the Setup:
    Connect to your PostgreSQL database to verify the setup:
 
 `docker exec -it my-postgres psql -U postgres -d app_hub_db_local`
@@ -96,8 +91,8 @@ Once connected, you can run SQL queries to check the contents of your tables:
 
 `\dt` -- List all tables
 
-5. Configure Environment Variables:
-   Create a .env file in the root directory of your project with the following content:
+6. Configure Backend Environment Variables:
+   Create a .env file in the api/ directory with the following content:
 
 ```
 DB_CLIENT=pg
@@ -110,7 +105,12 @@ DB_USE_SSL=false
 DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/app_hub_db_local?sslmode=disable
 ```
 
-6. Run Application:
+7. Configure Frontend Environment Variables:
+   Create a .env.local file in the frontend/ directory with the following content:
+
+`NEXT_PUBLIC_API_URL=http://localhost:3001/api`
+
+8. Run Application:
    Start an application and verify that you can register a new user and add a new application job.
 
 ## Getting started
