@@ -1,4 +1,5 @@
 'use client'
+import useIsMobile from '@/app/hooks/useIsMobile'
 import {
   Box,
   Typography,
@@ -9,13 +10,10 @@ import {
   TableRow,
   TableContainer,
   Paper,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material'
 
 const Overview = ({ application }) => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const isMobile = useIsMobile()
 
   return (
     <Box

@@ -1,19 +1,11 @@
 'use client'
-import { useParams } from 'next/navigation'
-import {
-  Box,
-  CircularProgress,
-  Typography,
-  IconButton,
-  Stack,
-  Alert,
-} from '@mui/material'
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded'
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
+import { Typography, Stack } from '@mui/material'
+import ControlPanel from './ControlPanel'
 
 export default function DashboardApplicationHeader({ application }) {
   return (
     <>
+      <ControlPanel />
       <Stack
         direction="row"
         sx={{ justifyContent: 'space-between', alignItems: 'center' }}
@@ -35,12 +27,6 @@ export default function DashboardApplicationHeader({ application }) {
           <Typography sx={{ color: 'accent.main' }}>
             {application.status.toLocaleUpperCase()}
           </Typography>
-          <IconButton size="large" sx={{ color: 'accent.main' }}>
-            <DeleteRoundedIcon />
-          </IconButton>
-          <IconButton size="large" sx={{ color: 'accent.main' }}>
-            <CancelRoundedIcon />
-          </IconButton>
         </Stack>
       </Stack>
     </>

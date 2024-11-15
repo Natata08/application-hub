@@ -10,11 +10,11 @@ import {
 import DashboardApplicationMain from './DashboardApplicationMain'
 import DashboardApplicationHeader from './DashboardApplicationHeader'
 import { useApplicationById } from '@/app/hooks/useApplicationById'
+import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
 
 export default function Application() {
   const params = useParams()
   const { id } = params
-
   const { application, isLoading, error } = useApplicationById(id)
 
   if (isLoading) {
@@ -38,7 +38,7 @@ export default function Application() {
 
   if (error) {
     return (
-      <Container maxWidth="xl">
+      <Container>
         <Typography variant="h6" color="error">
           {error}
         </Typography>
@@ -47,11 +47,11 @@ export default function Application() {
   }
 
   return (
-    <Box component="main" sx={{ p: 2 }}>
-      <Container maxWidth="xl">
+    <Box component="main">
+      <ResponsiveWrapper>
         <DashboardApplicationHeader application={application} />
         <DashboardApplicationMain application={application} />
-      </Container>
+      </ResponsiveWrapper>
     </Box>
   )
 }

@@ -1,4 +1,5 @@
 'use client'
+import useIsMobile from '@/app/hooks/useIsMobile'
 import {
   Box,
   List,
@@ -7,8 +8,6 @@ import {
   ListItemText,
   ListItemIcon,
   Typography,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material'
 
 const styleCustomDrawer = (drawerOpen, drawerWidth, isMobile) => ({
@@ -35,8 +34,7 @@ export default function CustomDrawer({
   menuItems,
   handleButtonClick,
 }) {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const isMobile = useIsMobile()
 
   return (
     <Box sx={styleCustomDrawer(drawerOpen, drawerWidth, isMobile)}>
