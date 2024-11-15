@@ -7,6 +7,7 @@ import knex from './database_client.js'
 import register from './routers/register.js'
 import login from './routers/login.js'
 import user from './routers/user.js'
+import publicApi from './routers/publicApi.js'
 
 const app = express()
 app.use(cors())
@@ -17,6 +18,7 @@ app.use('/api', apiRouter)
 apiRouter.use('/register', register)
 apiRouter.use('/login', login)
 apiRouter.use('/user', user)
+apiRouter.use('/publicApi', publicApi)
 
 apiRouter.get('/', async (req, res) => {
   res.json('This is welcoming page of FONA Api')

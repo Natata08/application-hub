@@ -30,5 +30,15 @@ if git diff --name-only api/ | grep -q -E '\.(js|jsx|ts|tsx)$'; then
   fi
 fi
 
+# run build for frontend
+echo "Building frontend..."
+(cd frontend && npm run build)
+
+# if build fails, abort commit
+if [ $? -ne 0 ]; then
+  echo "Build failed. Aborting commit."
+  exit 1
+fi
+
 echo "All checks passed in both frontend and api!"
 exit 0

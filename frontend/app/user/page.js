@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useDebounce } from 'react-use'
 import { Container, Box, Button, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import DashboardHeader from './DashboardHeader'
@@ -8,20 +9,52 @@ import TabsControl from './tabs/TabsControl'
 import SearchField from './SearchField'
 import SortControl from './SortControl'
 import TabPanel from './tabs/TabPanel'
-import ApplicationsBoard from './applications/ApplicationsBoard'
+import ApplicationsBoard from '../applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
+import AddApplicationForm from './ApplicationAddForm'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [userName, setUserName] = useState('')
+  const [openModal, setOpenModal] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const { applications, isLoading, error } = useApplications()
+
+  useDebounce(
+    () => {
+      setDebouncedSearchQuery(searchQuery)
+    },
+    300,
+    [searchQuery]
+  )
 
   useEffect(() => {
     const userInfo = getLocalStorageItem('userInfo')
     setUserName(userInfo?.first_name || '')
   }, [])
+  const handleOpenModal = () => {
+    setOpenModal(true)
+  }
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
+
+  const getFilteredApplications = () => {
+    if (!debouncedSearchQuery.trim()) return applications
+
+    return applications.filter((app) => {
+      const searchKeyword = debouncedSearchQuery.toLowerCase()
+      const companyName = app.company_name.toLowerCase()
+      const jobTitle = app.job_title.toLowerCase()
+
+      return (
+        companyName.includes(searchKeyword) || jobTitle.includes(searchKeyword)
+      )
+    })
+  }
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue)
@@ -54,17 +87,26 @@ export default function DashboardPage() {
               gap: 2,
             }}
           >
-            <SearchField />
+            <SearchField
+              value={searchQuery}
+              onChange={setSearchQuery}
+              isSearching={searchQuery !== debouncedSearchQuery}
+            />
             <SortControl />
             <Button
               variant="contained"
               startIcon={<AddIcon />}
+              onClick={handleOpenModal}
               sx={{
                 textTransform: 'none',
               }}
             >
               Add a job
             </Button>
+            <AddApplicationForm
+              openModal={openModal}
+              onClose={handleCloseModal}
+            />
           </Stack>
           <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
         </Box>
@@ -72,9 +114,10 @@ export default function DashboardPage() {
           <TabPanel key={`tab-${index}`} value={activeTab} index={index}>
             <ApplicationsBoard
               isActive={isActive}
-              applications={applications}
+              applications={getFilteredApplications()}
               isLoading={isLoading}
               error={error}
+              searchQuery={debouncedSearchQuery}
             />
           </TabPanel>
         ))}

@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken'
 import {
   getUserProfile,
   getUserApplications,
+  getUserApplicationsById,
+  postUserApplications,
 } from '../controllers/userController.js'
 
 const user = express.Router()
@@ -23,5 +25,7 @@ function authenticateToken(req, res, next) {
 // The endpoints for getting user information in a safe way
 user.get('/me', authenticateToken, getUserProfile)
 user.get('/applications', authenticateToken, getUserApplications)
+user.get('/applications/:id', authenticateToken, getUserApplicationsById)
+user.post('/applications', authenticateToken, postUserApplications)
 
 export default user

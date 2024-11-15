@@ -12,8 +12,12 @@ export const makeSignUpApiCall = async (userData) => {
     try {
       errorData = await response.json()
     } catch {
-      errorData = { message: response.statusText || 'Unknown error' }
+      errorData = { message: 'Failed to parse error message' }
     }
-    throw new Error(`Error ${response.status}: ${errorData.message}`)
+    throw new Error(
+      `Error ${response.status}: ${errorData.message || 'Unknown error'}`
+    )
   }
+
+  return await response.json()
 }
