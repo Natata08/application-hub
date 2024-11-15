@@ -12,7 +12,12 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('authToken')
     const user = localStorage.getItem('userInfo')
     setIsLoggedIn(!!token)
-    setUserInfo(user ? JSON.parse(user) : null)
+    try {
+      setUserInfo(user ? JSON.parse(user) : null)
+    } catch (error) {
+      console.error('Error parsing userInfo:', error)
+      setUserInfo(null)
+    }
   }, [])
 
   const login = (user, token) => {
