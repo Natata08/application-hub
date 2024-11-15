@@ -20,6 +20,8 @@ const colors = {
   footerDark: '#F9FAD2', // Light yellow for dark footer
   cardBlue: '#d2e8d4', //Light blue color
   dashboard: '#C5D5D4', // Dashboard background
+  cardBlueDark: '#A7D08B',
+  cardYellow: '#F9FAD2',
 }
 
 const sharedColors = {
@@ -90,7 +92,7 @@ export const lightTheme = createTheme({
     background: {
       default: colors.neutralLight,
       paper: colors.paperLight,
-      footer: colors.footerLight,
+      footer: colors.footerDark,
       cardYellow: colors.cardYellow,
       cardBlue: colors.cardBlue,
     },
@@ -106,6 +108,7 @@ export const lightTheme = createTheme({
           color: colors.accent,
           '&:hover': {
             backgroundColor: colors.primary,
+            color: colors.neutralLight,
           },
         },
         outlined: {
@@ -136,14 +139,14 @@ export const darkTheme = createTheme({
     text: {
       primary: colors.textPrimaryDark,
       secondary: colors.textSecondaryDark,
-      footer: colors.textPrimaryLight,
+      footer: colors.textSecondaryDark,
     },
     background: {
       default: colors.neutralDark,
       paper: colors.paperDark,
-      footer: colors.cardYellowDark,
-      cardYellow: colors.cardYellowDark,
+      footer: colors.paperDark,
       cardBlue: colors.cardBlueDark,
+      cardYellow: colors.cardBlueDark,
     },
   },
   components: {

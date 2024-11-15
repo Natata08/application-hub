@@ -1,5 +1,6 @@
 'use client'
 
+import { SORT_FIELDS, SORT_DIRECTIONS } from '@/constants/sort'
 import { useState, useEffect } from 'react'
 import { useDebounce } from 'react-use'
 import { Container, Box, Button, Stack } from '@mui/material'
@@ -13,6 +14,7 @@ import ApplicationsBoard from '../applications/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
+import { sortApplications } from '@/utils/sortApplications'
 import AddApplicationForm from './ApplicationAddForm'
 
 export default function DashboardPage() {
@@ -21,6 +23,10 @@ export default function DashboardPage() {
   const [openModal, setOpenModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
+  const [sortConfig, setSortConfig] = useState({
+    field: SORT_FIELDS.CREATED_DATE,
+    direction: SORT_DIRECTIONS.DESC,
+  })
   const { applications, isLoading, error } = useApplications()
 
   useDebounce(
@@ -54,6 +60,12 @@ export default function DashboardPage() {
         companyName.includes(searchKeyword) || jobTitle.includes(searchKeyword)
       )
     })
+  }
+
+  // Process applications: first search, then sort
+  const processApplications = () => {
+    const searchedApplications = getFilteredApplications(applications)
+    return sortApplications(searchedApplications, sortConfig)
   }
 
   const handleTabChange = (event, newValue) => {
@@ -92,7 +104,7 @@ export default function DashboardPage() {
               onChange={setSearchQuery}
               isSearching={searchQuery !== debouncedSearchQuery}
             />
-            <SortControl />
+            <SortControl onSortApply={setSortConfig} />
             <Button
               variant="contained"
               startIcon={<AddIcon />}
@@ -114,7 +126,7 @@ export default function DashboardPage() {
           <TabPanel key={`tab-${index}`} value={activeTab} index={index}>
             <ApplicationsBoard
               isActive={isActive}
-              applications={getFilteredApplications()}
+              applications={processApplications()}
               isLoading={isLoading}
               error={error}
               searchQuery={debouncedSearchQuery}
