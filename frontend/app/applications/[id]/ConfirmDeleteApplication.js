@@ -20,7 +20,7 @@ const style = {
   },
 }
 
-export default function DeleteApplicationConfirm({ openModal, onClose }) {
+export default function ConfirmDeleteApplication({ openModal, onClose }) {
   const handleDeleteApplication = () => {
     //setOpenModal(false)
   }
@@ -40,7 +40,6 @@ export default function DeleteApplicationConfirm({ openModal, onClose }) {
           Are you sure you want to delete this application?
         </Typography>
         <Stack
-          direction="row"
           sx={{
             justifyContent: 'center',
             alignItems: 'center',

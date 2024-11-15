@@ -4,13 +4,14 @@ import { IconButton, Stack, Box, Link } from '@mui/material'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
-import DeleteApplicationConfirm from './DeleteApplicationConfirm'
+import ConfirmDeleteApplication from './ConfirmDeleteApplication'
 
 const stylesIconButton = {
   color: 'accent.main',
+  fontSize: { xs: 20, sm: 24, md: 28 },
 }
 
-const ControlPanel = () => {
+const ControlButton = () => {
   const [openModal, setOpenModal] = useState(false)
 
   const handleOpenModal = () => {
@@ -26,26 +27,30 @@ const ControlPanel = () => {
       <Stack
         spacing={2}
         direction="row"
-        sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingTop: { xs: 0, sm: 2 },
+        }}
       >
         <Link
           href={`/user`}
           passHref
           style={{ textDecoration: 'none', display: 'block' }}
         >
-          <IconButton sx={stylesIconButton}>
-            <ArrowBackIcon />
+          <IconButton>
+            <ArrowBackIcon sx={stylesIconButton} />
           </IconButton>
         </Link>
 
         <Box>
-          <IconButton sx={stylesIconButton}>
-            <BorderColorIcon />
+          <IconButton>
+            <BorderColorIcon sx={stylesIconButton} />
           </IconButton>
-          <IconButton sx={stylesIconButton} onClick={handleOpenModal}>
-            <DeleteRoundedIcon />
+          <IconButton onClick={handleOpenModal}>
+            <DeleteRoundedIcon sx={stylesIconButton} />
           </IconButton>
-          <DeleteApplicationConfirm
+          <ConfirmDeleteApplication
             openModal={openModal}
             onClose={handleCloseModal}
           />
@@ -55,4 +60,4 @@ const ControlPanel = () => {
   )
 }
 
-export default ControlPanel
+export default ControlButton
