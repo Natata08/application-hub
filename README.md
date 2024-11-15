@@ -51,64 +51,112 @@ This project assumes that there is a database already set up with tables and dat
 1. Pull the PostgreSQL Docker Image:
    Open your terminal and run the following command to pull the latest PostgreSQL image:
 
-`docker pull postgres:latest`
+   ```bash
+   docker pull postgres:latest
+   ```
 
 2. Run the PostgreSQL Container
    You can start a PostgreSQL instance using Docker with the below commands:
 
-`docker run --name my-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres:latest`
+   ```bash
+   docker run --name my-postgres -e POSTGRES_PASSWORD=mysecretpassword -d -p 5432:5432 -v pgdata:/var/lib/postgresql/data postgres:latest
+   ```
 
 3. Create the Database:
    Connect to the running PostgreSQL container:
 
-`docker exec -it my-postgres psql -U postgres -d postgres`
+   ▪ Unix-based systems:
 
-In the psql shell, create the app_hub_db_local database:
+   ```bash
+   docker exec -it my-postgres psql -U postgres -d postgres
+   ```
 
-`CREATE DATABASE app_hub_db_local;`
+   ▪ Windows:
 
-Exit the psql shell:
+   ```bash
+   winpty docker exec -it my-postgres psql -U postgres -d postgres
+   ```
 
-`\q`
+   In the psql shell, create the app_hub_db_local database:
 
-4.  Apply the Schema:
-    Copy your schema.sql file into the running container:
+   `CREATE DATABASE app_hub_db_local;`
 
-`docker cp /path/to/your/schema.sql my-postgres:/schema.sql`
+   Exit the psql shell:
 
-Replace /path/to/your/schema.sql with the actual path to your schema.sql file.
+   ```bash
+   \q
+   ```
 
-Execute the SQL script to set up the database schema:
+4. Apply the Schema:
+   Copy your schema.sql file into the running container:
 
-`docker exec -it my-postgres psql -U postgres -d app_hub_db_local -f /schema.sql`
+   ▪ Unix-based systems:
+
+   ```bash
+   docker cp /path/to/your/schema.sql my-postgres:/schema.sql
+   ```
+
+   ▪ Windows:
+
+   ```bash
+   winpty docker cp "/path/to/your/schema.sql" my-postgres:\schema.sql
+   ```
+
+   Replace /path/to/your/schema.sql with the actual path to your schema.sql file. For example: "C:/Users/yourname/Desktop/schema.sql"
+
+   Execute the SQL script to set up the database schema:
+
+   ▪ Unix-based systems:
+
+   ```bash
+   docker exec -it my-postgres psql -U postgres -d app_hub_db_local -f /schema.sql
+   ```
+
+   ▪ Windows:
+
+   ```bash
+   winpty docker exec -it my-postgres psql -U postgres -d app_hub_db_local -f \schema.sql
+   ```
 
 5. Verify the Setup:
    Connect to your PostgreSQL database to verify the setup:
 
-`docker exec -it my-postgres psql -U postgres -d app_hub_db_local`
+   ▪ Unix-based systems:
 
-Once connected, you can run SQL queries to check the contents of your tables:
+   ```bash
+   docker exec -it my-postgres psql -U postgres -d app_hub_db_local
+   ```
 
-`\dt` -- List all tables
+   ▪ Windows:
+
+   ```bash
+   winpty docker exec -it my-postgres psql -U postgres -d app_hub_db_local
+   ```
+
+   Once connected, you can run SQL queries to check the contents of your tables:
+
+   ```bash
+   \dt -- List all tables
+   ```
 
 6. Configure Backend Environment Variables:
    Create a .env file in the api/ directory with the following content:
 
-```
-DB_CLIENT=pg
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=mysecretpassword
-DB_DATABASE_NAME=app_hub_db_local
-DB_USE_SSL=false
-DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/app_hub_db_local?sslmode=disable
-```
+   ```
+   DB_CLIENT=pg
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=postgres
+   DB_PASSWORD=mysecretpassword
+   DB_DATABASE_NAME=app_hub_db_local
+   DB_USE_SSL=false
+   DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/app_hub_db_local?sslmode=disable
+   ```
 
 7. Configure Frontend Environment Variables:
    Create a .env.local file in the frontend/ directory with the following content:
 
-`NEXT_PUBLIC_API_URL=http://localhost:3001/api`
+   `NEXT_PUBLIC_API_URL=http://localhost:3001/api`
 
 8. Run Application:
    Start an application and verify that you can register a new user and add a new application job.
@@ -141,3 +189,7 @@ npm run dev
 
 You can then open the web app at [http://localhost:3000](http://localhost:3000).
 ![Testing the app with a browser](./images/app_test.png)
+
+```
+
+```
