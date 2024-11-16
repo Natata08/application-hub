@@ -8,15 +8,10 @@ import {
 import EmptyState from './EmptyState'
 import MobileApplicationsBoard from './MobileApplicationsBoard'
 import DesktopApplicationsBoard from './DesktopApplicationsBoard'
-
-const activeStatuses = [
-  { name: 'saved' },
-  { name: 'applied' },
-  { name: 'interview' },
-  { name: 'offer' },
-]
-
-const inactiveStatuses = [{ name: 'rejected' }, { name: 'withdrawn' }]
+import {
+  ACTIVE_STATUSES,
+  INACTIVE_STATUSES,
+} from '@/constants/applicationStatus'
 
 export default function ApplicationsBoard({
   isActive,
@@ -25,7 +20,7 @@ export default function ApplicationsBoard({
   error,
   searchQuery,
 }) {
-  const statuses = isActive ? activeStatuses : inactiveStatuses
+  const statuses = isActive ? ACTIVE_STATUSES : INACTIVE_STATUSES
 
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
