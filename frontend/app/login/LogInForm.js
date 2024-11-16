@@ -15,7 +15,7 @@ import InputField from '@/components/ui/InputField'
 import { makeLoginApiCall } from '@/utils/makeLoginApiCall'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SaveIcon from '@mui/icons-material/Save'
-import { useAuth } from '@/components/Context/Authentication'
+import { useAuth } from '@/components/Context/authentication'
 
 export default function LogInForm() {
   const { login } = useAuth()

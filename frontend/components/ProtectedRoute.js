@@ -1,6 +1,6 @@
 'use client'
 import { useEffect } from 'react'
-import { useAuth } from './Context/Authentication'
+import { useAuth } from './Context/authentication'
 
 export default function ProtectedRoute({ children }) {
   const { isLoggedIn, redirectToLogin } = useAuth()
