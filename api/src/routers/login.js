@@ -24,8 +24,8 @@ login.post('/', async (req, res) => {
 
     const isPasswordRight = await bcrypt.compare(password, user.password_hash)
     if (isPasswordRight) {
+      // The data for send with token if the password is right
       const userInfo = {
-        // What we have to send if password is right
         id: user.user_id,
         first_name: user.first_name,
         last_name: user.last_name,
@@ -44,6 +44,7 @@ login.post('/', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: `Error logging in: ${error.message}` })
+    console.error(error)
   }
 })
 
