@@ -38,10 +38,6 @@ export default function LogInForm() {
 
     try {
       const data = await makeLoginApiCall(contactData)
-      // Save token to localStorage
-      localStorage.setItem('authToken', data.token)
-      // Save user info
-      localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
       login(data.userInfo, data.token)
       router.push('/user')
     } catch (error) {
