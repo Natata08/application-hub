@@ -16,7 +16,6 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/utils/api'
-import { getLocalStorageItem } from '@/utils/localStorage'
 import { fetchStatuses } from '@/utils/api'
 
 export default function AddApplicationForm({ openModal, onClose }) {
@@ -61,7 +60,6 @@ export default function AddApplicationForm({ openModal, onClose }) {
 
     try {
       await addApplication(appData)
-
       setIsConfirmOpen(true)
     } catch (error) {
       setError(error.message)
@@ -105,20 +103,28 @@ export default function AddApplicationForm({ openModal, onClose }) {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 600,
+              width: {
+                xs: '90%',
+                sm: '80%',
+                md: 500,
+              },
+              overflow: 'auto',
               bgcolor: 'background.paper',
               boxShadow: 24,
-              p: 4,
+              p: { xs: 1.5, sm: 3, md: 4 },
             }}
           >
             <Typography
-              sx={{ paddingBottom: 2, fontSize: { xs: '1.5rem', sm: '2rem' } }}
+              sx={{
+                paddingBottom: { xs: 0, sm: 2 },
+                fontSize: { xs: '1.25rem', sm: '1.5rem', md: '2rem' },
+              }}
               gutterBottom
               variant="h4"
               component="div"
               textAlign="center"
             >
-              Add an Application
+              Add a Job Application
             </Typography>
 
             {error && (
@@ -145,7 +151,7 @@ export default function AddApplicationForm({ openModal, onClose }) {
             />
             <InputField
               id="job_link"
-              label="Job Link (Optional)"
+              label="Job Link"
               register={register}
               errors={errors}
               minLength={2}
@@ -154,8 +160,10 @@ export default function AddApplicationForm({ openModal, onClose }) {
             <Box
               sx={{
                 display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                gap: 1,
                 justifyContent: 'space-between',
-                alignItems: 'center',
+                alignItems: { xs: 'stretch', sm: 'center' },
               }}
             >
               <Controller
@@ -164,8 +172,9 @@ export default function AddApplicationForm({ openModal, onClose }) {
                 defaultValue={null}
                 render={({ field }) => (
                   <DatePicker
-                    label="Application Date (Optional)"
+                    label="Application Date"
                     {...field}
+                    sx={{ width: { xs: '100%', sm: '50%' } }}
                     TextFieldComponent={(params) => (
                       <InputField
                         {...params}
@@ -182,8 +191,9 @@ export default function AddApplicationForm({ openModal, onClose }) {
                 defaultValue={null}
                 render={({ field }) => (
                   <DatePicker
-                    label="Deadline Date (Optional)"
+                    label="Deadline Date"
                     {...field}
+                    sx={{ width: { xs: '100%', sm: '50%' } }}
                     TextFieldComponent={(params) => (
                       <InputField
                         {...params}
@@ -224,7 +234,7 @@ export default function AddApplicationForm({ openModal, onClose }) {
             </FormControl>
             <InputField
               id="job_description"
-              label="Job Description (Optional)"
+              label="Job Description"
               register={register}
               errors={errors}
               multiline
@@ -236,7 +246,7 @@ export default function AddApplicationForm({ openModal, onClose }) {
                 mb: 1,
                 p: 1,
                 color: theme.palette.text.secondary,
-                fontSize: '13px',
+                fontSize: { xs: 12 },
               }}
             >
               * You can upload the documents or customize all the details after
@@ -262,16 +272,22 @@ export default function AddApplicationForm({ openModal, onClose }) {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            width: {
+              xs: '80%',
+              sm: 400,
+            },
             bgcolor: 'background.paper',
             boxShadow: 24,
-            p: 4,
+            p: { xs: 2, sm: 4 },
           }}
         >
           <Typography
             variant="h6"
             gutterBottom
-            sx={{ textAlign: 'center', fontSize: '1.5rem' }}
+            sx={{
+              textAlign: 'center',
+              fontSize: '1.25rem',
+            }}
           >
             Application Added Successfully!
           </Typography>
@@ -279,7 +295,9 @@ export default function AddApplicationForm({ openModal, onClose }) {
             variant="contained"
             fullWidth
             onClick={handleConfirmClose}
-            sx={{ mt: 2 }}
+            sx={{
+              mt: 2,
+            }}
           >
             Close
           </Button>
