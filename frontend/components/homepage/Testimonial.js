@@ -23,18 +23,6 @@ const testimonials = [
 export default function TestimonialComponent() {
   return (
     <>
-      <Typography
-        variant="h5"
-        component="h2"
-        gutterBottom
-        color="text.primary"
-        sx={{
-          textAlign: 'center',
-          marginBottom: 4,
-        }}
-      >
-        Testimonials
-      </Typography>
       <Box marginTop={10}>
         <Grid
           container
@@ -58,6 +46,7 @@ export default function TestimonialComponent() {
                   justifyContent: 'space-between',
                   borderRadius: '15px',
                   padding: '20px',
+                  margin: '15px',
                   backgroundColor: 'background.default',
                   color: 'text.primary',
                 }}
