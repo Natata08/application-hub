@@ -21,20 +21,20 @@ export default function StatusColumn({ status, applications }) {
         flexDirection: 'column',
         alignItems: 'stretch',
         width: '100%',
-        minWidth: 180,
+        minWidth: 100,
       }}
     >
       <Paper
         elevation={0}
         sx={{
-          p: 1,
+          p: 0.5,
           mb: 2,
           border: 1,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'space-between',
-          bgcolor: 'background.default',
+          bgcolor: 'background.dashboard',
           position: 'relative',
         }}
       >
@@ -74,12 +74,11 @@ export default function StatusColumn({ status, applications }) {
               color: 'text.secondary',
               '&:hover': {
                 backgroundColor: 'action.hover',
+                color: 'secondary.main',
               },
             }}
           >
-            {showAll
-              ? 'Show less'
-              : `Show ${applications.length - INITIAL_DISPLAY_NUMBER} more`}
+            {showAll ? 'Show less' : `Show more`}
           </Button>
         )}
       </Box>

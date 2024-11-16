@@ -15,9 +15,11 @@ import { makeSignUpApiCall } from '@/utils/makeSignUpApiCall'
 import { useRouter } from 'next/navigation'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SaveIcon from '@mui/icons-material/Save'
+import { useAuth } from '@/components/Context/authentication'
 
 export default function SignUpForm() {
   const router = useRouter()
+  const { login } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -36,10 +38,7 @@ export default function SignUpForm() {
 
     try {
       const data = await makeSignUpApiCall(userData)
-      // Save token to localStorage
-      localStorage.setItem('authToken', data.token)
-      // Save user info
-      localStorage.setItem('userInfo', JSON.stringify(data.userInfo))
+      login(data.userInfo, data.token)
       router.push('/user')
     } catch (error) {
       setError(error.message)

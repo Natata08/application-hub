@@ -7,20 +7,18 @@ export function useApplications() {
   const [error, setError] = useState(null)
 
   const getApplications = async () => {
+    setIsLoading(true)
+    setError(null)
+
     try {
-      setIsLoading(true)
-      setError(null)
       const data = await fetchApplications()
       setApplications(data)
     } catch (err) {
       setError(
-        err.status === 401
-          ? 'Please login to view your applications.'
-          : "We're having trouble loading your applications. Please try again later."
+        "We're having trouble loading your applications. Please try again later."
       )
-    } finally {
-      setIsLoading(false)
     }
+    setIsLoading(false)
   }
 
   useEffect(() => {

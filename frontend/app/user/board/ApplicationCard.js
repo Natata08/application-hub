@@ -11,14 +11,15 @@ export default function ApplicationCard({ application }) {
     >
       <Card
         sx={{
-          p: 1.5,
+          p: 1,
           border: 1,
           display: 'flex',
           flexDirection: 'column',
-          gap: 1,
+          gap: 0.5,
           borderRadius: 2,
+          backgroundColor: 'background.default',
           '&:hover': {
-            boxShadow: 3,
+            boxShadow: 4,
           },
         }}
       >
@@ -28,7 +29,7 @@ export default function ApplicationCard({ application }) {
         <Typography
           variant="subtitle1"
           component="h3"
-          sx={{ fontWeight: '600', lineHeight: '1.5' }}
+          sx={{ fontWeight: '600', lineHeight: '1' }}
         >
           {application.job_title}
         </Typography>
