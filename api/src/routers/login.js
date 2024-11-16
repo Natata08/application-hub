@@ -1,11 +1,9 @@
 import express from 'express'
 import knex from '../database_client.js'
-import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import { generateAuthResponse } from '../utils/auth.js'
 
-// This router can be deleted once you add your own router
 const login = express.Router()
-const secretKey = process.env.JWT_SECRET
 
 login.post('/', async (req, res) => {
   const { email, password } = req.body
@@ -25,19 +23,10 @@ login.post('/', async (req, res) => {
     const isPasswordRight = await bcrypt.compare(password, user.password_hash)
     if (isPasswordRight) {
       // The data for send with token if the password is right
-      const userInfo = {
-        id: user.user_id,
-        first_name: user.first_name,
-        last_name: user.last_name,
-      }
-
-      // creating token for the user
-      const token = jwt.sign({ userId: user.user_id }, secretKey, {
-        expiresIn: '1h',
-      })
+      const authResponse = generateAuthResponse(user)
 
       // Sending userInfo with token
-      res.status(200).json({ userInfo: userInfo, token })
+      res.status(200).json(authResponse)
     } else {
       // Invalid password
       res.status(401).json({ message: 'Invalid password' })
