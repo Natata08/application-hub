@@ -1,5 +1,5 @@
 'use client'
-import useIsMobile from '@/app/hooks/useIsMobile'
+import { useIsMobile } from '@/app/hooks/useIsMobile'
 import {
   Box,
   Typography,

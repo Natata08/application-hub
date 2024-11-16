@@ -7,8 +7,18 @@ import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import useIsMobile from '@/app/hooks/useIsMobile'
+import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { useThemeContext } from '@/components/styles/ThemeApp'
+
+const menuItemStyles = {
+  minHeight: '30px',
+  height: 'auto',
+  fontSize: '0.85rem',
+  overflow: 'hidden',
+  '&:focus': {
+    color: 'accent.main',
+  },
+}
 
 const StatusPanel = ({ application }) => {
   const { isLightMode } = useThemeContext()
@@ -54,29 +64,22 @@ const StatusPanel = ({ application }) => {
             fontSize: '0.85rem',
             fontWeight: 600,
             overflow: 'hidden',
+            '& .MuiSelect-select': {
+              textAlign: 'center',
+              paddingY: '8px',
+            },
           }}
           MenuProps={{
             PaperProps: {
               sx: {
                 maxHeight: '200px',
                 overflowY: 'auto',
-                padding: 0,
               },
             },
           }}
         >
           {statuses.map((s) => (
-            <MenuItem
-              key={s}
-              value={s}
-              sx={{
-                fontSize: '0.85rem',
-                overflow: 'hidden',
-                '&:focus': {
-                  color: 'accent.main',
-                },
-              }}
-            >
+            <MenuItem key={s} value={s} sx={menuItemStyles}>
               {s.toLocaleUpperCase()}
             </MenuItem>
           ))}

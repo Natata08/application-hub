@@ -1,7 +1,7 @@
 'use client'
 import { Box, Typography } from '@mui/material'
 
-const Edit = () => {
+const Contacts = () => {
   return (
     <>
       <Box sx={{ marginTop: 4 }}>
@@ -12,4 +12,4 @@ const Edit = () => {
   )
 }
 
-export default Edit
+export default Contacts

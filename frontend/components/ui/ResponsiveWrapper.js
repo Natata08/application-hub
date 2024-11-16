@@ -1,6 +1,6 @@
 'use client'
 import { Container } from '@mui/material'
-import useIsMobile from '@/app/hooks/useIsMobile'
+import { useIsMobile } from '@/app/hooks/useIsMobile'
 
 const ResponsiveWrapper = ({ children }) => {
   const isMobile = useIsMobile()

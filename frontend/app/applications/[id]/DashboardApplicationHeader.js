@@ -2,8 +2,9 @@
 import { Typography, Stack, Link, Box, Button } from '@mui/material'
 import ControlButton from './ControlButton'
 import StatusPanel from './StatusPanel'
-import useIsMobile from '@/app/hooks/useIsMobile'
+import { useIsMobile } from '@/app/hooks/useIsMobile'
 import AddIcon from '@mui/icons-material/Add'
+import ManagePanel from './ManagePanel'
 
 export default function DashboardApplicationHeader({ application }) {
   const isMobile = useIsMobile()
@@ -41,7 +42,7 @@ export default function DashboardApplicationHeader({ application }) {
             passHref
             sx={{
               display: application.website ? 'block' : 'none',
-              pb: { xs: 0, md: 2 },
+              pb: { xs: 1, md: 2 },
               color: 'inherit',
               textDecoration: 'none',
               '&:hover': { textDecoration: 'underline' },
@@ -50,17 +51,26 @@ export default function DashboardApplicationHeader({ application }) {
             {application.website}
           </Link>
         </Box>
-        <Typography variant="h5" component="h5" sx={{ pb: 2 }}>
-          {application.salary === 0 ? 'Unpaid' : application.salary}
-
-          {application.salary ? (
-            application.salary
+        <Typography
+          variant="body1"
+          component="div"
+          sx={{
+            pb: 2,
+            color: 'accent.main',
+            fontSize: { xs: '1rem', sm: '1.5rem' },
+          }}
+        >
+          {application.salary !== undefined && application.salary !== null ? (
+            application.salary === 0 ? (
+              'Unpaid'
+            ) : (
+              application.salary
+            )
           ) : (
             <Button
               size="medium"
               variant="text"
               startIcon={<AddIcon />}
-              // onClick={handleOpenModal}
               sx={{
                 textTransform: 'none',
               }}
@@ -72,6 +82,8 @@ export default function DashboardApplicationHeader({ application }) {
       </Stack>
 
       <StatusPanel application={application} />
+
+      <ManagePanel />
     </Box>
   )
 }
