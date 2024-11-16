@@ -15,7 +15,7 @@ import { makeSignUpApiCall } from '@/utils/makeSignUpApiCall'
 import { useRouter } from 'next/navigation'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SaveIcon from '@mui/icons-material/Save'
-import { useAuth } from '@/components/Context/authentication'
+import { useAuth } from '@/components/Context/Authentication'
 
 export default function SignUpForm() {
   const router = useRouter()

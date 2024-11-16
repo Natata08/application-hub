@@ -16,7 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { useThemeContext } from '@/components/styles/ThemeApp'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
-import { useAuth } from '../Context/authentication'
+import { useAuth } from '../Context/Authentication'
 
 export default function NavBar() {
   const { isLightMode, handleThemeChange } = useThemeContext()
