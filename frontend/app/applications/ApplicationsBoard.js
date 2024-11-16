@@ -55,8 +55,8 @@ export default function ApplicationsBoard({
           gridTemplateColumns: 'repeat(2, 1fr)',
         },
         gap: {
-          xs: 2,
-          md: 3,
+          xs: 1.2,
+          md: 1.5,
         },
         width: '100%',
       }}

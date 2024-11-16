@@ -19,7 +19,8 @@ const colors = {
   footerLight: '#000000', // Black for light footer
   footerDark: '#F9FAD2', // Light yellow for dark footer
   cardBlue: '#d2e8d4', //Light blue color
-  dashboard: '#C5D5D4', // Dashboard background
+  dashboard: '#C5D5D4',
+  dashboardDark: '#2a2c2c',
   cardBlueDark: '#A7D08B',
   cardYellow: '#F9FAD2',
 }
@@ -95,6 +96,7 @@ export const lightTheme = createTheme({
       footer: colors.footerDark,
       cardYellow: colors.cardYellow,
       cardBlue: colors.cardBlue,
+      dashboard: colors.dashboard,
     },
   },
   components: {
@@ -147,6 +149,7 @@ export const darkTheme = createTheme({
       footer: colors.paperDark,
       cardBlue: colors.cardBlueDark,
       cardYellow: colors.cardBlueDark,
+      dashboard: colors.dashboardDark,
     },
   },
   components: {

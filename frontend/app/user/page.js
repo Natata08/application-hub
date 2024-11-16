@@ -74,13 +74,13 @@ export default function DashboardPage() {
 
   return (
     <Box component="main">
-      <Container sx={{ p: 4, maxWidth: '1200px', margin: '0 auto' }}>
+      <Container sx={{ p: 2, maxWidth: '1200px', margin: '0 auto' }}>
         <DashboardHeader name={userName} />
         <Box
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
-            gap: { xs: 2, md: 0 },
+            gap: { xs: 1, md: 0 },
             width: '100%',
           }}
         >
@@ -96,7 +96,7 @@ export default function DashboardPage() {
                 md: 'flex-end',
               },
               flexWrap: 'wrap',
-              gap: 2,
+              gap: 1,
             }}
           >
             <SearchField
