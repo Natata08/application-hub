@@ -1,12 +1,19 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
+  const router = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userInfo, setUserInfo] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const redirectToLogin = () => {
+    router.push('/login')
+  }
 
   // Checking if the token is not expired
   const isTokenValid = (token) => {
@@ -33,8 +40,12 @@ export const AuthProvider = ({ children }) => {
         }
       } else {
         // Clear invalid or expired token
-        logout()
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('userInfo')
+        setIsLoggedIn(false)
+        setUserInfo(null)
       }
+      setIsLoading(false)
     }
     checkAuth()
   }, [])
@@ -55,10 +66,18 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('userInfo')
     setIsLoggedIn(false)
     setUserInfo(null)
+    redirectToLogin()
+  }
+
+  // Don't render children until initial auth check is complete
+  if (isLoading) {
+    return null
   }
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userInfo, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, userInfo, login, logout, redirectToLogin }}
+    >
       {children}
     </AuthContext.Provider>
   )
