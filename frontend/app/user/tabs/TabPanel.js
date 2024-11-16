@@ -12,7 +12,7 @@ export default function TabPanel(props) {
       aria-labelledby={`applications-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
     </div>
   )
 }
