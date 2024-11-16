@@ -152,7 +152,7 @@ export default function NavBar() {
           onClick={handleCloseDrawer}
         >
           {isLoggedIn ? (
-            <Link href="/register" passHref>
+            <Link href="/user" passHref>
               <Button
                 color="inherit"
                 sx={{ margin: '10px', width: '80%', textAlign: 'left' }}
