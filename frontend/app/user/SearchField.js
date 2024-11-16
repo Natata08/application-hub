@@ -34,6 +34,7 @@ export default function SearchField({ value, onChange, isSearching }) {
           padding: '8px',
           color: 'text.secondary',
           fontSize: 35,
+          opacity: 0.5,
         }}
       />
       <InputBase
@@ -47,7 +48,7 @@ export default function SearchField({ value, onChange, isSearching }) {
             fontSize: 14,
             '&::placeholder': {
               color: 'text.secondary',
-              opacity: 1,
+              opacity: 0.5,
             },
           },
         }}

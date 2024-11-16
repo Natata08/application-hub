@@ -10,7 +10,7 @@ import TabsControl from './tabs/TabsControl'
 import SearchField from './SearchField'
 import SortControl from './SortControl'
 import TabPanel from './tabs/TabPanel'
-import ApplicationsBoard from '../applications/ApplicationsBoard'
+import ApplicationsBoard from './board/ApplicationsBoard'
 import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
@@ -76,13 +76,13 @@ export default function DashboardPage() {
   return (
     <ProtectedRoute>
       <Box component="main">
-        <Container sx={{ p: 4, maxWidth: '1200px', margin: '0 auto' }}>
+        <Container sx={{ p: 2, maxWidth: '1200px', margin: '0 auto' }}>
           <DashboardHeader name={userName} />
           <Box
             sx={{
               display: 'flex',
               flexDirection: { xs: 'column', md: 'row' },
-              gap: { xs: 2, md: 0 },
+              gap: { xs: 1, md: 0 },
               width: '100%',
             }}
           >
@@ -98,7 +98,7 @@ export default function DashboardPage() {
                   md: 'flex-end',
                 },
                 flexWrap: 'wrap',
-                gap: 2,
+                gap: 1,
               }}
             >
               <SearchField

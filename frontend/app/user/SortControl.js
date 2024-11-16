@@ -65,7 +65,7 @@ export default function SortControl({ onSortApply }) {
           sx={{
             minWidth: 160,
             bgcolor: 'background.paper',
-            color: 'text.primary',
+            color: 'text.secondary',
             textTransform: 'none',
             border: 1,
             borderColor: 'divider',
@@ -75,6 +75,7 @@ export default function SortControl({ onSortApply }) {
             '&:hover': {
               bgcolor: 'background.paper',
               borderColor: 'secondary.main',
+              color: 'secondary.main',
             },
           }}
         >

@@ -1,6 +1,13 @@
-import { Box, CircularProgress, Alert } from '@mui/material'
-import StatusColumn from './StatusColumn'
+import {
+  Box,
+  CircularProgress,
+  Alert,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material'
 import EmptyState from './EmptyState'
+import MobileApplicationsBoard from './MobileApplicationsBoard'
+import DesktopApplicationsBoard from './DesktopApplicationsBoard'
 
 const activeStatuses = [
   { name: 'saved' },
@@ -19,6 +26,9 @@ export default function ApplicationsBoard({
   searchQuery,
 }) {
   const statuses = isActive ? activeStatuses : inactiveStatuses
+
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   if (isLoading) {
     return (
@@ -42,34 +52,9 @@ export default function ApplicationsBoard({
     return <EmptyState searchQuery={searchQuery} />
   }
 
-  return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: {
-          xs: 'repeat(1, 1fr)',
-          sm: 'repeat(3, 1fr)',
-          md: 'repeat(4, 1fr)',
-        },
-        '@media (min-width: 450px) and (max-width: 600px)': {
-          gridTemplateColumns: 'repeat(2, 1fr)',
-        },
-        gap: {
-          xs: 2,
-          md: 3,
-        },
-        width: '100%',
-      }}
-    >
-      {statuses.map((status) => (
-        <StatusColumn
-          key={status.name}
-          status={status}
-          applications={applications.filter(
-            (app) => app.status === status.name
-          )}
-        />
-      ))}
-    </Box>
+  return isMobile ? (
+    <MobileApplicationsBoard statuses={statuses} applications={applications} />
+  ) : (
+    <DesktopApplicationsBoard statuses={statuses} applications={applications} />
   )
 }
