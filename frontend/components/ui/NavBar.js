@@ -99,7 +99,7 @@ export default function NavBar() {
                   color="inherit"
                   sx={{ margin: '5px', color: 'text.primary' }}
                 >
-                  WELCOME, {userInfo.first_name}!
+                  Hi, {userInfo.first_name}!
                 </span>
               )}
               <IconButton
@@ -139,94 +139,54 @@ export default function NavBar() {
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
         <Box
           sx={{
-            width: 250,
+            width: 200,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            mt: 2,
           }}
           role="presentation"
           onClick={handleCloseDrawer}
         >
+          {userInfo && (
+            <Typography color="text.primary">
+              Hi, {userInfo.first_name}!
+            </Typography>
+          )}
           {isLoggedIn ? (
             <Link href="/user" passHref>
-              <Button
-                color="inherit"
-                sx={{ margin: '5px', width: '80%', textAlign: 'left' }}
-              >
-                Dashboard
-              </Button>
+              <Button color="inherit">Dashboard</Button>
             </Link>
           ) : (
             <Link href="/" passHref>
-              <Button
-                color="inherit"
-                sx={{ margin: '5px', width: '80%', textAlign: 'left' }}
-              >
-                Home
-              </Button>
+              <Button color="inherit">Home</Button>
             </Link>
           )}
-
           <Link href="/about" passHref>
-            <Button
-              color="inherit"
-              sx={{ margin: '5px', width: '80%', textAlign: 'left' }}
-            >
-              About
-            </Button>
+            <Button color="inherit">About</Button>
           </Link>
+
+          <IconButton onClick={handleThemeChange} color="inherit" size="large">
+            {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
+          </IconButton>
+
           {isLoggedIn ? (
             <>
-              {userInfo && (
-                <span
-                  color="text.primary"
-                  sx={{ margin: '5px', width: '80%', textAlign: 'left' }}
-                >
-                  WELCOME, {userInfo.first_name}!
-                </span>
-              )}
-              <IconButton
-                onClick={handleThemeChange}
-                color="inherit"
-                size="large"
-                sx={{ margin: '5px', width: '80%', textAlign: 'left' }}
-              >
-                {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
-              </IconButton>
               <Link href={`/login`}>
-                <Button
-                  onClick={logout}
-                  variant="contained"
-                  sx={{ margin: '5px', width: '80%', textAlign: 'left' }}
-                >
+                <Button onClick={logout} variant="contained">
                   LogOut
                 </Button>
               </Link>
             </>
           ) : (
             <>
-              <IconButton
-                onClick={handleThemeChange}
-                color="inherit"
-                size="large"
-                sx={{ margin: '5px', width: '80%', textAlign: 'left' }}
-              >
-                {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
-              </IconButton>
-
               <Link href={`/login`}>
-                <Button
-                  variant="contained"
-                  sx={{ margin: '5px', width: '80%', textAlign: 'left' }}
-                >
-                  LogIn
-                </Button>
+                <Button variant="contained">LogIn</Button>
               </Link>
 
               <Link href={`/register`}>
-                <Button
-                  variant="contained"
-                  sx={{ margin: '5px', width: '80%', textAlign: 'left' }}
-                >
-                  Sign up
-                </Button>
+                <Button variant="contained">Sign up</Button>
               </Link>
             </>
           )}
