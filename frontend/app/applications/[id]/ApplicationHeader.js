@@ -2,22 +2,21 @@
 import { Typography, Stack, Link, Box, Button } from '@mui/material'
 import ControlButton from './ControlButton'
 import StatusPanel from './StatusPanel'
-import { useIsMobile } from '@/app/hooks/useIsMobile'
 import AddIcon from '@mui/icons-material/Add'
 import ManagePanel from './ManagePanel'
+import { useIsMobile } from '@/app/hooks/useIsMobile'
 
-export default function DashboardApplication({ application }) {
+export default function ApplicationHeader({ application }) {
+  const isMobile = useIsMobile()
   return (
-    <Box sx={{ marginBottom: 4 }}>
-      <ControlButton />
-
+    <Box>
       <Typography
-        variant="h5"
-        component="h5"
+        variant={isMobile ? 'h6' : 'h5'}
+        component="div"
         sx={{
           pb: { xs: 0.5, sm: 2 },
           paddingX: 2,
-          fontSize: { xs: '1.5rem', sm: '2rem' },
+          fontWeight: 600,
         }}
       >
         {application.job_title}
@@ -32,8 +31,8 @@ export default function DashboardApplication({ application }) {
         }}
       >
         <Box>
-          <Typography variant="subtitle1" component="div" sx={{ pb: 0.5 }}>
-            {application.name.toLocaleUpperCase()} {application.location}
+          <Typography variant={'body1'} component="div" sx={{ pb: 0.5 }}>
+            {application.name} {application.location}
           </Typography>
           <Link
             href={application.website}
@@ -55,7 +54,7 @@ export default function DashboardApplication({ application }) {
           component="div"
           sx={{
             pb: 2,
-            color: 'accent.main',
+            color: 'secondary.main',
             fontSize: { xs: '1rem', sm: '1.5rem' },
           }}
         >
@@ -67,7 +66,6 @@ export default function DashboardApplication({ application }) {
             )
           ) : (
             <Button
-              size="medium"
               variant="text"
               startIcon={<AddIcon />}
               sx={{
@@ -79,8 +77,6 @@ export default function DashboardApplication({ application }) {
           )}
         </Typography>
       </Stack>
-      <StatusPanel application={application} />
-      <ManagePanel application={application} />
     </Box>
   )
 }

@@ -8,7 +8,6 @@ import Select from '@mui/material/Select'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
-import { useThemeContext } from '@/components/styles/ThemeApp'
 
 const menuItemStyles = {
   minHeight: '30px',
@@ -16,12 +15,11 @@ const menuItemStyles = {
   fontSize: '0.85rem',
   overflow: 'hidden',
   '&:focus': {
-    color: 'accent.main',
+    color: 'secondary.main',
   },
 }
 
 const StatusPanel = ({ application }) => {
-  const { isLightMode } = useThemeContext()
   const isMobile = useIsMobile()
   console.log(application.status)
 
@@ -59,8 +57,6 @@ const StatusPanel = ({ application }) => {
           displayEmpty
           fullWidth
           sx={{
-            bgcolor: isLightMode ? 'dashboard.main' : 'inherit',
-            color: 'accent.main',
             fontSize: '0.85rem',
             fontWeight: 600,
             overflow: 'hidden',
@@ -100,9 +96,9 @@ const StatusPanel = ({ application }) => {
             key={s}
             value={s}
             sx={{
+              color: 'secondary.main',
               fontSize: '0.85rem',
               '&.Mui-selected': {
-                color: 'accent.main',
                 fontWeight: 600,
               },
             }}

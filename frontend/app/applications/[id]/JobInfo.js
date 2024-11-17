@@ -1,10 +1,9 @@
 'use client'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import {
   Box,
   Accordion,
-  AccordionActions,
   AccordionSummary,
   AccordionDetails,
   Button,
@@ -45,6 +44,7 @@ export default function JobInfo({ application }) {
     textDecoration: 'none',
     '&:hover': { textDecoration: 'underline' },
     wordBreak: 'break-word',
+    fontSize: isMobile ? '0.875rem' : '1rem',
   }
 
   const { control, handleSubmit } = useForm({
@@ -75,7 +75,7 @@ export default function JobInfo({ application }) {
             <Stack sx={stackStyles}>
               <Typography sx={{ fontWeight: 600 }}>Job Link</Typography>
               <IconButton>
-                <EditIcon sx={{ color: 'accent.main', fontSize: 20 }} />
+                <EditIcon sx={{ color: 'secondary.main', fontSize: 20 }} />
               </IconButton>
             </Stack>
           </AccordionSummary>
@@ -89,7 +89,9 @@ export default function JobInfo({ application }) {
                 {application.job_link}
               </Link>
             ) : (
-              <Typography sx={{ color: 'secondary.main' }}>No data</Typography>
+              <Typography sx={{ color: 'secondary.main' }}>
+                Add a job link
+              </Typography>
             )}
           </AccordionDetails>
         </Accordion>
@@ -144,36 +146,22 @@ export default function JobInfo({ application }) {
             <Stack sx={stackStyles}>
               <Typography sx={{ fontWeight: 600 }}>Job Description</Typography>
               <IconButton>
-                <EditIcon sx={{ color: 'accent.main', fontSize: 20 }} />
+                <EditIcon sx={{ color: 'secondary.main', fontSize: 20 }} />
               </IconButton>
             </Stack>
           </AccordionSummary>
           <AccordionDetails
             sx={{ maxHeight: '300px', height: 'auto', overflowY: 'auto' }}
           >
-            <Typography>{application.job_description}</Typography>
-            <Typography>
-              {application.job_description}
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry&apos;s standard dummy
-              text ever since the 1500s, when an unknown printer took a galley
-              of type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry. Lorem Ipsum has been the industry&apos;s
-              standard dummy text ever since the 1500s, when an unknown printer
-              took a galley of type and scrambled it to make a type specimen
-              book. It has survived not only five centuries, but also the leap
-              into electronic typesetting, remaining essentially unchanged. It
-              was popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </Typography>
+            {application.job_description ? (
+              <Typography variant={isMobile ? 'body2' : 'body1'}>
+                {application.job_description}
+              </Typography>
+            ) : (
+              <Typography sx={{ color: 'secondary.main' }}>
+                Add a job description
+              </Typography>
+            )}
           </AccordionDetails>
         </Accordion>
       </Box>

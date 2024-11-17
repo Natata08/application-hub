@@ -32,12 +32,14 @@ export default function ManagePanel({ application }) {
     width: 'auto',
     minHeight: 40,
     height: 'auto',
-    color: !isLightMode ? 'text.primary' : 'text.secondary',
+    color: !isLightMode ? 'text.secondary' : 'text.secondary',
+    opacity: 0.8,
     '&.Mui-selected': {
-      color: !isLightMode ? 'accent.main' : 'inherit',
+      color: !isLightMode ? 'text.primary' : 'inherit',
+      opacity: 1,
     },
     '&:hover': {
-      color: !isLightMode ? 'accent.main' : 'inherit',
+      color: !isLightMode ? 'text.primary' : 'inherit',
       opacity: 0.8,
     },
   }
@@ -85,7 +87,7 @@ export default function ManagePanel({ application }) {
             scrollButtons="auto"
             sx={{
               '& .MuiTabs-indicator': {
-                backgroundColor: !isLightMode ? 'accent.main' : '',
+                backgroundColor: !isLightMode ? 'text.primary' : '',
               },
             }}
           >

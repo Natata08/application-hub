@@ -7,9 +7,13 @@ import {
   CircularProgress,
   Alert,
 } from '@mui/material'
-import DashboardApplication from './DashboardApplication'
+import ApplicationHeader from './ApplicationHeader'
 import { useApplicationById } from '@/app/hooks/useApplicationById'
 import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
+import ControlButton from './ControlButton'
+import StatusPanel from './StatusPanel'
+import ManagePanel from './ManagePanel'
+import { useIsMobile } from '@/app/hooks/useIsMobile'
 
 export default function Application() {
   const params = useParams()
@@ -46,9 +50,14 @@ export default function Application() {
   }
 
   return (
-    <Box component="main">
+    <Box component="main" sx={{ marginBottom: 4 }}>
       <ResponsiveWrapper>
-        <DashboardApplication application={application} />
+        <Box sx={{ marginBottom: 4 }}>
+          <ControlButton />
+          <ApplicationHeader application={application} />
+          <StatusPanel application={application} />
+          <ManagePanel application={application} />
+        </Box>
       </ResponsiveWrapper>
     </Box>
   )

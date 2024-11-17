@@ -7,7 +7,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor'
 import ConfirmDeleteApplication from './ConfirmDeleteApplication'
 
 const stylesIconButton = {
-  color: 'accent.main',
+  color: 'secondary.main',
   fontSize: { xs: 20, sm: 24 },
 }
 
