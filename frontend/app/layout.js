@@ -2,7 +2,7 @@ import ThemeApp from '@/components/styles/ThemeApp'
 import NavBar from '@/components/ui/NavBar'
 import Footer from '@/components/ui/Footer'
 import { Box } from '@mui/material'
-import { AuthProvider } from '@/components/Context/authentication'
+import { AuthProvider } from '@/components/Context/Authentication'
 
 export const metadata = {
   title: 'ApplicationHub App',
