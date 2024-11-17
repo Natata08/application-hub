@@ -7,8 +7,7 @@ import {
   CircularProgress,
   Alert,
 } from '@mui/material'
-import DashboardApplicationMain from './DashboardApplicationMain'
-import DashboardApplicationHeader from './DashboardApplicationHeader'
+import DashboardApplication from './DashboardApplication'
 import { useApplicationById } from '@/app/hooks/useApplicationById'
 import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
 
@@ -49,8 +48,7 @@ export default function Application() {
   return (
     <Box component="main">
       <ResponsiveWrapper>
-        <DashboardApplicationHeader application={application} />
-        <DashboardApplicationMain application={application} />
+        <DashboardApplication application={application} />
       </ResponsiveWrapper>
     </Box>
   )

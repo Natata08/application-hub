@@ -7,45 +7,73 @@ import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import NotesIcon from '@mui/icons-material/Notes'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import EditIcon from '@mui/icons-material/Edit'
+import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
 import PeopleIcon from '@mui/icons-material/People'
 import PreviewIcon from '@mui/icons-material/Preview'
 import { useIsMobileSmall } from '@/app/hooks/useIsMobile'
-import Overview from './Overview'
+import JobInfo from './JobInfo'
 import Contacts from './Contacts'
 import Notes from './Notes'
 import Interview from './Interview'
 import Documents from './Documents'
+import { useThemeContext } from '@/components/styles/ThemeApp'
 
-const tabStyles = {
-  minWidth: '42px',
-  width: 'auto',
-  minHeight: 40,
-  height: 'auto',
-}
-
-const tabItems = [
-  { label: 'Overview', value: 'Overview', icon: <PreviewIcon /> },
-  { label: 'Notes', value: 'Notes', icon: <NotesIcon /> },
-  { label: 'Interview', value: 'Interview', icon: <PeopleIcon /> },
-  { label: 'Documents', value: 'Documents', icon: <InsertDriveFileIcon /> },
-  { label: 'Contacts', value: 'Contacts', icon: <EditIcon /> },
-]
-
-const components = {
-  Overview: Overview,
-  Notes: Notes,
-  Interview: Interview,
-  Documents: Documents,
-  Contacts: Contacts,
-}
-
-export default function ManagePanel() {
-  const [value, setValue] = useState('Overview')
+export default function ManagePanel({ application }) {
+  const { isLightMode } = useThemeContext()
+  const isMobileSmall = useIsMobileSmall()
+  const [value, setValue] = useState('Job Info')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  const tabStyles = {
+    minWidth: '42px',
+    width: 'auto',
+    minHeight: 40,
+    height: 'auto',
+    color: !isLightMode ? 'text.primary' : 'text.secondary',
+    '&.Mui-selected': {
+      color: !isLightMode ? 'accent.main' : 'inherit',
+    },
+    '&:hover': {
+      color: !isLightMode ? 'accent.main' : 'inherit',
+      opacity: 0.8,
+    },
+  }
+
+  const tabs = [
+    {
+      label: 'Job Info',
+      value: 'Job Info',
+      icon: <PreviewIcon />,
+      component: (application) => <JobInfo application={application} />,
+    },
+    {
+      label: 'Notes',
+      value: 'Notes',
+      icon: <NotesIcon />,
+      component: (application) => <Notes application={application} />,
+    },
+    {
+      label: 'Interview',
+      value: 'Interview',
+      icon: <PeopleIcon />,
+      component: (application) => <Interview application={application} />,
+    },
+    {
+      label: 'Documents',
+      value: 'Documents',
+      icon: <InsertDriveFileIcon />,
+      component: (application) => <Documents application={application} />,
+    },
+    {
+      label: 'Contacts',
+      value: 'Contacts',
+      icon: <PermContactCalendarIcon />,
+      component: (application) => <Contacts application={application} />,
+    },
+  ]
 
   return (
     <Box sx={{ width: '100%', typography: 'body1' }}>
@@ -55,12 +83,16 @@ export default function ManagePanel() {
             onChange={handleChange}
             variant="scrollable"
             scrollButtons="auto"
+            sx={{
+              '& .MuiTabs-indicator': {
+                backgroundColor: !isLightMode ? 'accent.main' : 'primary.main',
+              },
+            }}
           >
-            {tabItems.map((item) => (
+            {tabs.map((item) => (
               <Tab
-                key={item.name}
-                // label= {useIsMobileSmall() ? '' : item.label}
-                label={item.label}
+                key={item.value}
+                label={isMobileSmall ? '' : item.label}
                 value={item.value}
                 icon={item.icon}
                 iconPosition="start"
@@ -69,9 +101,15 @@ export default function ManagePanel() {
             ))}
           </TabList>
         </Box>
-        <TabPanel value="Overview">Item One</TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
-        <TabPanel value="3">Item Three</TabPanel>
+        {tabs.map((item) => (
+          <TabPanel
+            key={item.value}
+            value={item.value}
+            sx={{ padding: 0, paddingTop: 2 }}
+          >
+            {item.component(application)}
+          </TabPanel>
+        ))}
       </TabContext>
     </Box>
   )

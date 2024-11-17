@@ -6,11 +6,9 @@ import { useIsMobile } from '@/app/hooks/useIsMobile'
 import AddIcon from '@mui/icons-material/Add'
 import ManagePanel from './ManagePanel'
 
-export default function DashboardApplicationHeader({ application }) {
-  const isMobile = useIsMobile()
-
+export default function DashboardApplication({ application }) {
   return (
-    <Box>
+    <Box sx={{ marginBottom: 4 }}>
       <ControlButton />
 
       <Typography
@@ -38,7 +36,7 @@ export default function DashboardApplicationHeader({ application }) {
             {application.name.toLocaleUpperCase()} {application.location}
           </Typography>
           <Link
-            href="https://www.lego.com"
+            href={application.website}
             passHref
             sx={{
               display: application.website ? 'block' : 'none',
@@ -46,6 +44,7 @@ export default function DashboardApplicationHeader({ application }) {
               color: 'inherit',
               textDecoration: 'none',
               '&:hover': { textDecoration: 'underline' },
+              wordBreak: 'break-word',
             }}
           >
             {application.website}
@@ -80,10 +79,8 @@ export default function DashboardApplicationHeader({ application }) {
           )}
         </Typography>
       </Stack>
-
       <StatusPanel application={application} />
-
-      <ManagePanel />
+      <ManagePanel application={application} />
     </Box>
   )
 }

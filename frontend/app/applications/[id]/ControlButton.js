@@ -8,7 +8,7 @@ import ConfirmDeleteApplication from './ConfirmDeleteApplication'
 
 const stylesIconButton = {
   color: 'accent.main',
-  fontSize: { xs: 20, sm: 24, md: 28 },
+  fontSize: { xs: 20, sm: 24 },
 }
 
 const ControlButton = () => {
