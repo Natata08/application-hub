@@ -85,7 +85,7 @@ export default function ManagePanel({ application }) {
             scrollButtons="auto"
             sx={{
               '& .MuiTabs-indicator': {
-                backgroundColor: !isLightMode ? 'accent.main' : 'primary.main',
+                backgroundColor: !isLightMode ? 'accent.main' : '',
               },
             }}
           >
