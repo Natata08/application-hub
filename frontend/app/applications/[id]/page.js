@@ -13,7 +13,7 @@ import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
 import ControlButton from './ControlButton'
 import StatusPanel from './StatusPanel'
 import ManagePanel from './ManagePanel'
-import { useIsMobile } from '@/app/hooks/useIsMobile'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 export default function Application() {
   const params = useParams()
@@ -50,15 +50,17 @@ export default function Application() {
   }
 
   return (
-    <Box component="main" sx={{ marginBottom: 4 }}>
-      <ResponsiveWrapper>
-        <Box sx={{ marginBottom: 4 }}>
-          <ControlButton />
-          <ApplicationHeader application={application} />
-          <StatusPanel application={application} />
-          <ManagePanel application={application} />
-        </Box>
-      </ResponsiveWrapper>
-    </Box>
+    <ProtectedRoute>
+      <Box component="main" sx={{ marginBottom: 4 }}>
+        <ResponsiveWrapper>
+          <Box>
+            <ControlButton />
+            <ApplicationHeader application={application} />
+            <StatusPanel application={application} />
+            <ManagePanel application={application} />
+          </Box>
+        </ResponsiveWrapper>
+      </Box>
+    </ProtectedRoute>
   )
 }
