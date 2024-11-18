@@ -56,13 +56,13 @@ const StatusPanel = ({ application }) => {
           onChange={(e) => handleStatusChange(e.target.value)}
           displayEmpty
           fullWidth
+          size="small"
           sx={{
             fontSize: '0.85rem',
             fontWeight: 600,
             overflow: 'hidden',
             '& .MuiSelect-select': {
               textAlign: 'center',
-              paddingY: '8px',
             },
           }}
           MenuProps={{

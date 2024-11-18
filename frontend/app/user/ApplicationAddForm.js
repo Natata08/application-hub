@@ -19,8 +19,10 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/utils/api'
 import { fetchStatuses } from '@/utils/api'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 export default function AddApplicationForm({ openModal, onClose }) {
+  const isMobile = useIsMobile()
   const theme = useTheme()
   const [isAppFormOpen, setIsAppFormOpen] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
@@ -200,6 +202,7 @@ export default function AddApplicationForm({ openModal, onClose }) {
                     labelId="status-label"
                     label="Application Status"
                     {...field}
+                    size={isMobile ? 'small' : 'normal'}
                   >
                     {statuses.map((status) => (
                       <MenuItem key={status.value} value={status.value}>
