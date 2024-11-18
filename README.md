@@ -71,7 +71,9 @@ This project assumes that there is a database already set up with tables and dat
 
    In the psql shell, create the app_hub_db_local database:
 
-   `CREATE DATABASE app_hub_db_local;`
+   ```bash
+   CREATE DATABASE app_hub_db_local;
+   ```
 
    Exit the psql shell:
 
@@ -104,12 +106,6 @@ This project assumes that there is a database already set up with tables and dat
    docker exec -it my-postgres psql -U postgres -d app_hub_db_local -f /schema.sql
    ```
 
-   ▪ Windows:
-
-   ```bash
-   docker exec -it my-postgres psql -U postgres -d app_hub_db_local -f \schema.sql
-   ```
-
 5. Verify the Setup:
    Connect to your PostgreSQL database to verify the setup:
 
@@ -140,7 +136,10 @@ This project assumes that there is a database already set up with tables and dat
 7. Configure Frontend Environment Variables:
    Create a .env.local file in the frontend/ directory with the following content:
 
-   `NEXT_PUBLIC_API_URL=http://localhost:3001/api`
+   ```
+   NEXT_PUBLIC_API_URL=/api
+   NEXT_PUBLIC_UPSTREAM_API_URL=http://localhost:3001/api
+   ```
 
 8. Run Application:
    Start an application and verify that you can register a new user and add a new application job.
