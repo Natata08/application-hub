@@ -23,40 +23,38 @@ const ControlButton = () => {
   }
 
   return (
-    <>
-      <Stack
-        spacing={2}
-        direction="row"
-        sx={{
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingTop: { xs: 0, sm: 2 },
-        }}
+    <Stack
+      spacing={2}
+      direction="row"
+      sx={{
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingTop: { xs: 0, sm: 2 },
+      }}
+    >
+      <Link
+        href={`/user`}
+        passHref
+        style={{ textDecoration: 'none', display: 'block' }}
       >
-        <Link
-          href={`/user`}
-          passHref
-          style={{ textDecoration: 'none', display: 'block' }}
-        >
-          <IconButton>
-            <ArrowBackIcon sx={stylesIconButton} />
-          </IconButton>
-        </Link>
+        <IconButton>
+          <ArrowBackIcon sx={stylesIconButton} />
+        </IconButton>
+      </Link>
 
-        <Box>
-          <IconButton>
-            <BorderColorIcon sx={stylesIconButton} />
-          </IconButton>
-          <IconButton onClick={handleOpenModal}>
-            <DeleteRoundedIcon sx={stylesIconButton} />
-          </IconButton>
-          <ConfirmDeleteApplication
-            openModal={openModal}
-            onClose={handleCloseModal}
-          />
-        </Box>
-      </Stack>
-    </>
+      <Box>
+        <IconButton>
+          <BorderColorIcon sx={stylesIconButton} />
+        </IconButton>
+        <IconButton onClick={handleOpenModal}>
+          <DeleteRoundedIcon sx={stylesIconButton} />
+        </IconButton>
+        <ConfirmDeleteApplication
+          openModal={openModal}
+          onClose={handleCloseModal}
+        />
+      </Box>
+    </Stack>
   )
 }
 

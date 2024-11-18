@@ -1,9 +1,6 @@
 'use client'
 import { Typography, Stack, Link, Box, Button } from '@mui/material'
-import ControlButton from './ControlButton'
-import StatusPanel from './StatusPanel'
 import AddIcon from '@mui/icons-material/Add'
-import ManagePanel from './ManagePanel'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 
 export default function ApplicationHeader({ application }) {
@@ -11,9 +8,9 @@ export default function ApplicationHeader({ application }) {
   return (
     <Box>
       <Typography
-        variant={isMobile ? 'h6' : 'h5'}
-        component="div"
+        component="h1"
         sx={{
+          fontSize: { xs: '1.5rem', sm: '1.75rem' },
           pb: { xs: 0.5, sm: 2 },
           paddingX: 2,
           fontWeight: 600,
@@ -31,7 +28,10 @@ export default function ApplicationHeader({ application }) {
         }}
       >
         <Box>
-          <Typography variant={'body1'} component="div" sx={{ pb: 0.5 }}>
+          <Typography
+            component="h2"
+            sx={{ pb: 0.5, fontSize: { xs: '1rem', sm: '1.2rem' } }}
+          >
             {application.name} {application.location}
           </Typography>
           <Link
@@ -50,8 +50,7 @@ export default function ApplicationHeader({ application }) {
           </Link>
         </Box>
         <Typography
-          variant="body1"
-          component="div"
+          component="p"
           sx={{
             pb: 2,
             color: 'secondary.main',
