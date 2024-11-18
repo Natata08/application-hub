@@ -65,16 +65,8 @@ This project assumes that there is a database already set up with tables and dat
 3. Create the Database:
    Connect to the running PostgreSQL container:
 
-   ▪ Unix-based systems:
-
    ```bash
    docker exec -it my-postgres psql -U postgres -d postgres
-   ```
-
-   ▪ Windows:
-
-   ```bash
-   winpty docker exec -it my-postgres psql -U postgres -d postgres
    ```
 
    In the psql shell, create the app_hub_db_local database:
@@ -99,7 +91,7 @@ This project assumes that there is a database already set up with tables and dat
    ▪ Windows:
 
    ```bash
-   winpty docker cp "/path/to/your/schema.sql" my-postgres:\schema.sql
+   docker cp "/path/to/your/schema.sql" my-postgres:\schema.sql
    ```
 
    Replace /path/to/your/schema.sql with the actual path to your schema.sql file. For example: "C:/Users/yourname/Desktop/schema.sql"
@@ -115,22 +107,14 @@ This project assumes that there is a database already set up with tables and dat
    ▪ Windows:
 
    ```bash
-   winpty docker exec -it my-postgres psql -U postgres -d app_hub_db_local -f \schema.sql
+   docker exec -it my-postgres psql -U postgres -d app_hub_db_local -f \schema.sql
    ```
 
 5. Verify the Setup:
    Connect to your PostgreSQL database to verify the setup:
 
-   ▪ Unix-based systems:
-
    ```bash
    docker exec -it my-postgres psql -U postgres -d app_hub_db_local
-   ```
-
-   ▪ Windows:
-
-   ```bash
-   winpty docker exec -it my-postgres psql -U postgres -d app_hub_db_local
    ```
 
    Once connected, you can run SQL queries to check the contents of your tables:
