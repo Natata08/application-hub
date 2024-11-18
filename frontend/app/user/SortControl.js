@@ -1,3 +1,4 @@
+import { SORT_FIELDS, SORT_DIRECTIONS } from '@/constants/sort'
 import {
   Button,
   Menu,
@@ -15,16 +16,12 @@ import { useState } from 'react'
 
 export default function SortControl({ onSortApply }) {
   const [anchorEl, setAnchorEl] = useState(null)
-  const [selectedSort, setSelectedSort] = useState('Created Date')
-  const [sortDirection, setSortDirection] = useState('desc')
+  const [selectedSort, setSelectedSort] = useState(SORT_FIELDS.CREATED_DATE)
+  const [sortDirection, setSortDirection] = useState(SORT_DIRECTIONS.DESC)
   const open = Boolean(anchorEl)
 
-  const sortOptions = ['Created Date', 'Last Updated', 'Job Title']
-
-  const directionOptions = [
-    { value: 'asc', label: 'Asc' },
-    { value: 'desc', label: 'Desc' },
-  ]
+  const sortOptions = Object.values(SORT_FIELDS)
+  const directionOptions = Object.values(SORT_DIRECTIONS)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -68,7 +65,7 @@ export default function SortControl({ onSortApply }) {
           sx={{
             minWidth: 160,
             bgcolor: 'background.paper',
-            color: 'text.primary',
+            color: 'text.secondary',
             textTransform: 'none',
             border: 1,
             borderColor: 'divider',
@@ -78,6 +75,7 @@ export default function SortControl({ onSortApply }) {
             '&:hover': {
               bgcolor: 'background.paper',
               borderColor: 'secondary.main',
+              color: 'secondary.main',
             },
           }}
         >
@@ -128,8 +126,8 @@ export default function SortControl({ onSortApply }) {
           <RadioGroup value={sortDirection} onChange={handleDirectionChange}>
             {directionOptions.map((option) => (
               <FormControlLabel
-                key={option.value}
-                value={option.value}
+                key={option}
+                value={option}
                 control={
                   <Radio
                     size="small"
@@ -145,12 +143,12 @@ export default function SortControl({ onSortApply }) {
                     sx={{
                       fontSize: 14,
                       color:
-                        sortDirection === option.value
+                        sortDirection === option
                           ? 'text.primary'
                           : 'text.secondary',
                     }}
                   >
-                    {option.label}
+                    {option}
                   </Typography>
                 }
               />

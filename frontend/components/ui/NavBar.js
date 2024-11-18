@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useThemeContext } from '@/components/styles/ThemeApp'
 import {
   AppBar,
   Toolbar,
@@ -14,17 +13,22 @@ import {
 import Logo from './Logo'
 import Link from 'next/link'
 import MenuIcon from '@mui/icons-material/Menu'
+import { useThemeContext } from '@/components/styles/ThemeApp'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
 import LightModeIcon from '@mui/icons-material/LightMode'
+import { useAuth } from '../Context/Authentication'
 
 export default function NavBar() {
-  const { isLightMode, handleThemeChange, darkTheme, lightTheme } =
-    useThemeContext()
-  const theme = isLightMode ? lightTheme : darkTheme
+  const { isLightMode, handleThemeChange } = useThemeContext()
+  const { isLoggedIn, userInfo, logout } = useAuth()
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen)
+  }
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false)
   }
 
   return (
@@ -34,8 +38,10 @@ export default function NavBar() {
         backgroundColor: 'transparent',
         borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
         boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        color: theme.palette.text.primary,
+        color: 'text.primary',
         width: '100%',
+        padding: '0',
+        margin: '0',
       }}
     >
       <Toolbar>
@@ -54,93 +60,136 @@ export default function NavBar() {
         <Box
           sx={{
             display: { xs: 'none', sm: 'flex' },
-            gap: 1.5,
+            gap: 1,
             justifyContent: 'flex-end',
             flexWrap: 'wrap',
             alignItems: 'center',
             width: '100%',
           }}
         >
-          <Link href="/" passHref>
-            <Button
-              color="inherit"
-              sx={{ margin: '10px', color: theme.palette.text.primary }}
-            >
-              Home
-            </Button>
-          </Link>
+          {isLoggedIn ? (
+            <Link href="/user" passHref>
+              <Button
+                color="inherit"
+                sx={{ margin: '0', color: 'text.primary' }}
+              >
+                Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/" passHref>
+              <Button
+                color="inherit"
+                sx={{ margin: '0', color: 'text.primary' }}
+              >
+                Home
+              </Button>
+            </Link>
+          )}
+
           <Link href="/about" passHref>
-            <Button
-              color="inherit"
-              sx={{ margin: '10px', color: theme.palette.text.primary }}
-            >
+            <Button color="inherit" sx={{ margin: '0', color: 'text.primary' }}>
               About
             </Button>
           </Link>
-          <Link href="/signup" passHref>
-            <Button
-              color="inherit"
-              sx={{ margin: '10px', color: theme.palette.text.primary }}
-            >
-              Dashboard
-            </Button>
-          </Link>
-          <IconButton onClick={handleThemeChange} color="inherit" size="large">
-            {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
-          </IconButton>
-          <Link href={`/login`}>
-            <Button variant="contained" sx={{ marginTop: 1 }}>
-              LogIn
-            </Button>
-          </Link>
-          <Link href={`/register`}>
-            <Button variant="contained" sx={{ marginTop: 1 }}>
-              Sign up
-            </Button>
-          </Link>
+          {isLoggedIn ? (
+            <>
+              {userInfo && (
+                <span
+                  color="inherit"
+                  sx={{ margin: '5px', color: 'text.primary' }}
+                >
+                  Hi, {userInfo.first_name}!
+                </span>
+              )}
+              <IconButton
+                onClick={handleThemeChange}
+                color="inherit"
+                size="large"
+              >
+                {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
+              </IconButton>
+              <Link href={`/login`}>
+                <Button onClick={logout} variant="contained">
+                  LogOut
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <IconButton
+                onClick={handleThemeChange}
+                color="inherit"
+                size="large"
+              >
+                {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
+              </IconButton>
+
+              <Link href={`/login`}>
+                <Button variant="contained">LogIn</Button>
+              </Link>
+              <Link href={`/register`}>
+                <Button variant="contained">Sign up</Button>
+              </Link>
+            </>
+          )}
         </Box>
       </Toolbar>
 
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
-        <Box sx={{ width: 250 }} role="presentation">
-          <Link href="/" passHref>
-            <Button
-              color="inherit"
-              sx={{ margin: '10px', width: '100%', textAlign: 'left' }}
-            >
-              Home
-            </Button>
-          </Link>
+        <Box
+          sx={{
+            width: 200,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            mt: 2,
+          }}
+          role="presentation"
+          onClick={handleCloseDrawer}
+        >
+          {userInfo && (
+            <Typography color="text.primary">
+              Hi, {userInfo.first_name}!
+            </Typography>
+          )}
+          {isLoggedIn ? (
+            <Link href="/user" passHref>
+              <Button color="inherit">Dashboard</Button>
+            </Link>
+          ) : (
+            <Link href="/" passHref>
+              <Button color="inherit">Home</Button>
+            </Link>
+          )}
           <Link href="/about" passHref>
-            <Button
-              color="inherit"
-              sx={{ margin: '10px', width: '100%', textAlign: 'left' }}
-            >
-              About
-            </Button>
+            <Button color="inherit">About</Button>
           </Link>
-          <Link href="/register" passHref>
-            <Button
-              color="inherit"
-              sx={{ margin: '10px', width: '100%', textAlign: 'left' }}
-            >
-              Dashboard
-            </Button>
-          </Link>
+
           <IconButton onClick={handleThemeChange} color="inherit" size="large">
             {isLightMode ? <DarkModeIcon /> : <LightModeIcon />}
           </IconButton>
-          <Link href={`/login`}>
-            <Button variant="contained" sx={{ marginTop: 1 }}>
-              LogIn
-            </Button>
-          </Link>
 
-          <Link href={`/register`}>
-            <Button variant="contained" sx={{ marginTop: 1 }}>
-              Sign up
-            </Button>
-          </Link>
+          {isLoggedIn ? (
+            <>
+              <Link href={`/login`}>
+                <Button onClick={logout} variant="contained">
+                  LogOut
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href={`/login`}>
+                <Button variant="contained">LogIn</Button>
+              </Link>
+
+              <Link href={`/register`}>
+                <Button variant="contained">Sign up</Button>
+              </Link>
+            </>
+          )}
         </Box>
       </Drawer>
     </AppBar>

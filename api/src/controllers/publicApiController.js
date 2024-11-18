@@ -2,13 +2,15 @@ import knex from '../database_client.js'
 
 export const getApplicationStatuses = async (req, res) => {
   try {
-    // Fetch predefined values for status
-    const rows = await knex('application').distinct('status')
+    // Get all possible values from application_status enum type as separate rows
+    const { rows } = await knex.raw(`
+      SELECT unnest(enum_range(NULL::application_status)) as status;
+    `)
 
     // Mapping the raw statuses to the format that will be used in frontend
     const statuses = rows.map((row) => ({
       value: row.status,
-      label: row.status.charAt(0).toUpperCase() + row.status.slice(1), // Capitalizing the first letter for the label
+      label: row.status.charAt(0).toUpperCase() + row.status.slice(1),
     }))
 
     // Returning the response with the statuses array

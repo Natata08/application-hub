@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import morgan from 'morgan'
 import knex from './database_client.js'
 
 import register from './routers/register.js'
@@ -10,6 +11,7 @@ import user from './routers/user.js'
 import publicApi from './routers/publicApi.js'
 
 const app = express()
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(cors())
 app.use(bodyParser.json())
 
@@ -35,6 +37,7 @@ apiRouter.get('/check-db', async (req, res) => {
       message: 'Failed to connect to the database',
       error: error.message,
     })
+    console.error('Database connection error :', error)
   }
 })
 app.listen(process.env.PORT, () => {

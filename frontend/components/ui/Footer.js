@@ -6,40 +6,49 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import TwitterIcon from '@mui/icons-material/Twitter'
 import Logo from './Logo'
-import { useThemeContext } from '@/components/styles/ThemeApp'
 
 export default function Footer() {
-  const { isLightMode, handleThemeChange, darkTheme, lightTheme } =
-    useThemeContext()
-  const theme = isLightMode ? lightTheme : darkTheme
   return (
     <Box
       component="footer"
       sx={{
-        backgroundColor: theme.palette.background.footer,
-        color: theme.palette.text.primary,
-        py: 4,
-        px: { xs: 2, sm: 8 },
-        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.9)',
+        backgroundColor: 'background.footer',
+        color: 'text.footer',
+        py: { xs: 1, sm: 1 },
+        boxShadow: '0px -1px 6px rgba(0, 0, 0, 0.4)',
         width: '100vw',
       }}
     >
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
+          justifyContent: { xs: 'center', sm: 'space-between' },
+          alignItems: { xs: 'center', sm: 'flex-start' },
+          flexDirection: { xs: 'column', sm: 'row' },
           flexWrap: 'wrap',
           maxWidth: '1200px',
           margin: '0 auto',
+          textAlign: { xs: 'center', sm: 'left' },
         }}
       >
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: { xs: 2, sm: 3 } }}>
           <Logo />
-          <Typography variant="body2" color={theme.palette.text.primary}>
+          <Typography
+            variant="body2"
+            color="text.footer"
+            sx={{
+              fontSize: { xs: '0.8rem', sm: '1rem' },
+            }}
+          >
             &copy; {new Date().getFullYear()} ApplicationHub
           </Typography>
-          <Box sx={{ mt: 1 }}>
+          <Box
+            sx={{
+              mt: { xs: 1, sm: 2 },
+              display: 'flex',
+              justifyContent: { xs: 'center', sm: 'flex-start' },
+            }}
+          >
             <IconButton
               href="https://www.linkedin.com"
               target="_blank"
@@ -67,76 +76,95 @@ export default function Footer() {
           </Box>
         </Box>
 
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: { xs: 2, sm: 3 } }}>
           <Typography
             variant="h6"
-            sx={{ color: theme.palette.text.primary, mb: 1 }}
+            sx={{
+              color: 'text.footer',
+              mb: 1,
+              fontSize: { xs: '1rem', sm: '1.25rem' },
+            }}
           >
             Learn
           </Typography>
 
           <Link
             color="inherit"
-            sx={{ display: 'block', mb: 0.5 }}
-            underline="none"
-          >
-            Blog
-          </Link>
-          <Link
-            color="inherit"
-            sx={{ display: 'block', mb: 0.5 }}
+            sx={{
+              display: 'block',
+              mb: { xs: 0.4, sm: 0.5 },
+              fontSize: { xs: '0.9rem', sm: '1rem' },
+            }}
             underline="none"
           >
             Schedule a demo
           </Link>
           <Link
             color="inherit"
-            sx={{ display: 'block', mb: 0.5 }}
+            sx={{
+              display: 'block',
+              mb: { xs: 0.4, sm: 0.5 },
+              fontSize: { xs: '0.9rem', sm: '1rem' },
+            }}
             underline="none"
           >
             Help Center
           </Link>
         </Box>
 
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: { xs: 2, sm: 3 } }}>
           <Typography
             variant="h6"
-            sx={{ color: theme.palette.text.primary, mb: 1 }}
+            sx={{
+              color: 'text.footer',
+              mb: 1,
+              fontSize: { xs: '1rem', sm: '1.25rem' },
+            }}
           >
             Our company
           </Typography>
           <Link
             color="inherit"
-            sx={{ display: 'block', mb: 0.5 }}
+            sx={{
+              display: 'block',
+              mb: { xs: 0.4, sm: 0.5 },
+              fontSize: { xs: '0.9rem', sm: '1rem' },
+            }}
             underline="none"
           >
             Privacy Policy
           </Link>
           <Link
             color="inherit"
-            sx={{ display: 'block', mb: 0.5 }}
+            sx={{
+              display: 'block',
+              mb: { xs: 0.4, sm: 0.5 },
+              fontSize: { xs: '0.9rem', sm: '1rem' },
+            }}
             underline="none"
           >
             User Terms
           </Link>
-          <Link
-            color="inherit"
-            sx={{ display: 'block', mb: 0.5 }}
-            underline="none"
-          >
-            Careers
-          </Link>
         </Box>
 
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: { xs: 2, sm: 3 } }}>
           <Typography
             variant="h6"
-            sx={{ color: theme.palette.text.primary, mb: 1 }}
+            sx={{
+              color: 'text.footer',
+              mb: 1,
+              fontSize: { xs: '1rem', sm: '1.25rem' },
+            }}
           >
             Contact us
           </Typography>
 
-          <Typography variant="body2">
+          <Typography
+            variant="body2"
+            sx={{
+              fontSize: { xs: '0.9rem', sm: '1rem' },
+            }}
+          >
             <Link
               href="mailto:support@applicationhub.com"
               color="inherit"
