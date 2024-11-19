@@ -9,7 +9,9 @@ export const getOrCreateCompanyId = async (companyName, user_id) => {
     const existingCompany = await knex('company')
       .whereRaw('LOWER(name) = ?', trimmedCompanyName.toLowerCase())
       .first()
-    if (existingCompany) {
+
+    // Checking if the company name exists and if it does, whether it belongs to the same user
+    if (existingCompany && existingCompany.user_id === user_id) {
       company_id = existingCompany.company_id
       return company_id
     } else {
