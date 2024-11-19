@@ -19,9 +19,9 @@ export const AuthProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const redirectToLogin = () => {
+  const redirectToLogin = useCallback(() => {
     router.push('/login')
-  }
+  }, [router])
 
   // Checking if the token is not expired
   const isTokenValid = (token) => {
