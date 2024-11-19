@@ -1,6 +1,6 @@
 import knex from '../database_client.js'
 
-export const getOrCreateCompanyId = async (companyName) => {
+export const getOrCreateCompanyId = async (companyName, user_id) => {
   try {
     let company_id
     const trimmedCompanyName = companyName.trim()
@@ -18,6 +18,7 @@ export const getOrCreateCompanyId = async (companyName) => {
         const [newCompany] = await knex('company')
           .insert({
             name: trimmedCompanyName,
+            user_id: user_id,
           })
           .returning('company_id') // Get the inserted company's ID
         company_id = newCompany.company_id
