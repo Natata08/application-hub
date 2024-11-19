@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import knex from '../database_client.js'
 import { v4 as uuidv4 } from 'uuid'
 
 export const generateAuthResponse = (user) => {
@@ -22,4 +23,32 @@ export const generateAuthResponse = (user) => {
   })
 
   return { userInfo, token }
+}
+
+export const invalidateAuthToken = async (token) => {
+  const decoded = jwt.decode(token)
+
+  if (!decoded || !decoded.jti) {
+    throw new Error('Invalid token')
+  }
+
+  const jti = decoded.jti // Extract the JTI (JWT ID)
+  const expiryTime = decoded.exp
+
+  await knex('invalidated_token').insert({
+    jti,
+    expiry_time: expiryTime,
+  })
+}
+
+export const cleanupInvalidatedTokens = async () => {
+  const currentTime = Math.floor(Date.now() / 1000)
+
+  try {
+    await knex('invalidated_token')
+      .where('expiry_time', '<', currentTime)
+      .delete()
+  } catch (error) {
+    console.error('Error cleaning up expired tokens:', error)
+  }
 }
