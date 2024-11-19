@@ -7,14 +7,17 @@ import {
   CircularProgress,
   Alert,
 } from '@mui/material'
-import DashboardApplicationMain from './DashboardApplicationMain'
-import DashboardApplicationHeader from './DashboardApplicationHeader'
+import ApplicationHeader from './ApplicationHeader'
 import { useApplicationById } from '@/app/hooks/useApplicationById'
+import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
+import ControlButton from './ControlButton'
+import StatusPanel from './StatusPanel'
+import ManagePanel from './ManagePanel'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 export default function Application() {
   const params = useParams()
   const { id } = params
-
   const { application, isLoading, error } = useApplicationById(id)
 
   if (isLoading) {
@@ -38,7 +41,7 @@ export default function Application() {
 
   if (error) {
     return (
-      <Container maxWidth="xl">
+      <Container>
         <Typography variant="h6" color="error">
           {error}
         </Typography>
@@ -47,11 +50,17 @@ export default function Application() {
   }
 
   return (
-    <Box component="main" sx={{ p: 2 }}>
-      <Container maxWidth="xl">
-        <DashboardApplicationHeader application={application} />
-        <DashboardApplicationMain application={application} />
-      </Container>
-    </Box>
+    <ProtectedRoute>
+      <Box component="main" sx={{ marginBottom: 4 }}>
+        <ResponsiveWrapper>
+          <Box>
+            <ControlButton />
+            <ApplicationHeader application={application} />
+            <StatusPanel application={application} />
+            <ManagePanel application={application} />
+          </Box>
+        </ResponsiveWrapper>
+      </Box>
+    </ProtectedRoute>
   )
 }

@@ -10,15 +10,19 @@ import {
   MenuItem,
 } from '@mui/material'
 import InputField from '@/components/ui/InputField'
+import DatePickerField from '@/components/ui/DatePickerField'
 import { useForm, Controller } from 'react-hook-form'
 import { useState, useEffect } from 'react'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { enGB } from 'date-fns/locale'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/utils/api'
 import { fetchStatuses } from '@/utils/api'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 export default function AddApplicationForm({ openModal, onClose }) {
+  const isMobile = useIsMobile()
   const theme = useTheme()
   const [isAppFormOpen, setIsAppFormOpen] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
@@ -92,7 +96,7 @@ export default function AddApplicationForm({ openModal, onClose }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
           <Paper
             component="form"
             onSubmit={handleSubmit(handleAppFormSubmit)}
@@ -166,43 +170,19 @@ export default function AddApplicationForm({ openModal, onClose }) {
                 alignItems: { xs: 'stretch', sm: 'center' },
               }}
             >
-              <Controller
+              <DatePickerField
+                control={control}
                 name="applied_date"
-                control={control}
-                defaultValue={null}
-                render={({ field }) => (
-                  <DatePicker
-                    label="Application Date"
-                    {...field}
-                    sx={{ width: { xs: '100%', sm: '50%' } }}
-                    TextFieldComponent={(params) => (
-                      <InputField
-                        {...params}
-                        errors={errors}
-                        id="application_date"
-                      />
-                    )}
-                  />
-                )}
+                label="Application Date"
+                errors={errors}
+                sx={{ width: { xs: '100%', sm: '50%' } }}
               />
-              <Controller
-                name="deadline_date"
+              <DatePickerField
                 control={control}
-                defaultValue={null}
-                render={({ field }) => (
-                  <DatePicker
-                    label="Deadline Date"
-                    {...field}
-                    sx={{ width: { xs: '100%', sm: '50%' } }}
-                    TextFieldComponent={(params) => (
-                      <InputField
-                        {...params}
-                        errors={errors}
-                        id="deadline_date"
-                      />
-                    )}
-                  />
-                )}
+                name="deadline_date"
+                label="Deadline Date"
+                errors={errors}
+                sx={{ width: { xs: '100%', sm: '50%' } }}
               />
             </Box>
             {/* Status Select Field */}
@@ -222,6 +202,7 @@ export default function AddApplicationForm({ openModal, onClose }) {
                     labelId="status-label"
                     label="Application Status"
                     {...field}
+                    size={isMobile ? 'small' : 'normal'}
                   >
                     {statuses.map((status) => (
                       <MenuItem key={status.value} value={status.value}>
