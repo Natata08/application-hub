@@ -1,6 +1,6 @@
 import express from 'express'
-import knex from '../database_client.js'
-import jwt from 'jsonwebtoken'
+import { cleanupInvalidatedTokens } from '../utils/cleanupInvalidatedTokens.js'
+import { invalidateAuthToken } from '../utils/invalidateAuthToken.js'
 
 const logout = express.Router()
 
@@ -12,29 +12,9 @@ logout.post('/', async (req, res) => {
   }
 
   try {
-    // Decode the token without verifying to extract the JTI
-    const decoded = jwt.decode(token)
+    await invalidateAuthToken(token)
 
-    if (!decoded || !decoded.jti) {
-      return res.status(400).json({ message: 'Invalid token' })
-    }
-
-    const jti = decoded.jti // Extract the JTI (JWT ID)
-    const expiryTime = decoded.exp * 1000 // Convert expiry time to milliseconds
-
-    // Insert the JTI into the invalidated_tokens table
-    await knex('invalidated_token').insert({
-      jti,
-      expiry_time: expiryTime,
-    })
-
-    // Cleanup expired tokens (non-blocking)
-    knex('invalidated_token')
-      .where('expiry_time', '<', Date.now())
-      .del()
-      .catch((error) => {
-        console.error('Error cleaning up expired tokens:', error)
-      })
+    cleanupInvalidatedTokens()
 
     return res
       .status(200)

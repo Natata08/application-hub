@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 export const generateAuthResponse = (user) => {
   const secretKey = process.env.JWT_SECRET
+  const expireTime = process.env.JWT_EXPIRY_IN_SECONDS
 
   if (!secretKey) {
     throw new Error('JWT_SECRET is not defined in environment variables')
@@ -17,10 +18,8 @@ export const generateAuthResponse = (user) => {
   const jti = uuidv4()
 
   const token = jwt.sign({ userId: user.user_id, jti: jti }, secretKey, {
-    expiresIn: '3m',
+    expiresIn: expireTime,
   })
-  // console.log('Generated JWT:', token)
-  // console.log('Decoded Payload:', jwt.decode(token))
 
   return { userInfo, token }
 }

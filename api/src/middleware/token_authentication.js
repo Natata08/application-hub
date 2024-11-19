@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 const SECRET_KEY = process.env.JWT_SECRET
 
 // Middleware to verify the token for restrict outside reach to the db
-const authenticateToken = async (req, res, next) => {
+const verifyAuthToken = async (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1]
 
   if (!token) {
@@ -35,4 +35,4 @@ const authenticateToken = async (req, res, next) => {
   }
 }
 
-export default authenticateToken
+export default verifyAuthToken

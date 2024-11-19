@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 import { makeLogoutApiCall } from '@/utils/makeLogoutApiCall'
 
 const AuthContext = createContext()
-const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export const AuthProvider = ({ children }) => {
   const router = useRouter()
@@ -65,13 +64,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await makeLogoutApiCall()
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Server response:', errorText)
-        throw new Error('Failed to log out')
-      }
+      await makeLogoutApiCall() // Since makeLogoutApiCall doesn't return the response, no need to check for response.ok here
 
       localStorage.removeItem('authToken')
       localStorage.removeItem('userInfo')

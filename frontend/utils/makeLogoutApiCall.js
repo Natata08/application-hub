@@ -1,4 +1,5 @@
 export const makeLogoutApiCall = async () => {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
   try {
     const token = localStorage.getItem('authToken')
 
@@ -14,6 +15,7 @@ export const makeLogoutApiCall = async () => {
       console.error('Server response:', errorText)
       throw new Error('Failed to log out')
     }
+    return response
   } catch (err) {
     console.error('Error during logout:', err)
   }
