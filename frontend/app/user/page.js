@@ -15,7 +15,6 @@ import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
 import { sortApplications } from '@/utils/sortApplications'
-import AddApplicationForm from '../applications/add/ApplicationAddForm'
 import ProtectedRoute from '@/components/ProtectedRoute'
 
 export default function DashboardPage() {
@@ -117,10 +116,6 @@ export default function DashboardPage() {
               >
                 Add a job
               </Button>
-              <AddApplicationForm
-                openModal={openModal}
-                onClose={handleCloseModal}
-              />
             </Stack>
             <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
           </Box>
