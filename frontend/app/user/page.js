@@ -16,6 +16,7 @@ import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
 import { sortApplications } from '@/utils/sortApplications'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import Link from 'next/link'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
@@ -41,12 +42,6 @@ export default function DashboardPage() {
     const userInfo = getLocalStorageItem('userInfo')
     setUserName(userInfo?.first_name || '')
   }, [])
-  const handleOpenModal = () => {
-    setOpenModal(true)
-  }
-  const handleCloseModal = () => {
-    setOpenModal(false)
-  }
 
   const getFilteredApplications = () => {
     if (!debouncedSearchQuery.trim()) return applications
@@ -109,12 +104,22 @@ export default function DashboardPage() {
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
-                onClick={handleOpenModal}
                 sx={{
                   textTransform: 'none',
                 }}
               >
-                Add a job
+                <Link
+                  href="/applications/add"
+                  sx={{
+                    textDecoration: 'none', // Removes underline
+                    color: 'inherit', // Prevents color change on click and visited state
+                    '&:visited': {
+                      color: 'inherit', // Keeps the color from changing when clicked/visited
+                    },
+                  }}
+                >
+                  Add a job
+                </Link>
               </Button>
             </Stack>
             <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />

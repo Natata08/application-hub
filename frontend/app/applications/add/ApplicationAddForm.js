@@ -35,23 +35,30 @@ export default function AddApplicationForm({ openModal, onClose }) {
     formState: { errors },
     control,
     watch,
+    setValue,
   } = useForm()
   // All inputs are saved in appData object
   const appData = watch()
 
-  // Open and close the modal depending on  `openModal` value - openModal value comes from parent component
   useEffect(() => {
     const fetchStatus = async () => {
       try {
         const statusData = await fetchStatuses()
-        setStatuses(statusData) // Set statuses to state
+        setStatuses(statusData)
+        console.log(statuses)
       } catch (err) {
         setError('Failed to fetch statuses')
       }
     }
     fetchStatus()
-  }, [openModal])
-  // Handle Submit
+  }, [])
+
+  useEffect(() => {
+    if (statuses.length > 0) {
+      setValue('status', statuses[0].value) // Set default value for the 'status' field
+    }
+  }, [statuses, setValue]) // This runs when 'statuses' changes
+
   const handleAppFormSubmit = async () => {
     setLoading(true)
 
@@ -68,7 +75,6 @@ export default function AddApplicationForm({ openModal, onClose }) {
   // Handle confirmation modal close
   const handleConfirmClose = () => {
     setIsConfirmOpen(false)
-    setIsAppFormOpen(false)
     if (onClose) {
       onClose()
     }
