@@ -37,40 +37,52 @@ export const getUserApplicationsById = async (req, res) => {
       return res.status(400).json({ message: 'Invalid application ID' })
     }
     const application = await knex('application')
-      .select(['application.*', 'company.*'])
+      .select([
+        'application.*',
+        'company.name as company_name',
+        'company.website as company_website',
+        'company.location as company_location',
+      ])
       .leftJoin('company', 'application.company_id', 'company.company_id')
-      .where({ application_id: id, user_id: req.userInfo.userId })
+      .where({
+        'application.application_id': id,
+        'application.user_id': req.userInfo.userId,
+      })
       .first()
     if (!application) {
       return res.status(404).json({ message: "Application can't find" })
     }
     return res.json(application)
   } catch (error) {
-    return res.status(500).json({ error: 'Internal Server Error' })
+    return res
+      .status(500)
+      .json({ error: `Error on getting application by ID : ${error.message}` })
   }
 }
+
 export const postUserApplications = async (req, res) => {
   try {
     const appData = req.body
+    const user_id = req.userInfo.userId
     let company_id
     try {
-      company_id = await getOrCreateCompanyId(appData.company_name)
+      company_id = await getOrCreateCompanyId(appData.company_name, user_id)
     } catch (error) {
       return res.status(500).json({
-        error: ' Error on getting or creating company ID' + error.message,
+        error: 'Error on getting or creating company ID' + error.message,
       })
     }
-    const user_id = req.userInfo.userId
+
     // Insert the data for the new application
     await knex('application').insert({
       user_id: user_id,
       job_title: appData.job_title,
       company_id: company_id,
       status: appData.status,
-      job_description: appData.job_description,
-      job_link: appData.job_link,
-      applied_date: appData.applied_date,
-      deadline_date: appData.deadline_date,
+      job_description: appData.job_description || null,
+      job_link: appData.job_link || null,
+      applied_date: appData.applied_date || null,
+      deadline_date: appData.deadline_date || null,
     })
     res.status(201).json({ message: 'Application added successfully' })
   } catch (error) {
