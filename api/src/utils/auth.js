@@ -2,11 +2,12 @@ import jwt from 'jsonwebtoken'
 import knex from '../database_client.js'
 import { v4 as uuidv4 } from 'uuid'
 
+const SECRET_KEY = process.env.JWT_SECRET
+
 export const generateAuthResponse = (user) => {
-  const secretKey = process.env.JWT_SECRET
   const expireTime = process.env.JWT_EXPIRY_IN_SECONDS
 
-  if (!secretKey) {
+  if (!SECRET_KEY) {
     throw new Error('JWT_SECRET is not defined in environment variables')
   }
 
@@ -18,7 +19,7 @@ export const generateAuthResponse = (user) => {
 
   const jti = uuidv4()
 
-  const token = jwt.sign({ userId: user.user_id, jti: jti }, secretKey, {
+  const token = jwt.sign({ userId: user.user_id, jti: jti }, SECRET_KEY, {
     expiresIn: expireTime,
   })
 

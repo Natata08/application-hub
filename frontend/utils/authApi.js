@@ -1,8 +1,7 @@
-export const makeLogoutApiCall = async () => {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL
-  try {
-    const token = localStorage.getItem('authToken')
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
+export const makeLogoutApiCall = async (token) => {
+  try {
     const response = await fetch(`${API_URL}/logout`, {
       method: 'POST',
       headers: {

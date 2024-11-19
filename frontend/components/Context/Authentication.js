@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { makeLogoutApiCall } from '@/utils/makeLogoutApiCall'
+import { makeLogoutApiCall } from '@/utils/authApi.js'
 
 const AuthContext = createContext()
 
@@ -64,17 +64,18 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await makeLogoutApiCall() // Since makeLogoutApiCall doesn't return the response, no need to check for response.ok here
-
-      localStorage.removeItem('authToken')
-      localStorage.removeItem('userInfo')
-
-      setIsLoggedIn(false)
-      setUserInfo(null)
-
-      router.push('/login')
+      const token = localStorage.getItem('authToken')
+      if (token) {
+        await makeLogoutApiCall(token)
+      }
     } catch (err) {
       console.error('Error during logout:', err)
+    } finally {
+      localStorage.removeItem('authToken')
+      localStorage.removeItem('userInfo')
+      setIsLoggedIn(false)
+      setUserInfo(null)
+      redirectToLogin()
     }
   }
 
