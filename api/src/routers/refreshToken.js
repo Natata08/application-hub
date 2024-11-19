@@ -27,7 +27,7 @@ refreshToken.post('/', async (req, res) => {
     await invalidateAuthToken(token)
     cleanupInvalidatedTokens()
     const authResponse = generateAuthResponse(user)
-    res.json(authResponse)
+    res.status(200).json(authResponse)
   } catch (error) {
     console.error('Token refresh error:', error)
     return res.status(500).json({ message: 'Failed to refresh token' })
