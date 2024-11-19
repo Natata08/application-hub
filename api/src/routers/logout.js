@@ -1,6 +1,5 @@
 import express from 'express'
-import { cleanupInvalidatedTokens } from '../utils/auth.js'
-import { invalidateAuthToken } from '../utils/auth.js'
+import { cleanupInvalidatedTokens, invalidateAuthToken } from '../utils/auth.js'
 
 const logout = express.Router()
 
