@@ -53,3 +53,22 @@ export const cleanupInvalidatedTokens = async () => {
     console.error('Error cleaning up expired tokens:', error)
   }
 }
+
+export const verifyAndValidateToken = async (token) => {
+  if (!token) {
+    throw new Error('No token provided')
+  }
+
+  const decoded = jwt.verify(token, SECRET_KEY)
+
+  // Check if token is invalidated
+  const invalidatedToken = await knex('invalidated_token')
+    .where('jti', decoded.jti)
+    .first()
+
+  if (invalidatedToken) {
+    throw new Error('Token has been invalidated')
+  }
+
+  return decoded
+}

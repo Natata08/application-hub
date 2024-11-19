@@ -6,9 +6,10 @@ import morgan from 'morgan'
 import knex from './database_client.js'
 import register from './routers/register.js'
 import login from './routers/login.js'
+import logout from './routers/logout.js'
+import refreshToken from './routers/refreshToken.js'
 import user from './routers/user.js'
 import publicApi from './routers/publicApi.js'
-import logout from './routers/logout.js'
 
 const app = express()
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
@@ -19,9 +20,10 @@ const apiRouter = express.Router()
 app.use('/api', apiRouter)
 apiRouter.use('/register', register)
 apiRouter.use('/login', login)
+apiRouter.use('/logout', logout)
+apiRouter.use('/refresh-token', refreshToken)
 apiRouter.use('/user', user)
 apiRouter.use('/publicApi', publicApi)
-apiRouter.use('/logout', logout)
 
 apiRouter.get('/', async (req, res) => {
   res.json('This is welcoming page of FONA Api')
