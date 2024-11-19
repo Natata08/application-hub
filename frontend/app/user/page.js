@@ -16,7 +16,7 @@ import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
 import { sortApplications } from '@/utils/sortApplications'
 import ProtectedRoute from '@/components/ProtectedRoute'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
@@ -29,6 +29,7 @@ export default function DashboardPage() {
     direction: SORT_DIRECTIONS.DESC,
   })
   const { applications, isLoading, error } = useApplications()
+  const router = useRouter()
 
   useDebounce(
     () => {
@@ -65,6 +66,10 @@ export default function DashboardPage() {
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue)
+  }
+
+  const handleAddApplicationClick = () => {
+    router.push('/applications/add')
   }
 
   return (
@@ -104,22 +109,12 @@ export default function DashboardPage() {
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
+                onClick={handleAddApplicationClick}
                 sx={{
                   textTransform: 'none',
                 }}
               >
-                <Link
-                  href="/applications/add"
-                  sx={{
-                    textDecoration: 'none', // Removes underline
-                    color: 'inherit', // Prevents color change on click and visited state
-                    '&:visited': {
-                      color: 'inherit', // Keeps the color from changing when clicked/visited
-                    },
-                  }}
-                >
-                  Add a job
-                </Link>
+                Add a job
               </Button>
             </Stack>
             <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
