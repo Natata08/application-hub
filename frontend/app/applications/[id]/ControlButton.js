@@ -5,6 +5,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 import ConfirmDeleteApplication from './ConfirmDeleteApplication'
+import EditionFormApplication from './EditionFormApplication'
 
 const stylesIconButton = {
   color: 'secondary.main',
@@ -12,14 +13,22 @@ const stylesIconButton = {
 }
 
 const ControlButton = () => {
-  const [openModal, setOpenModal] = useState(false)
-
-  const handleOpenModal = () => {
-    setOpenModal(true)
+  const [openModalDeletion, setOpenModalDeletion] = useState(false)
+  const [openModalEdition, setOpenModalEdition] = useState(false)
+  const handleOpenModalDeletion = () => {
+    setOpenModalDeletion(true)
   }
 
-  const handleCloseModal = () => {
-    setOpenModal(false)
+  const handleCloseModalDeletion = () => {
+    setOpenModalDeletion(false)
+  }
+
+  const handleOpenModalEdition = () => {
+    setOpenModalEdition(true)
+  }
+
+  const handleCloseModalEdition = () => {
+    setOpenModalEdition(false)
   }
 
   return (
@@ -37,21 +46,25 @@ const ControlButton = () => {
         passHref
         style={{ textDecoration: 'none', display: 'block' }}
       >
-        <IconButton>
+        <IconButton onClick={handleOpenModalEdition}>
           <ArrowBackIcon sx={stylesIconButton} />
         </IconButton>
+        <EditionFormApplication
+          openModal={openModalEdition}
+          onClose={handleCloseModalEdition}
+        />
       </Link>
 
       <Box>
         <IconButton>
           <BorderColorIcon sx={stylesIconButton} />
         </IconButton>
-        <IconButton onClick={handleOpenModal}>
+        <IconButton onClick={handleOpenModalDeletion}>
           <DeleteRoundedIcon sx={stylesIconButton} />
         </IconButton>
         <ConfirmDeleteApplication
-          openModal={openModal}
-          onClose={handleCloseModal}
+          openModal={openModalDeletion}
+          onClose={handleCloseModalDeletion}
         />
       </Box>
     </Stack>
