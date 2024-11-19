@@ -19,12 +19,11 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/utils/api'
 import { fetchStatuses } from '@/utils/api'
-import { useIsMobile } from '../hooks/useIsMobile'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 export default function AddApplicationForm({ openModal, onClose }) {
   const isMobile = useIsMobile()
   const theme = useTheme()
-  const [isAppFormOpen, setIsAppFormOpen] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const [statuses, setStatuses] = useState([])
   const [loading, setLoading] = useState(false)
@@ -51,12 +50,6 @@ export default function AddApplicationForm({ openModal, onClose }) {
       }
     }
     fetchStatus()
-
-    if (openModal) {
-      setIsAppFormOpen(true)
-    } else {
-      setIsAppFormOpen(false)
-    }
   }, [openModal])
   // Handle Submit
   const handleAppFormSubmit = async () => {
@@ -72,13 +65,6 @@ export default function AddApplicationForm({ openModal, onClose }) {
     }
   }
 
-  // Handle modal close
-  const handleCloseModal = () => {
-    setIsAppFormOpen(false)
-    if (onClose) {
-      onClose() // Notify parent to reset the state Parent component is : app/user/page.js
-    }
-  }
   // Handle confirmation modal close
   const handleConfirmClose = () => {
     setIsConfirmOpen(false)
@@ -90,29 +76,31 @@ export default function AddApplicationForm({ openModal, onClose }) {
 
   return (
     <>
-      <Modal
-        open={isAppFormOpen}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
+        <Box
+          sx={{
+            position: 'relative',
+            minHeight: '100vh', // Ensure the page content can expand
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflowY: 'auto',
+            px: 2, // Optional padding on the sides
+          }}
+        >
           <Paper
             component="form"
             onSubmit={handleSubmit(handleAppFormSubmit)}
             noValidate
             autoComplete="off"
             sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
               width: {
                 xs: '90%',
                 sm: '80%',
                 md: 500,
               },
-              overflow: 'auto',
+              maxHeight: '90vh',
+              overflowY: 'auto',
               bgcolor: 'background.paper',
               boxShadow: 24,
               p: { xs: 1.5, sm: 3, md: 4 },
@@ -238,8 +226,9 @@ export default function AddApplicationForm({ openModal, onClose }) {
               {loading ? 'Submitting...' : 'Add Application'}
             </Button>
           </Paper>
-        </LocalizationProvider>
-      </Modal>
+        </Box>
+      </LocalizationProvider>
+
       {/* Confirmation Modal*/}
       <Modal
         open={isConfirmOpen}

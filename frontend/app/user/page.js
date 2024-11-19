@@ -15,7 +15,7 @@ import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
 import { sortApplications } from '@/utils/sortApplications'
-import AddApplicationForm from './ApplicationAddForm'
+import AddApplicationForm from '../applications/add/ApplicationAddForm'
 import ProtectedRoute from '@/components/ProtectedRoute'
 
 export default function DashboardPage() {
