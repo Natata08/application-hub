@@ -3,14 +3,15 @@ import express from 'express'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import knex from './database_client.js'
-
+import authenticateToken from './middleware/token_authentication.js'
 import register from './routers/register.js'
 import login from './routers/login.js'
 import user from './routers/user.js'
 import publicApi from './routers/publicApi.js'
+import logout from './routers/logout.js'
 
 const app = express()
-app.use(cors())
+app.use(cors({ origin: 'http://localhost:3000' }))
 app.use(bodyParser.json())
 
 const apiRouter = express.Router()
@@ -19,6 +20,7 @@ apiRouter.use('/register', register)
 apiRouter.use('/login', login)
 apiRouter.use('/user', user)
 apiRouter.use('/publicApi', publicApi)
+apiRouter.use('/logout', logout)
 
 apiRouter.get('/', async (req, res) => {
   res.json('This is welcoming page of FONA Api')

@@ -17,8 +17,10 @@ export const generateAuthResponse = (user) => {
   const jti = uuidv4()
 
   const token = jwt.sign({ userId: user.user_id, jti: jti }, secretKey, {
-    expiresIn: '1h',
+    expiresIn: '3m',
   })
+  // console.log('Generated JWT:', token)
+  // console.log('Decoded Payload:', jwt.decode(token))
 
   return { userInfo, token }
 }

@@ -2,8 +2,10 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { makeLogoutApiCall } from '@/utils/makeLogoutApiCall'
 
 const AuthContext = createContext()
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export const AuthProvider = ({ children }) => {
   const router = useRouter()
@@ -61,12 +63,26 @@ export const AuthProvider = ({ children }) => {
     setUserInfo(user)
   }
 
-  const logout = () => {
-    localStorage.removeItem('authToken')
-    localStorage.removeItem('userInfo')
-    setIsLoggedIn(false)
-    setUserInfo(null)
-    redirectToLogin()
+  const logout = async () => {
+    try {
+      const response = await makeLogoutApiCall()
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('Server response:', errorText)
+        throw new Error('Failed to log out')
+      }
+
+      localStorage.removeItem('authToken')
+      localStorage.removeItem('userInfo')
+
+      setIsLoggedIn(false)
+      setUserInfo(null)
+
+      router.push('/login')
+    } catch (err) {
+      console.error('Error during logout:', err)
+    }
   }
 
   // Don't render children until initial auth check is complete
