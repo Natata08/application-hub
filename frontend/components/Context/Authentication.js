@@ -1,8 +1,15 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react'
 import { useRouter } from 'next/navigation'
-import { makeLogoutApiCall } from '@/utils/authApi.js'
+import { makeLogoutApiCall, makeRefreshTokenApiCall } from '@/utils/authApi.js'
+import { jwtDecode } from 'jwt-decode'
 
 const AuthContext = createContext()
 
@@ -11,6 +18,42 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [userInfo, setUserInfo] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+
+  const refreshAuthToken = async () => {
+    try {
+      const currentToken = localStorage.getItem('authToken')
+      const data = await makeRefreshTokenApiCall(currentToken)
+      if (data.token) {
+        localStorage.setItem('authToken', data.token)
+        return true
+      }
+      return false
+    } catch (error) {
+      console.error('Failed to refresh token:', error)
+      return false
+    }
+  }
+
+  const refreshTokenIfNeeded = useCallback(async () => {
+    const token = localStorage.getItem('authToken')
+    if (token) {
+      try {
+        const payload = jwtDecode(token)
+        const expiryInMinutes = (payload.exp * 1000 - Date.now()) / 1000 / 60
+
+        if (expiryInMinutes <= 10) {
+          const success = await refreshAuthToken()
+          if (!success) {
+            // If refresh failed, log out the user
+            logout()
+          }
+        }
+      } catch (error) {
+        console.error('Invalid token:', error)
+        logout()
+      }
+    }
+  }, [])
 
   const redirectToLogin = () => {
     router.push('/login')
@@ -78,6 +121,11 @@ export const AuthProvider = ({ children }) => {
       redirectToLogin()
     }
   }
+
+  useEffect(() => {
+    const intervalId = setInterval(refreshTokenIfNeeded, 60 * 1000) // Check every minute
+    return () => clearInterval(intervalId)
+  }, [refreshTokenIfNeeded])
 
   // Don't render children until initial auth check is complete
   if (isLoading) {

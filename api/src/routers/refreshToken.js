@@ -23,7 +23,7 @@ refreshToken.post('/', async (req, res) => {
       return res.status(404).json({ message: 'User not found' })
     }
 
-    // Invalidate old token and generate new one
+    // Invalidate old token, clean up DB and generate new one
     await invalidateAuthToken(token)
     cleanupInvalidatedTokens()
     const authResponse = generateAuthResponse(user)
