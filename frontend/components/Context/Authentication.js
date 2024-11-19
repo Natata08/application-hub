@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
       setUserInfo(null)
       redirectToLogin()
     }
-  }, [])
+  }, [redirectToLogin])
 
   const refreshAuthToken = async () => {
     try {
