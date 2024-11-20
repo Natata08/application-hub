@@ -43,7 +43,6 @@ export default function AddApplicationForm({ openModal, onClose }) {
       try {
         const statusData = await fetchStatuses()
         setStatuses(statusData)
-        console.log(statuses)
       } catch (err) {
         setError('Failed to fetch statuses')
       }
