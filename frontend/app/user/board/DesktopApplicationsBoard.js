@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import StatusColumn from './StatusColumn'
 
-export default function DesktopApplicationsBoard({ statuses, applications }) {
+export default function DesktopApplicationsBoard({ applicationsByStatus }) {
   return (
     <Box
       sx={{
@@ -14,13 +14,11 @@ export default function DesktopApplicationsBoard({ statuses, applications }) {
         width: '100%',
       }}
     >
-      {statuses.map((status) => (
+      {applicationsByStatus.map(({ status, applications }) => (
         <StatusColumn
-          key={status.name}
-          status={status}
-          applications={applications.filter(
-            (app) => app.status === status.name
-          )}
+          key={status}
+          status={{ status }}
+          applications={applications}
         />
       ))}
     </Box>

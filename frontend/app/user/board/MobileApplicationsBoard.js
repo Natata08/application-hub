@@ -8,11 +8,11 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ApplicationCard from './ApplicationCard'
 
-export default function MobileApplicationsBoard({ statuses, applications }) {
+export default function MobileApplicationsBoard({ applicationsByStatus }) {
   return (
     <Box sx={{ width: '100%' }}>
-      {statuses.map((status) => (
-        <Accordion key={status.name}>
+      {applicationsByStatus.map(({ status, applications }) => (
+        <Accordion key={status}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             sx={{
@@ -25,12 +25,9 @@ export default function MobileApplicationsBoard({ statuses, applications }) {
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              {status.name.toUpperCase()}
+              {status.toUpperCase()}
               <Chip
-                label={
-                  applications.filter((app) => app.status === status.name)
-                    .length
-                }
+                label={applications.length}
                 color="secondary"
                 size="small"
               />
@@ -38,14 +35,12 @@ export default function MobileApplicationsBoard({ statuses, applications }) {
           </AccordionSummary>
           <AccordionDetails>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              {applications
-                .filter((app) => app.status === status.name)
-                .map((application) => (
-                  <ApplicationCard
-                    key={application.application_id}
-                    application={application}
-                  />
-                ))}
+              {applications.map((application) => (
+                <ApplicationCard
+                  key={application.application_id}
+                  application={application}
+                />
+              ))}
             </Box>
           </AccordionDetails>
         </Accordion>
