@@ -42,7 +42,7 @@ export default function StatusColumn({ status, applications }) {
           variant="h6"
           sx={{ fontWeight: 'medium', letterSpacing: 2 }}
         >
-          {status.name.toUpperCase()}
+          {status.status.toUpperCase()}
         </Typography>
         <Chip
           label={applications.length}
