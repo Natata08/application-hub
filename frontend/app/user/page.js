@@ -1,7 +1,7 @@
 'use client'
 
 import { SORT_FIELDS, SORT_DIRECTIONS } from '@/constants/sort'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { useDebounce } from 'react-use'
 import { Container, Box, Button, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
@@ -11,7 +11,7 @@ import SearchField from './SearchField'
 import SortControl from './SortControl'
 import TabPanel from './tabs/TabPanel'
 import ApplicationsBoard from './board/ApplicationsBoard'
-import MotivationalQuote from './MotivationalQuote'
+const MotivationalQuote = lazy(() => import('./MotivationalQuote'))
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
 import { sortApplications } from '@/utils/sortApplications'
@@ -136,7 +136,9 @@ export default function DashboardPage() {
             </TabPanel>
           ))}
 
-          <MotivationalQuote />
+          <Suspense fallback={null}>
+            <MotivationalQuote />
+          </Suspense>
         </Container>
       </Box>
     </ProtectedRoute>
