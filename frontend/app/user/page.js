@@ -1,7 +1,7 @@
 'use client'
 
 import { SORT_FIELDS, SORT_DIRECTIONS } from '@/constants/sort'
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
 import { useDebounce } from 'react-use'
 import { Container, Box, Button, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
@@ -49,25 +49,24 @@ export default function DashboardPage() {
     setOpenModal(false)
   }
 
-  const getFilteredApplications = () => {
-    if (!debouncedSearchQuery.trim()) return applications
+  const processedApplications = useMemo(() => {
+    // If no search query, just sort
+    if (!debouncedSearchQuery.trim()) {
+      return sortApplications(applications, sortConfig)
+    }
 
-    return applications.filter((app) => {
-      const searchKeyword = debouncedSearchQuery.toLowerCase()
+    // Combined filtering and sorting
+    const searchKeyword = debouncedSearchQuery.toLowerCase()
+    const filteredAndSorted = applications.filter((app) => {
       const companyName = app.company_name.toLowerCase()
       const jobTitle = app.job_title.toLowerCase()
-
       return (
         companyName.includes(searchKeyword) || jobTitle.includes(searchKeyword)
       )
     })
-  }
 
-  // Process applications: first search, then sort
-  const processApplications = () => {
-    const searchedApplications = getFilteredApplications(applications)
-    return sortApplications(searchedApplications, sortConfig)
-  }
+    return sortApplications(filteredAndSorted, sortConfig)
+  }, [applications, debouncedSearchQuery, sortConfig])
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue)
@@ -128,7 +127,7 @@ export default function DashboardPage() {
             <TabPanel key={`tab-${index}`} value={activeTab} index={index}>
               <ApplicationsBoard
                 isActive={isActive}
-                applications={processApplications()}
+                applications={processedApplications}
                 isLoading={isLoading}
                 error={error}
                 searchQuery={debouncedSearchQuery}
