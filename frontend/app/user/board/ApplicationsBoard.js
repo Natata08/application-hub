@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import {
   Box,
   CircularProgress,
@@ -21,9 +22,21 @@ export default function ApplicationsBoard({
   searchQuery,
 }) {
   const statuses = isActive ? ACTIVE_STATUSES : INACTIVE_STATUSES
-
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const applicationsByStatus = useMemo(() => {
+    return applications.reduce(
+      (acc, app) => {
+        const statusIndex = acc.findIndex((s) => s.status === app.status)
+        if (statusIndex !== -1) {
+          acc[statusIndex].applications.push(app)
+        }
+        return acc
+      },
+      statuses.map((status) => ({ status: status.name, applications: [] }))
+    )
+  }, [statuses, applications])
 
   if (isLoading) {
     return (
@@ -48,8 +61,8 @@ export default function ApplicationsBoard({
   }
 
   return isMobile ? (
-    <MobileApplicationsBoard statuses={statuses} applications={applications} />
+    <MobileApplicationsBoard applicationsByStatus={applicationsByStatus} />
   ) : (
-    <DesktopApplicationsBoard statuses={statuses} applications={applications} />
+    <DesktopApplicationsBoard applicationsByStatus={applicationsByStatus} />
   )
 }
