@@ -19,10 +19,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/utils/api'
 import { fetchStatuses } from '@/utils/api'
-import { useIsMobile } from '../../hooks/useIsMobile'
 
 export default function AddApplicationForm({ openModal, onClose }) {
-  const isMobile = useIsMobile()
   const theme = useTheme()
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const [statuses, setStatuses] = useState([])
@@ -86,12 +84,12 @@ export default function AddApplicationForm({ openModal, onClose }) {
         <Box
           sx={{
             position: 'relative',
-            minHeight: '100vh', // Ensure the page content can expand
+            minHeight: '100vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             overflowY: 'auto',
-            px: 2, // Optional padding on the sides
+            px: 2,
           }}
         >
           <Paper
@@ -100,16 +98,18 @@ export default function AddApplicationForm({ openModal, onClose }) {
             noValidate
             autoComplete="off"
             sx={{
+              margin: '30px 0 50px 0',
               width: {
                 xs: '90%',
                 sm: '80%',
                 md: 500,
               },
-              maxHeight: '90vh',
+
+              borderRadius: '30px',
               overflowY: 'auto',
               bgcolor: 'background.paper',
               boxShadow: 24,
-              p: { xs: 1.5, sm: 3, md: 4 },
+              p: { xs: 3, sm: 3, md: 4 },
             }}
           >
             <Typography
@@ -196,7 +196,6 @@ export default function AddApplicationForm({ openModal, onClose }) {
                     labelId="status-label"
                     label="Application Status"
                     {...field}
-                    size={isMobile ? 'small' : 'normal'}
                   >
                     {statuses.map((status) => (
                       <MenuItem key={status.value} value={status.value}>
