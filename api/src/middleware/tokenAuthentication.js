@@ -6,7 +6,7 @@ const SECRET_KEY = process.env.JWT_SECRET
 
 // Middleware to verify the token for restrict outside reach to the db
 const verifyAuthToken = async (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1]
+  const token = req.header('Authorization')?.split(' ')[1]
 
   if (!token) {
     return res.status(401).json({ message: 'Unauthorized' })
@@ -16,13 +16,13 @@ const verifyAuthToken = async (req, res, next) => {
     // Decode and verify the JWT
     const decoded = jwt.verify(token, SECRET_KEY)
 
-    // Optional: Check if the token's JTI is invalidated
-    const result = await knex('invalidated_token')
-      .select('jti')
+    // Check if the token's JTI is invalidated
+    const isInvalidated = await knex('invalidated_token')
       .where('jti', decoded.jti)
       .first()
+      .then(Boolean)
 
-    if (result) {
+    if (isInvalidated) {
       return res
         .status(401)
         .json({ message: 'Token has been invalidated. Please login again.' })

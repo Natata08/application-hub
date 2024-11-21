@@ -7,7 +7,7 @@ import {
   postUserApplications,
   patchUserApplicationAndCompany,
 } from '../controllers/userController.js'
-import verifyAuthToken from '../middleware/token_authentication.js'
+import verifyAuthToken from '../middleware/tokenAuthentication.js'
 
 const user = express.Router()
 
