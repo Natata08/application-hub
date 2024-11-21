@@ -121,8 +121,7 @@ export const patchUserApplicationAndCompany = async (req, res) => {
 
     if (!application) {
       return res.status(404).json({
-        error:
-          'Application not found or you do not have permission to update it',
+        error: 'Application not found',
       })
     }
 
@@ -136,20 +135,33 @@ export const patchUserApplicationAndCompany = async (req, res) => {
     updateField(applicationUpdateData, 'salary', salary, false, true)
     updateField(applicationUpdateData, 'applied_date', applied_date, true)
     updateField(applicationUpdateData, 'deadline_date', deadline_date, true)
+    updateField(companyUpdateData, 'name', company_name)
 
     if (company_name !== undefined) {
-      const company_id = await getOrCreateCompanyId(
-        company_name,
-        req.userInfo.userId
-      )
-      applicationUpdateData.company_id = company_id
+      const company = await knex('company')
+        .where({
+          company_id: application.company_id,
+          'company.user_id': req.userInfo.userId,
+        })
+        .first()
+
+      if (!company) {
+        return res.status(404).json({
+          error: 'Company not found',
+        })
+      }
+
+      // Update company details
       updateField(companyUpdateData, 'name', company_name)
       updateField(companyUpdateData, 'website', company_website)
       updateField(companyUpdateData, 'location', company_location)
 
       if (Object.keys(companyUpdateData).length > 0) {
         await knex('company')
-          .where({ company_id, 'company.user_id': req.userInfo.userId })
+          .where({
+            company_id: application.company_id,
+            'company.user_id': req.userInfo.userId,
+          })
           .update(companyUpdateData)
       }
     }
