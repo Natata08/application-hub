@@ -17,8 +17,10 @@ import Notes from './Notes'
 import Interview from './Interview'
 import Documents from './Documents'
 import { useThemeContext } from '@/components/styles/ThemeApp'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
 
-export default function ManagePanel({ application }) {
+export default function ManagePanel() {
+  const { application } = useApplicationContext()
   const { isLightMode } = useThemeContext()
   const isMobileSmall = useIsMobileSmall()
   const [value, setValue] = useState('Job Info')

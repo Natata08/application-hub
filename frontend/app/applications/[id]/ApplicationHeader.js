@@ -1,10 +1,10 @@
 'use client'
-import { Typography, Stack, Link, Box, Button } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
-import { useIsMobile } from '@/app/hooks/useIsMobile'
+import { Typography, Stack, Link, Box } from '@mui/material'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
 
-export default function ApplicationHeader({ application }) {
-  const isMobile = useIsMobile()
+export default function ApplicationHeader() {
+  const { application } = useApplicationContext()
+
   return (
     <Box>
       <Typography
@@ -28,26 +28,52 @@ export default function ApplicationHeader({ application }) {
         }}
       >
         <Box>
-          <Typography
-            component="h2"
-            sx={{ pb: 0.5, fontSize: { xs: '1rem', sm: '1.2rem' } }}
-          >
-            {application.name} {application.location}
-          </Typography>
-          <Link
-            href={application.website}
-            passHref
+          <Stack
             sx={{
-              display: application.website ? 'block' : 'none',
-              pb: { xs: 1, md: 2 },
-              color: 'inherit',
-              textDecoration: 'none',
-              '&:hover': { textDecoration: 'underline' },
-              wordBreak: 'break-word',
+              flexDirection: 'row',
+              gap: 1,
             }}
           >
-            {application.website}
-          </Link>
+            <Typography
+              component="h2"
+              sx={{ fontSize: { xs: '1rem', sm: '1.2rem' } }}
+            >
+              {application.company_name}
+            </Typography>
+            {application.company_location ? (
+              <Typography
+                component="h2"
+                sx={{ fontSize: { xs: '1rem', sm: '1.2rem' } }}
+              >
+                - {application.company_location}
+              </Typography>
+            ) : (
+              <Typography variant="overline" color="comment.main">
+                location
+              </Typography>
+            )}
+          </Stack>
+
+          {application.company_website ? (
+            <Link
+              href={application.company_website}
+              passHref
+              sx={{
+                display: application.company_website ? 'block' : 'none',
+                pb: { xs: 1, md: 2 },
+                color: 'inherit',
+                textDecoration: 'none',
+                '&:hover': { textDecoration: 'underline' },
+                wordBreak: 'break-word',
+              }}
+            >
+              {application.company_website}
+            </Link>
+          ) : (
+            <Typography variant="overline" component="div" color="comment.main">
+              Website
+            </Typography>
+          )}
         </Box>
         <Typography
           component="p"
@@ -57,22 +83,16 @@ export default function ApplicationHeader({ application }) {
             fontSize: { xs: '1rem', sm: '1.5rem' },
           }}
         >
-          {application.salary !== undefined && application.salary !== null ? (
-            application.salary === 0 ? (
+          {Number(application.salary || 0) === 0 ? (
+            application.salary ? (
               'Unpaid'
             ) : (
-              application.salary
+              <Typography variant="overline" color="comment.main">
+                Salary
+              </Typography>
             )
           ) : (
-            <Button
-              variant="text"
-              startIcon={<AddIcon />}
-              sx={{
-                textTransform: 'none',
-              }}
-            >
-              Add a salary
-            </Button>
+            application.salary
           )}
         </Typography>
       </Stack>

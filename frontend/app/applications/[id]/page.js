@@ -1,24 +1,33 @@
 'use client'
+import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import {
-  Box,
-  Container,
-  Typography,
-  CircularProgress,
-  Alert,
-} from '@mui/material'
+import { Box, CircularProgress, Alert } from '@mui/material'
 import ApplicationHeader from './ApplicationHeader'
-import { useApplicationById } from '@/app/hooks/useApplicationById'
 import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
 import ControlButton from './ControlButton'
 import StatusPanel from './StatusPanel'
 import ManagePanel from './ManagePanel'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import {
+  ApplicationProvider,
+  useApplicationContext,
+} from '@/components/Context/ApplicationContext'
 
-export default function Application() {
-  const params = useParams()
-  const { id } = params
-  const { application, isLoading, error } = useApplicationById(id)
+function Content() {
+  const { application, isLoading, error } = useApplicationContext()
+  const [showError, setShowError] = useState(false)
+
+  useEffect(() => {
+    let timeout
+    if (isLoading) {
+      timeout = setTimeout(() => {
+        setShowError(true)
+      }, 5000)
+    } else {
+      setShowError(false)
+    }
+    return () => clearTimeout(timeout)
+  }, [isLoading])
 
   if (isLoading) {
     return (
@@ -27,40 +36,40 @@ export default function Application() {
       </Box>
     )
   }
-  if (error) {
+
+  if (error || (showError && !application)) {
     return (
       <Alert severity="error" sx={{ m: 4 }}>
-        {error}
+        {error || 'No application data available'}
       </Alert>
     )
   }
 
-  if (!application) {
-    return <Typography>No application data available</Typography>
-  }
-
-  if (error) {
+  if (application) {
     return (
-      <Container>
-        <Typography variant="h6" color="error">
-          {error}
-        </Typography>
-      </Container>
-    )
-  }
-
-  return (
-    <ProtectedRoute>
       <Box component="main" sx={{ marginBottom: 4 }}>
         <ResponsiveWrapper>
           <Box>
             <ControlButton />
-            <ApplicationHeader application={application} />
-            <StatusPanel application={application} />
-            <ManagePanel application={application} />
+            <ApplicationHeader />
+            <StatusPanel />
+            <ManagePanel />
           </Box>
         </ResponsiveWrapper>
       </Box>
+    )
+  }
+}
+
+export default function Application() {
+  const params = useParams()
+  const { id } = params
+
+  return (
+    <ProtectedRoute>
+      <ApplicationProvider id={id}>
+        <Content />
+      </ApplicationProvider>
     </ProtectedRoute>
   )
 }

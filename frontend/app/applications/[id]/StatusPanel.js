@@ -8,6 +8,7 @@ import Select from '@mui/material/Select'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
 
 const menuItemStyles = {
   minHeight: '30px',
@@ -19,9 +20,9 @@ const menuItemStyles = {
   },
 }
 
-const StatusPanel = ({ application }) => {
+const StatusPanel = () => {
+  const { application } = useApplicationContext()
   const isMobile = useIsMobile()
-  console.log(application.status)
 
   const storedStatus =
     typeof window !== 'undefined' ? localStorage.getItem('status') : null

@@ -46,19 +46,19 @@ const ControlButton = () => {
         passHref
         style={{ textDecoration: 'none', display: 'block' }}
       >
-        <IconButton onClick={handleOpenModalEdition}>
+        <IconButton>
           <ArrowBackIcon sx={stylesIconButton} />
+        </IconButton>
+      </Link>
+
+      <Box>
+        <IconButton onClick={handleOpenModalEdition}>
+          <BorderColorIcon sx={stylesIconButton} />
         </IconButton>
         <EditionFormApplication
           openModal={openModalEdition}
           onClose={handleCloseModalEdition}
         />
-      </Link>
-
-      <Box>
-        <IconButton>
-          <BorderColorIcon sx={stylesIconButton} />
-        </IconButton>
         <IconButton onClick={handleOpenModalDeletion}>
           <DeleteRoundedIcon sx={stylesIconButton} />
         </IconButton>

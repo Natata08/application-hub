@@ -1,20 +1,11 @@
 'use client'
-
-import {
-  Typography,
-  Button,
-  Paper,
-  Box,
-  Modal,
-  Select,
-  FormControl,
-  InputLabel,
-  MenuItem,
-} from '@mui/material'
+import { Typography, Button, Paper, Modal, Stack } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
-import DatePickerField from '@/components/ui/DatePickerField'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useState, useEffect } from 'react'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
+import { editApplicationAndCompany } from '@/utils/api'
 
 const style = {
   position: 'absolute',
@@ -28,6 +19,7 @@ const style = {
   p: 4,
   overflow: 'hidden',
   maxHeight: 600,
+  height: 'auto',
   overflowY: 'auto',
   padding: '16px',
   width: '100%',
@@ -37,11 +29,7 @@ const style = {
 }
 
 export default function EditionFormApplication({ openModal, onClose }) {
-  const isMobile = useIsMobile()
-  const theme = useTheme()
-  const [isAppFormOpen, setIsAppFormOpen] = useState(false)
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
-
+  const { application, updateApplication } = useApplicationContext()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -49,27 +37,21 @@ export default function EditionFormApplication({ openModal, onClose }) {
     register,
     handleSubmit,
     formState: { errors },
-    control,
     watch,
   } = useForm()
-  // All inputs are saved in appData object
-  const appData = watch()
 
-  // Open and close the modal depending on  `openModal` value - openModal value comes from parent component
-  useEffect(() => {
-    if (openModal) {
-      setIsAppFormOpen(true)
-    } else {
-      setIsAppFormOpen(false)
-    }
-  }, [openModal])
+  const updatedApplicationAndCompanyData = watch()
 
-  const handleAppFormSubmit = async () => {
+  const handleEditApplicationSubmit = async () => {
     setLoading(true)
-
+    setError('')
     try {
-      await addApplication(appData)
-      setIsConfirmOpen(true)
+      await editApplicationAndCompany({
+        id: application.application_id,
+        updatedApplicationAndCompanyData,
+      })
+      onClose()
+      updateApplication(updatedApplicationAndCompanyData)
     } catch (error) {
       setError(error.message)
     } finally {
@@ -77,16 +59,12 @@ export default function EditionFormApplication({ openModal, onClose }) {
     }
   }
 
-  const handleEditApplication = () => {
-    //setOpenModal(false)
-  }
-
   return (
     <Modal open={openModal} onClose={onClose}>
       <Paper
         sx={style}
         component="form"
-        onSubmit={handleSubmit(handleAppFormSubmit)}
+        onSubmit={handleSubmit(handleEditApplicationSubmit)}
         noValidate
         autoComplete="off"
       >
@@ -95,12 +73,12 @@ export default function EditionFormApplication({ openModal, onClose }) {
           variant="h4"
           sx={{
             marginBottom: 0,
-            paddingY: 4,
+            paddingY: 2,
             textAlign: 'center',
             fontSize: { xs: '1.5rem', sm: '2rem' },
           }}
         >
-          Edit data
+          Edit a Job Application
         </Typography>
         {error && (
           <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
@@ -108,35 +86,86 @@ export default function EditionFormApplication({ openModal, onClose }) {
           </Typography>
         )}
 
-        {/* Input fields for the form */}
         <InputField
           id="job_title"
           label="Job Title"
+          defaultValue={application.job_title}
+          required
           register={register}
           errors={errors}
-          required
           minLength={2}
         />
         <InputField
           id="company_name"
           label="Company Name"
-          register={register}
+          defaultValue={application.company_name}
           required
+          register={register}
           errors={errors}
         />
         <InputField
-          id="job_link"
-          label="Job Link"
+          id="company_location"
+          label="Location"
+          defaultValue={application.company_location}
           register={register}
           errors={errors}
-          minLength={2}
         />
-        <Button variant="contained" type="submit" fullWidth>
-          {loading ? 'Submitting...' : 'Save'}
-        </Button>
-        <Button variant="contained" fullWidth>
-          Cancel
-        </Button>
+        <InputField
+          id="company_website"
+          label="Website Company"
+          defaultValue={application.company_website}
+          register={register}
+          errors={errors}
+        />
+        <InputField
+          id="salary"
+          label="Salary"
+          defaultValue={application.salary}
+          register={register}
+          errors={errors}
+          pattern={{
+            value: /^(?:0|[1-9]\d*)([.,]\d+)?$/,
+            message: 'Salary must be a positive number or zero',
+          }}
+        />
+
+        <Stack
+          spacing={2}
+          direction="row"
+          sx={{
+            justifyContent: 'end',
+            alignItems: 'center',
+            paddingTop: { xs: 0, sm: 2 },
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={onClose}
+            sx={{ width: '92px' }}
+            size="small"
+          >
+            Cancel
+          </Button>
+          {loading ? (
+            <LoadingButton
+              size="small"
+              loading={loading}
+              variant="outlined"
+              disabled
+            >
+              Disabled
+            </LoadingButton>
+          ) : (
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ width: '92px' }}
+              size="small"
+            >
+              Save
+            </Button>
+          )}
+        </Stack>
       </Paper>
     </Modal>
   )
