@@ -91,3 +91,101 @@ export const postUserApplications = async (req, res) => {
       .json({ error: `Error on adding application : ${error.message}` })
   }
 }
+
+const updateField = (data, key, value, isDate = false, isInt = false) => {
+  if (value !== undefined) {
+    const trimmedValue = value.trim()
+    if (trimmedValue === '') {
+      data[key] = null
+    } else if (isInt) {
+      const parsedValue = parseInt(trimmedValue)
+      if (isNaN(parsedValue) || parsedValue < 0) {
+        throw new Error(`${key} must be a non-negative integer`)
+      }
+      data[key] = parsedValue
+    } else if (isDate) {
+      if (isNaN(Date.parse(trimmedValue))) {
+        throw new Error(`Invalid ${key} format. Must be a valid ISO 8601 date`)
+      }
+      data[key] = trimmedValue
+    } else {
+      data[key] = trimmedValue
+    }
+  }
+}
+
+export const patchUserApplicationAndCompany = async (req, res) => {
+  const id = parseInt(req.params.id)
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ message: 'Invalid application ID' })
+  }
+  const {
+    job_title,
+    status,
+    job_description,
+    job_link,
+    salary,
+    applied_date,
+    deadline_date,
+    company_name,
+    company_website,
+    company_location,
+  } = req.body
+
+  try {
+    const application = await knex('application')
+      .where({
+        application_id: id,
+        user_id: req.userInfo.userId,
+      })
+      .first()
+
+    if (!application) {
+      return res.status(404).json({
+        error:
+          'Application not found or you do not have permission to update it',
+      })
+    }
+
+    const applicationUpdateData = {}
+    let companyUpdateData = {}
+
+    updateField(applicationUpdateData, 'job_title', job_title)
+    updateField(applicationUpdateData, 'status', status)
+    updateField(applicationUpdateData, 'job_description', job_description)
+    updateField(applicationUpdateData, 'job_link', job_link)
+    updateField(applicationUpdateData, 'salary', salary, false, true)
+    updateField(applicationUpdateData, 'applied_date', applied_date, true)
+    updateField(applicationUpdateData, 'deadline_date', deadline_date, true)
+
+    if (company_name !== undefined) {
+      const company_id = await getOrCreateCompanyId(
+        company_name,
+        req.userInfo.userId
+      )
+      applicationUpdateData.company_id = company_id
+      updateField(companyUpdateData, 'website', company_website)
+      updateField(companyUpdateData, 'location', company_location)
+
+      if (Object.keys(companyUpdateData).length > 0) {
+        await knex('company').where({ company_id }).update(companyUpdateData)
+      }
+    }
+
+    if (Object.keys(applicationUpdateData).length > 0) {
+      await knex('application')
+        .where({ application_id: id, user_id: req.userInfo.userId })
+        .update(applicationUpdateData)
+    }
+
+    res.status(200).json({
+      message: 'Application and Company updated successfully',
+      updatedApplicationData: applicationUpdateData,
+      updatedCompanyData: companyUpdateData,
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: `Error updating data: ${error.message}`,
+    })
+  }
+}
