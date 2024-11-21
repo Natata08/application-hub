@@ -12,9 +12,9 @@ import {
 } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import CheckIcon from '@mui/icons-material/Check'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
-export default function SortControl({ onSortApply }) {
+export default memo(function SortControl({ onSortApply }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [selectedSort, setSelectedSort] = useState(SORT_FIELDS.CREATED_DATE)
   const [sortDirection, setSortDirection] = useState(SORT_DIRECTIONS.DESC)
@@ -172,4 +172,4 @@ export default function SortControl({ onSortApply }) {
       </Menu>
     </>
   )
-}
+})
