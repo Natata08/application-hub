@@ -19,16 +19,15 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/utils/api'
 import { fetchStatuses } from '@/utils/api'
-import { useIsMobile } from '../hooks/useIsMobile'
+import { useRouter } from 'next/navigation'
 
 export default function AddApplicationForm({ openModal, onClose }) {
-  const isMobile = useIsMobile()
   const theme = useTheme()
-  const [isAppFormOpen, setIsAppFormOpen] = useState(false)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const [statuses, setStatuses] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const router = useRouter()
 
   const {
     register,
@@ -36,34 +35,35 @@ export default function AddApplicationForm({ openModal, onClose }) {
     formState: { errors },
     control,
     watch,
+    setValue,
   } = useForm()
   // All inputs are saved in appData object
   const appData = watch()
 
-  // Open and close the modal depending on  `openModal` value - openModal value comes from parent component
   useEffect(() => {
     const fetchStatus = async () => {
       try {
         const statusData = await fetchStatuses()
-        setStatuses(statusData) // Set statuses to state
+        setStatuses(statusData)
       } catch (err) {
         setError('Failed to fetch statuses')
       }
     }
     fetchStatus()
+  }, [])
 
-    if (openModal) {
-      setIsAppFormOpen(true)
-    } else {
-      setIsAppFormOpen(false)
+  useEffect(() => {
+    if (statuses.length > 0) {
+      setValue('status', statuses[0].value) // Set default value for the 'status' field
     }
-  }, [openModal])
-  // Handle Submit
+  }, [statuses, setValue]) // This runs when 'statuses' changes
+
   const handleAppFormSubmit = async () => {
     setLoading(true)
-
+    setError('')
     try {
-      await addApplication(appData)
+      const result = await addApplication(appData)
+      router.push(`/applications/${result.application_id}`)
       setIsConfirmOpen(true)
     } catch (error) {
       setError(error.message)
@@ -72,17 +72,9 @@ export default function AddApplicationForm({ openModal, onClose }) {
     }
   }
 
-  // Handle modal close
-  const handleCloseModal = () => {
-    setIsAppFormOpen(false)
-    if (onClose) {
-      onClose() // Notify parent to reset the state Parent component is : app/user/page.js
-    }
-  }
   // Handle confirmation modal close
   const handleConfirmClose = () => {
     setIsConfirmOpen(false)
-    setIsAppFormOpen(false)
     if (onClose) {
       onClose()
     }
@@ -90,32 +82,36 @@ export default function AddApplicationForm({ openModal, onClose }) {
 
   return (
     <>
-      <Modal
-        open={isAppFormOpen}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
+        <Box
+          sx={{
+            position: 'relative',
+            minHeight: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflowY: 'auto',
+            px: 2,
+          }}
+        >
           <Paper
             component="form"
             onSubmit={handleSubmit(handleAppFormSubmit)}
             noValidate
             autoComplete="off"
             sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              margin: '30px 0 50px 0',
               width: {
                 xs: '90%',
                 sm: '80%',
                 md: 500,
               },
-              overflow: 'auto',
+
+              borderRadius: '30px',
+              overflowY: 'auto',
               bgcolor: 'background.paper',
               boxShadow: 24,
-              p: { xs: 1.5, sm: 3, md: 4 },
+              p: { xs: 3, sm: 3, md: 4 },
             }}
           >
             <Typography
@@ -202,7 +198,6 @@ export default function AddApplicationForm({ openModal, onClose }) {
                     labelId="status-label"
                     label="Application Status"
                     {...field}
-                    size={isMobile ? 'small' : 'normal'}
                   >
                     {statuses.map((status) => (
                       <MenuItem key={status.value} value={status.value}>
@@ -238,8 +233,9 @@ export default function AddApplicationForm({ openModal, onClose }) {
               {loading ? 'Submitting...' : 'Add Application'}
             </Button>
           </Paper>
-        </LocalizationProvider>
-      </Modal>
+        </Box>
+      </LocalizationProvider>
+
       {/* Confirmation Modal*/}
       <Modal
         open={isConfirmOpen}
