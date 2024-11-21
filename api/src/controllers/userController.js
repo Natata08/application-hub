@@ -114,8 +114,8 @@ export const patchUserApplicationAndCompany = async (req, res) => {
   try {
     const application = await knex('application')
       .where({
-        application_id: id,
-        user_id: req.userInfo.userId,
+        'application.application_id': id,
+        'application.user_id': req.userInfo.userId,
       })
       .first()
 
@@ -126,7 +126,7 @@ export const patchUserApplicationAndCompany = async (req, res) => {
       })
     }
 
-    const applicationUpdateData = {}
+    let applicationUpdateData = {}
     let companyUpdateData = {}
 
     updateField(applicationUpdateData, 'job_title', job_title)
@@ -143,17 +143,23 @@ export const patchUserApplicationAndCompany = async (req, res) => {
         req.userInfo.userId
       )
       applicationUpdateData.company_id = company_id
+      updateField(companyUpdateData, 'name', company_name)
       updateField(companyUpdateData, 'website', company_website)
       updateField(companyUpdateData, 'location', company_location)
 
       if (Object.keys(companyUpdateData).length > 0) {
-        await knex('company').where({ company_id }).update(companyUpdateData)
+        await knex('company')
+          .where({ company_id, 'company.user_id': req.userInfo.userId })
+          .update(companyUpdateData)
       }
     }
 
     if (Object.keys(applicationUpdateData).length > 0) {
       await knex('application')
-        .where({ application_id: id, user_id: req.userInfo.userId })
+        .where({
+          'application.application_id': id,
+          'application.user_id': req.userInfo.userId,
+        })
         .update(applicationUpdateData)
     }
 
