@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import {
   Box,
   CircularProgress,
@@ -13,30 +13,72 @@ import {
   ACTIVE_STATUSES,
   INACTIVE_STATUSES,
 } from '@/constants/applicationStatus'
+import { fetchApplications } from '@/utils/api'
+import { sortApplications } from '@/utils/sortApplications'
 
 export default function ApplicationsBoard({
   isActive,
-  applications,
-  isLoading,
-  error,
   searchQuery,
+  sortConfig,
 }) {
-  const statuses = isActive ? ACTIVE_STATUSES : INACTIVE_STATUSES
+  const [applications, setApplications] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const statuses = isActive ? ACTIVE_STATUSES : INACTIVE_STATUSES
 
-  const applicationsByStatus = useMemo(() => {
-    return applications.reduce(
-      (acc, app) => {
-        const statusIndex = acc.findIndex((s) => s.status === app.status)
-        if (statusIndex !== -1) {
-          acc[statusIndex].applications.push(app)
-        }
-        return acc
-      },
-      statuses.map((status) => ({ status: status.name, applications: [] }))
+  useEffect(() => {
+    const getApplications = async () => {
+      setIsLoading(true)
+      setError(null)
+
+      try {
+        const data = await fetchApplications()
+        setApplications(data)
+      } catch (err) {
+        setError(
+          "We're having trouble loading your applications. Please try again later."
+        )
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    getApplications()
+  }, [])
+
+  // Process applications: filter, sort, and group by status
+  const processedApplicationsByStatus = useMemo(() => {
+    // filter by search query
+    let filteredApplications = applications
+    if (searchQuery?.trim()) {
+      const searchKeyword = searchQuery.toLowerCase()
+      filteredApplications = applications.filter((app) => {
+        const companyName = app.company_name.toLowerCase()
+        const jobTitle = app.job_title.toLowerCase()
+        return (
+          companyName.includes(searchKeyword) ||
+          jobTitle.includes(searchKeyword)
+        )
+      })
+    }
+
+    // sort
+    const sortedApplications = sortApplications(
+      filteredApplications,
+      sortConfig
     )
-  }, [statuses, applications])
+
+    // group by status
+    return statuses.map((status) => ({
+      status: status.name,
+      applications: sortedApplications.filter(
+        (app) => app.status === status.name
+      ),
+    }))
+  }, [applications, searchQuery, sortConfig, statuses])
 
   if (isLoading) {
     return (
@@ -61,8 +103,12 @@ export default function ApplicationsBoard({
   }
 
   return isMobile ? (
-    <MobileApplicationsBoard applicationsByStatus={applicationsByStatus} />
+    <MobileApplicationsBoard
+      applicationsByStatus={processedApplicationsByStatus}
+    />
   ) : (
-    <DesktopApplicationsBoard applicationsByStatus={applicationsByStatus} />
+    <DesktopApplicationsBoard
+      applicationsByStatus={processedApplicationsByStatus}
+    />
   )
 }

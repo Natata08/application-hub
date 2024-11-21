@@ -1,14 +1,7 @@
 'use client'
 
 import { SORT_FIELDS, SORT_DIRECTIONS } from '@/constants/sort'
-import {
-  useState,
-  useEffect,
-  useMemo,
-  lazy,
-  Suspense,
-  useCallback,
-} from 'react'
+import { useState, useEffect, lazy, Suspense, useCallback } from 'react'
 import { useDebounce } from 'react-use'
 import { Container, Box, Button, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
@@ -20,8 +13,6 @@ import TabPanel from './tabs/TabPanel'
 import ApplicationsBoard from './board/ApplicationsBoard'
 const MotivationalQuote = lazy(() => import('./MotivationalQuote'))
 import { getLocalStorageItem } from '@/utils/localStorage'
-import { useApplications } from '../hooks/useApplications'
-import { sortApplications } from '@/utils/sortApplications'
 import AddApplicationForm from './ApplicationAddForm'
 import ProtectedRoute from '@/components/ProtectedRoute'
 
@@ -35,7 +26,6 @@ export default function DashboardPage() {
     field: SORT_FIELDS.CREATED_DATE,
     direction: SORT_DIRECTIONS.DESC,
   })
-  const { applications, isLoading, error } = useApplications()
 
   useDebounce(
     () => {
@@ -49,31 +39,13 @@ export default function DashboardPage() {
     const userInfo = getLocalStorageItem('userInfo')
     setUserName(userInfo?.first_name || '')
   }, [])
+
   const handleOpenModal = () => {
     setOpenModal(true)
   }
   const handleCloseModal = () => {
     setOpenModal(false)
   }
-
-  const processedApplications = useMemo(() => {
-    // If no search query, just sort
-    if (!debouncedSearchQuery.trim()) {
-      return sortApplications(applications, sortConfig)
-    }
-
-    // Combined filtering and sorting
-    const searchKeyword = debouncedSearchQuery.toLowerCase()
-    const filteredAndSorted = applications.filter((app) => {
-      const companyName = app.company_name.toLowerCase()
-      const jobTitle = app.job_title.toLowerCase()
-      return (
-        companyName.includes(searchKeyword) || jobTitle.includes(searchKeyword)
-      )
-    })
-
-    return sortApplications(filteredAndSorted, sortConfig)
-  }, [applications, debouncedSearchQuery, sortConfig])
 
   const handleTabChange = useCallback((event, newValue) => {
     setActiveTab(newValue)
@@ -130,14 +102,13 @@ export default function DashboardPage() {
             </Stack>
             <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
           </Box>
+
           {[true, false].map((isActive, index) => (
             <TabPanel key={`tab-${index}`} value={activeTab} index={index}>
               <ApplicationsBoard
                 isActive={isActive}
-                applications={processedApplications}
-                isLoading={isLoading}
-                error={error}
                 searchQuery={debouncedSearchQuery}
+                sortConfig={sortConfig}
               />
             </TabPanel>
           ))}
