@@ -19,7 +19,6 @@ import { useRouter } from 'next/navigation'
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [userName, setUserName] = useState('')
-  const [openModal, setOpenModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const [sortConfig, setSortConfig] = useState({
@@ -44,6 +43,10 @@ export default function DashboardPage() {
   const handleTabChange = useCallback((event, newValue) => {
     setActiveTab(newValue)
   }, [])
+
+  const handleAddApplicationClick = () => {
+    router.push('/applications/add')
+  }
 
   return (
     <ProtectedRoute>
