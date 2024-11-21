@@ -1,4 +1,5 @@
 import knex from '../database_client.js'
+import { checkApplicationExist } from '../utils/checkApplicationExist.js'
 import { getOrCreateCompanyId } from '../utils/getOrCreateCompanyId.js'
 
 export const getUserProfile = async (req, res) => {
@@ -64,6 +65,16 @@ export const postUserApplications = async (req, res) => {
   try {
     const appData = req.body
     const user_id = req.userInfo.userId
+    try {
+      // If application exist throw error
+      await checkApplicationExist(
+        appData.company_name,
+        appData.job_title,
+        user_id
+      )
+    } catch (error) {
+      return res.status(400).json({ message: error.message })
+    }
     let company_id
     try {
       company_id = await getOrCreateCompanyId(appData.company_name, user_id)
