@@ -1,7 +1,14 @@
 'use client'
 
 import { SORT_FIELDS, SORT_DIRECTIONS } from '@/constants/sort'
-import { useState, useEffect, useMemo, lazy, Suspense } from 'react'
+import {
+  useState,
+  useEffect,
+  useMemo,
+  lazy,
+  Suspense,
+  useCallback,
+} from 'react'
 import { useDebounce } from 'react-use'
 import { Container, Box, Button, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
@@ -68,9 +75,9 @@ export default function DashboardPage() {
     return sortApplications(filteredAndSorted, sortConfig)
   }, [applications, debouncedSearchQuery, sortConfig])
 
-  const handleTabChange = (event, newValue) => {
+  const handleTabChange = useCallback((event, newValue) => {
     setActiveTab(newValue)
-  }
+  }, [])
 
   return (
     <ProtectedRoute>
