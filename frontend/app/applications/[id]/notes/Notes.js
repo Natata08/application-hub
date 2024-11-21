@@ -13,6 +13,76 @@ const Notes = ({ applicationId }) => {
   const [isSaving, setIsSaving] = useState(false)
   const theme = useTheme()
 
+  const editorStyles = {
+    '.ql-container': {
+      height: '300px',
+      backgroundColor: theme.palette.background.paper,
+      borderRadius: '0 0 4px 4px',
+      border: `1px solid ${theme.palette.divider}`,
+      borderTop: 0,
+      fontSize: '0.8rem',
+    },
+    '.ql-toolbar': {
+      backgroundColor: theme.palette.background.paper,
+      borderRadius: '4px 4px 0 0',
+      border: `1px solid ${theme.palette.divider}`,
+    },
+    '.ql-stroke': {
+      stroke: `${theme.palette.text.primary} !important`,
+    },
+    '.ql-fill': {
+      fill: `${theme.palette.text.primary} !important`,
+    },
+    '.ql-picker': {
+      color: `${theme.palette.text.primary} !important`,
+    },
+    '.ql-picker-options': {
+      backgroundColor: `${theme.palette.background.paper} !important`,
+      border: `1px solid ${theme.palette.divider}`,
+    },
+    '.ql-tooltip': {
+      backgroundColor: `${theme.palette.background.paper} !important`,
+      color: `${theme.palette.text.primary} !important`,
+      border: `1px solid ${theme.palette.divider}`,
+    },
+    // Style for active buttons
+    '.ql-active': {
+      '.ql-stroke': {
+        stroke: `${theme.palette.secondary.main} !important`,
+      },
+      '.ql-fill': {
+        fill: `${theme.palette.secondary.main} !important`,
+      },
+    },
+    // Hover states
+    '.ql-toolbar button:hover': {
+      '.ql-stroke': {
+        stroke: `${theme.palette.secondary.main} !important`,
+      },
+      '.ql-fill': {
+        fill: `${theme.palette.secondary.main} !important`,
+      },
+    },
+    '.ql-toolbar .ql-picker-label:hover': {
+      color: `${theme.palette.secondary.main} !important`,
+    },
+    // Style for header dropdown
+    '.ql-picker.ql-header': {
+      '.ql-picker-label:hover': {
+        color: `${theme.palette.secondary.main} !important`,
+      },
+      '.ql-picker-item:hover': {
+        color: `${theme.palette.secondary.main} !important`,
+      },
+      '.ql-picker-item.ql-selected': {
+        color: `${theme.palette.secondary.main} !important`,
+      },
+      '.ql-picker-label.ql-active': {
+        color: `${theme.palette.secondary.main} !important`,
+      },
+    },
+  }
+
   const { quill, quillRef } = useQuill({
     modules: {
       toolbar: [
@@ -88,7 +158,7 @@ const Notes = ({ applicationId }) => {
 
   return (
     <Box sx={{ marginTop: 2, padding: 1 }}>
-      <Box>
+      <Box sx={editorStyles}>
         {!value && !isEditing ? <EmptyNotes /> : <div ref={quillRef} />}
       </Box>
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
