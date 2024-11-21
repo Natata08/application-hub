@@ -17,7 +17,6 @@ user.get('/me', verifyAuthToken, getUserProfile)
 user.get('/applications', verifyAuthToken, getUserApplications)
 user.get('/applications/:id', verifyAuthToken, getUserApplicationsById)
 user.post('/applications', verifyAuthToken, postUserApplications)
-//user.patch('/applications/:id', verifyAuthToken, patchUserApplicationAndCompany)
 user.patch('/applications/:id', verifyAuthToken, patchUserApplication)
 user.patch(
   '/applications/:id/company',

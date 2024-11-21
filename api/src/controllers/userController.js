@@ -1,4 +1,6 @@
 import knex from '../database_client.js'
+import { getApplicationById } from '../utils/getApplicationbyId.js'
+import { getCompanyById } from '../utils/getCompanybyId.js'
 import { getOrCreateCompanyId } from '../utils/getOrCreateCompanyId.js'
 import { updateField } from '../utils/updateField.js'
 
@@ -93,100 +95,6 @@ export const postUserApplications = async (req, res) => {
   }
 }
 
-// export const patchUserApplicationAndCompany = async (req, res) => {
-//   const id = parseInt(req.params.id)
-//   if (!id || isNaN(id)) {
-//     return res.status(400).json({ message: 'Invalid application ID' })
-//   }
-//   const {
-//     job_title,
-//     status,
-//     job_description,
-//     job_link,
-//     salary,
-//     applied_date,
-//     deadline_date,
-//     company_name,
-//     company_website,
-//     company_location,
-//   } = req.body
-
-//   try {
-//     const application = await knex('application')
-//       .where({
-//         'application.application_id': id,
-//         'application.user_id': req.userInfo.userId,
-//       })
-//       .first()
-
-//     if (!application) {
-//       return res.status(404).json({
-//         error: 'Application not found',
-//       })
-//     }
-
-//     let applicationUpdateData = {}
-//     let companyUpdateData = {}
-
-//     updateField(applicationUpdateData, 'job_title', job_title)
-//     updateField(applicationUpdateData, 'status', status)
-//     updateField(applicationUpdateData, 'job_description', job_description)
-//     updateField(applicationUpdateData, 'job_link', job_link)
-//     updateField(applicationUpdateData, 'salary', salary, false, true)
-//     updateField(applicationUpdateData, 'applied_date', applied_date, true)
-//     updateField(applicationUpdateData, 'deadline_date', deadline_date, true)
-//     updateField(companyUpdateData, 'name', company_name)
-
-//     if (company_name !== undefined) {
-//       const company = await knex('company')
-//         .where({
-//           company_id: application.company_id,
-//           'company.user_id': req.userInfo.userId,
-//         })
-//         .first()
-
-//       if (!company) {
-//         return res.status(404).json({
-//           error: 'Company not found',
-//         })
-//       }
-
-//       // Update company details
-//       updateField(companyUpdateData, 'name', company_name)
-//       updateField(companyUpdateData, 'website', company_website)
-//       updateField(companyUpdateData, 'location', company_location)
-
-//       if (Object.keys(companyUpdateData).length > 0) {
-//         await knex('company')
-//           .where({
-//             company_id: application.company_id,
-//             'company.user_id': req.userInfo.userId,
-//           })
-//           .update(companyUpdateData)
-//       }
-//     }
-
-//     if (Object.keys(applicationUpdateData).length > 0) {
-//       await knex('application')
-//         .where({
-//           'application.application_id': id,
-//           'application.user_id': req.userInfo.userId,
-//         })
-//         .update(applicationUpdateData)
-//     }
-
-//     res.status(200).json({
-//       message: 'Application and Company updated successfully',
-//       updatedApplicationData: applicationUpdateData,
-//       updatedCompanyData: companyUpdateData,
-//     })
-//   } catch (error) {
-//     res.status(500).json({
-//       error: `Error updating data: ${error.message}`,
-//     })
-//   }
-// }
-
 // Update Application
 export const patchUserApplication = async (req, res) => {
   const id = parseInt(req.params.id)
@@ -204,42 +112,45 @@ export const patchUserApplication = async (req, res) => {
     deadline_date,
   } = req.body
 
-  try {
-    const application = await knex('application')
-      .where({
-        'application.application_id': id,
-        'application.user_id': req.userInfo.userId,
-      })
-      .first()
+  const user_id = req.userInfo.userId
+  let updateData = {}
 
+  try {
+    const application = await getApplicationById(id, user_id)
     if (!application) {
       return res.status(404).json({
         error: 'Application not found',
       })
     }
+  } catch (error) {
+    return res.status(500).json({ error: 'Error fetching application data' })
+  }
 
-    let applicationUpdateData = {}
+  try {
+    updateField(updateData, 'job_title', job_title)
+    updateField(updateData, 'status', status)
+    updateField(updateData, 'job_description', job_description)
+    updateField(updateData, 'job_link', job_link)
+    updateField(updateData, 'salary', salary, false, true)
+    updateField(updateData, 'applied_date', applied_date, true)
+    updateField(updateData, 'deadline_date', deadline_date, true)
+  } catch (validationError) {
+    return res.status(400).json({ error: validationError.message })
+  }
 
-    updateField(applicationUpdateData, 'job_title', job_title)
-    updateField(applicationUpdateData, 'status', status)
-    updateField(applicationUpdateData, 'job_description', job_description)
-    updateField(applicationUpdateData, 'job_link', job_link)
-    updateField(applicationUpdateData, 'salary', salary, false, true)
-    updateField(applicationUpdateData, 'applied_date', applied_date, true)
-    updateField(applicationUpdateData, 'deadline_date', deadline_date, true)
-
-    if (Object.keys(applicationUpdateData).length > 0) {
+  try {
+    if (Object.keys(updateData).length > 0) {
       await knex('application')
         .where({
           'application.application_id': id,
-          'application.user_id': req.userInfo.userId,
+          'application.user_id': user_id,
         })
-        .update(applicationUpdateData)
+        .update(updateData)
     }
 
     res.status(200).json({
       message: 'Application updated successfully',
-      updatedApplicationData: applicationUpdateData,
+      updateData: updateData,
     })
   } catch (error) {
     res.status(500).json({
@@ -249,65 +160,61 @@ export const patchUserApplication = async (req, res) => {
 }
 
 // Update Company
-
-// Controller for updating company
 export const patchUserApplicationCompany = async (req, res) => {
-  const id = parseInt(req.params.id) // `application_id`
+  const id = parseInt(req.params.id)
   if (!id || isNaN(id)) {
     return res.status(400).json({ message: 'Invalid application ID' })
   }
 
   const { company_name, company_website, company_location } = req.body
+  const user_id = req.userInfo.userId
 
+  let updateData = {}
+  let application
+  let company
   try {
-    // Retrieve the application by its ID
-    const application = await knex('application')
-      .where({
-        'application.application_id': id,
-        'application.user_id': req.userInfo.userId,
-      })
-      .first()
-
+    application = await getApplicationById(id, user_id)
     if (!application) {
       return res.status(404).json({
         error: 'Application not found',
       })
     }
+  } catch (error) {
+    return res.status(500).json({ error: 'Error fetching application data' })
+  }
 
-    // Retrieve the company associated with the application
-    const company = await knex('company')
-      .where({
-        company_id: application.company_id, // Using company_id from the application
-        'company.user_id': req.userInfo.userId,
-      })
-      .first()
-
+  try {
+    company = await getCompanyById(application.company_id, user_id)
     if (!company) {
       return res.status(404).json({
         error: 'Company not found',
       })
     }
+  } catch (error) {
+    return res.status(500).json({ error: 'Error fetching company data' })
+  }
 
-    let companyUpdateData = {}
+  try {
+    updateField(updateData, 'name', company_name)
+    updateField(updateData, 'website', company_website)
+    updateField(updateData, 'location', company_location)
+  } catch (validationError) {
+    return res.status(400).json({ error: validationError.message })
+  }
 
-    // Update fields if provided
-    updateField(companyUpdateData, 'name', company_name)
-    updateField(companyUpdateData, 'website', company_website)
-    updateField(companyUpdateData, 'location', company_location)
-
-    // If any fields are updated, perform the update
-    if (Object.keys(companyUpdateData).length > 0) {
+  try {
+    if (Object.keys(updateData).length > 0) {
       await knex('company')
         .where({
           company_id: application.company_id,
-          'company.user_id': req.userInfo.userId,
+          'company.user_id': user_id,
         })
-        .update(companyUpdateData)
+        .update(updateData)
     }
 
     res.status(200).json({
       message: 'Company updated successfully',
-      updatedCompanyData: companyUpdateData,
+      updateData: updateData,
     })
   } catch (error) {
     res.status(500).json({
