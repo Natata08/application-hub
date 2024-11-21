@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { TextField, InputAdornment, IconButton } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { useIsMobile } from '@/app/hooks/useIsMobile'
 
 export default function InputField({
   errors,
@@ -17,7 +16,6 @@ export default function InputField({
   type = 'text',
   register,
 }) {
-  const isMobile = useIsMobile()
   const [showPassword, setShowPassword] = useState(false)
 
   const handleClickShowPassword = () => {
@@ -40,7 +38,6 @@ export default function InputField({
       rows={rows}
       fullWidth
       variant="outlined"
-      size={isMobile ? 'small' : 'normal'}
       {...register(id, {
         minLength: {
           value: minLength,

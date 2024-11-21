@@ -13,8 +13,8 @@ import TabPanel from './tabs/TabPanel'
 import ApplicationsBoard from './board/ApplicationsBoard'
 const MotivationalQuote = lazy(() => import('./MotivationalQuote'))
 import { getLocalStorageItem } from '@/utils/localStorage'
-import AddApplicationForm from './ApplicationAddForm'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import { useRouter } from 'next/navigation'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
@@ -26,6 +26,7 @@ export default function DashboardPage() {
     field: SORT_FIELDS.CREATED_DATE,
     direction: SORT_DIRECTIONS.DESC,
   })
+  const router = useRouter()
 
   useDebounce(
     () => {
@@ -39,13 +40,6 @@ export default function DashboardPage() {
     const userInfo = getLocalStorageItem('userInfo')
     setUserName(userInfo?.first_name || '')
   }, [])
-
-  const handleOpenModal = () => {
-    setOpenModal(true)
-  }
-  const handleCloseModal = () => {
-    setOpenModal(false)
-  }
 
   const handleTabChange = useCallback((event, newValue) => {
     setActiveTab(newValue)
@@ -88,17 +82,13 @@ export default function DashboardPage() {
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
-                onClick={handleOpenModal}
+                onClick={handleAddApplicationClick}
                 sx={{
                   textTransform: 'none',
                 }}
               >
                 Add a job
               </Button>
-              <AddApplicationForm
-                openModal={openModal}
-                onClose={handleCloseModal}
-              />
             </Stack>
             <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
           </Box>
