@@ -1,6 +1,6 @@
 import knex from '../database_client.js'
 
-export const getCompanyById = async (id, userId) => {
+export const getCompany = async (id, userId) => {
   const company = await knex('company')
     .where({
       company_id: id,

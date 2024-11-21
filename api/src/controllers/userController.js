@@ -1,8 +1,9 @@
 import knex from '../database_client.js'
-import { getApplicationById } from '../utils/getApplicationbyId.js'
-import { getCompanyById } from '../utils/getCompanybyId.js'
+import { checkApplicationExist } from '../utils/checkApplicationExist.js'
 import { getOrCreateCompanyId } from '../utils/getOrCreateCompanyId.js'
 import { updateField } from '../utils/updateField.js'
+import { getCompany } from '../utils/getCompany.js'
+import { getApplication } from '../utils/getApplication.js'
 
 export const getUserProfile = async (req, res) => {
   try {
@@ -67,6 +68,16 @@ export const postUserApplications = async (req, res) => {
   try {
     const appData = req.body
     const user_id = req.userInfo.userId
+    try {
+      // If application exist throw error
+      await checkApplicationExist(
+        appData.company_name,
+        appData.job_title,
+        user_id
+      )
+    } catch (error) {
+      return res.status(400).json({ message: error.message })
+    }
     let company_id
     try {
       company_id = await getOrCreateCompanyId(appData.company_name, user_id)
@@ -76,18 +87,24 @@ export const postUserApplications = async (req, res) => {
       })
     }
 
-    // Insert the data for the new application
-    await knex('application').insert({
-      user_id: user_id,
-      job_title: appData.job_title,
-      company_id: company_id,
-      status: appData.status,
-      job_description: appData.job_description || null,
-      job_link: appData.job_link || null,
-      applied_date: appData.applied_date || null,
-      deadline_date: appData.deadline_date || null,
+    // Insert the data for the new application and return the application id
+
+    const [insertedApplication] = await knex('application')
+      .insert({
+        user_id: user_id,
+        job_title: appData.job_title,
+        company_id: company_id,
+        status: appData.status,
+        job_description: appData.job_description || null,
+        job_link: appData.job_link || null,
+        applied_date: appData.applied_date || null,
+        deadline_date: appData.deadline_date || null,
+      })
+      .returning('application_id')
+    res.status(201).json({
+      message: 'Application added successfully',
+      application_id: insertedApplication.application_id,
     })
-    res.status(201).json({ message: 'Application added successfully' })
   } catch (error) {
     res
       .status(500)
@@ -116,7 +133,7 @@ export const patchUserApplication = async (req, res) => {
   let updateData = {}
 
   try {
-    const application = await getApplicationById(id, user_id)
+    const application = await getApplication(id, user_id)
     if (!application) {
       return res.status(404).json({
         error: 'Application not found',
@@ -173,7 +190,7 @@ export const patchUserApplicationCompany = async (req, res) => {
   let application
   let company
   try {
-    application = await getApplicationById(id, user_id)
+    application = await getApplication(id, user_id)
     if (!application) {
       return res.status(404).json({
         error: 'Application not found',
@@ -184,7 +201,7 @@ export const patchUserApplicationCompany = async (req, res) => {
   }
 
   try {
-    company = await getCompanyById(application.company_id, user_id)
+    company = await getCompany(application.company_id, user_id)
     if (!company) {
       return res.status(404).json({
         error: 'Company not found',

@@ -91,7 +91,6 @@ export const fetchApplicationById = async (id) => {
 
 export const addApplication = async (appData) => {
   const token = getLocalStorageItem('authToken')
-
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/applications`,
     {
@@ -113,6 +112,8 @@ export const addApplication = async (appData) => {
     }
     throw new Error(`Error ${response.status}: ${errorData.message}`)
   }
+  const result = await response.json()
+  return result
 }
 
 export const fetchStatuses = async () => {
