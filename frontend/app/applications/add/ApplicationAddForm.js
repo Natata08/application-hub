@@ -303,11 +303,10 @@ export default function AddApplicationForm() {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
+              borderRadius: '30px',
+              padding: '30px',
             }}
           >
-            <Typography variant="h6" gutterBottom>
-              Unsaved Changes
-            </Typography>
             <Typography variant="body1" sx={{ mb: 2 }}>
               You have unsaved changes. Are you sure you want to leave without
               saving?
@@ -319,10 +318,18 @@ export default function AddApplicationForm() {
                 width: '100%',
               }}
             >
-              <Button onClick={handleCancelLeave} color="primary">
+              <Button
+                variant="contained"
+                onClick={handleCancelLeave}
+                color="primary"
+              >
                 Stay
               </Button>
-              <Button onClick={handleConfirmLeave} color="secondary">
+              <Button
+                variant="contained"
+                onClick={handleConfirmLeave}
+                color="secondary"
+              >
                 Leave
               </Button>
             </Box>
