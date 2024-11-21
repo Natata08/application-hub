@@ -84,18 +84,24 @@ export const postUserApplications = async (req, res) => {
       })
     }
 
-    // Insert the data for the new application
-    await knex('application').insert({
-      user_id: user_id,
-      job_title: appData.job_title,
-      company_id: company_id,
-      status: appData.status,
-      job_description: appData.job_description || null,
-      job_link: appData.job_link || null,
-      applied_date: appData.applied_date || null,
-      deadline_date: appData.deadline_date || null,
+    // Insert the data for the new application and return the application id
+
+    const [insertedApplication] = await knex('application')
+      .insert({
+        user_id: user_id,
+        job_title: appData.job_title,
+        company_id: company_id,
+        status: appData.status,
+        job_description: appData.job_description || null,
+        job_link: appData.job_link || null,
+        applied_date: appData.applied_date || null,
+        deadline_date: appData.deadline_date || null,
+      })
+      .returning('application_id')
+    res.status(201).json({
+      message: 'Application added successfully',
+      application_id: insertedApplication.application_id,
     })
-    res.status(201).json({ message: 'Application added successfully' })
   } catch (error) {
     res
       .status(500)

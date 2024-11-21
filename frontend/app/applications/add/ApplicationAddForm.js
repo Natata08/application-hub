@@ -19,6 +19,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/utils/api'
 import { fetchStatuses } from '@/utils/api'
+import { useRouter } from 'next/navigation'
 
 export default function AddApplicationForm({ openModal, onClose }) {
   const theme = useTheme()
@@ -26,6 +27,7 @@ export default function AddApplicationForm({ openModal, onClose }) {
   const [statuses, setStatuses] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const router = useRouter()
 
   const {
     register,
@@ -58,9 +60,10 @@ export default function AddApplicationForm({ openModal, onClose }) {
 
   const handleAppFormSubmit = async () => {
     setLoading(true)
-
+    setError('')
     try {
-      await addApplication(appData)
+      const result = await addApplication(appData)
+      router.push(`/applications/${result.application_id}`)
       setIsConfirmOpen(true)
     } catch (error) {
       setError(error.message)
