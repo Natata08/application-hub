@@ -1,7 +1,10 @@
 import { Box } from '@mui/material'
 import StatusColumn from './StatusColumn'
+import { memo } from 'react'
 
-export default function DesktopApplicationsBoard({ applicationsByStatus }) {
+export default memo(function DesktopApplicationsBoard({
+  applicationsByStatus,
+}) {
   return (
     <Box
       sx={{
@@ -23,4 +26,4 @@ export default function DesktopApplicationsBoard({ applicationsByStatus }) {
       ))}
     </Box>
   )
-}
+})

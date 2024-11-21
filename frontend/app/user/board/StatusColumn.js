@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, memo, useCallback } from 'react'
 import { Box, Typography, Paper, Button, Chip } from '@mui/material'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import ApplicationCard from './ApplicationCard'
 
-export default function StatusColumn({ status, applications }) {
+export default memo(function StatusColumn({ status, applications }) {
   const [showAll, setShowAll] = useState(false)
   const INITIAL_DISPLAY_NUMBER = 3
 
@@ -13,6 +13,10 @@ export default function StatusColumn({ status, applications }) {
     : applications.slice(0, INITIAL_DISPLAY_NUMBER)
 
   const hasMore = applications.length > INITIAL_DISPLAY_NUMBER
+
+  const handleToggleShow = useCallback(() => {
+    setShowAll((prev) => !prev)
+  }, [])
 
   return (
     <Box
@@ -65,7 +69,7 @@ export default function StatusColumn({ status, applications }) {
 
         {hasMore && (
           <Button
-            onClick={() => setShowAll(!showAll)}
+            onClick={handleToggleShow}
             endIcon={
               showAll ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
             }
@@ -84,4 +88,4 @@ export default function StatusColumn({ status, applications }) {
       </Box>
     </Box>
   )
-}
+})

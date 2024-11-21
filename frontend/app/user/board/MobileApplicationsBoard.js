@@ -7,8 +7,9 @@ import {
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ApplicationCard from './ApplicationCard'
+import { memo } from 'react'
 
-export default function MobileApplicationsBoard({ applicationsByStatus }) {
+export default memo(function MobileApplicationsBoard({ applicationsByStatus }) {
   return (
     <Box sx={{ width: '100%' }}>
       {applicationsByStatus.map(({ status, applications }) => (
@@ -47,4 +48,4 @@ export default function MobileApplicationsBoard({ applicationsByStatus }) {
       ))}
     </Box>
   )
-}
+})
