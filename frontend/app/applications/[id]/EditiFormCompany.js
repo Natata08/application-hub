@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { editApplicationAndCompany } from '@/utils/api'
 
-export default function EditionFormJobLink({ onClose }) {
+export default function EditFormCompany({ onClose }) {
   const { application, updateApplication } = useApplicationContext()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -50,6 +50,30 @@ export default function EditionFormJobLink({ onClose }) {
           {error}
         </Typography>
       )}
+
+      <InputField
+        id="company_name"
+        label="Company Name"
+        defaultValue={application.company_name}
+        required
+        register={register}
+        errors={errors}
+      />
+      <InputField
+        id="company_location"
+        label="Location"
+        defaultValue={application.company_location}
+        register={register}
+        errors={errors}
+      />
+      <InputField
+        id="company_website"
+        label="Website Company"
+        defaultValue={application.company_website}
+        register={register}
+        errors={errors}
+      />
+
       <InputField
         id="job_link"
         defaultValue={application.job_link}

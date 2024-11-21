@@ -6,9 +6,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Button,
   Link,
-  IconButton,
   Typography,
   Stack,
 } from '@mui/material'
@@ -16,16 +14,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { enGB } from 'date-fns/locale'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import EditIcon from '@mui/icons-material/Edit'
 import DatePickerField from '@/components/ui/DatePickerField'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
-import EditionFormJobLink from './EditionFormJobLink'
 
 export default function JobInfo() {
   const { application } = useApplicationContext()
-  const [isOpenEdit, setOpenEditForm] = useState(false)
-
   const isMobile = useIsMobile()
 
   const accordionSummaryStyles = {
@@ -64,16 +58,6 @@ export default function JobInfo() {
     },
   })
 
-  const onSubmit = (data) => {
-    console.log('Submitted Data:', data)
-  }
-  const handleOpenEditForm = () => {
-    setOpenEditForm(true)
-  }
-  const handleCloseEditForm = () => {
-    setOpenEditForm(false)
-  }
-
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
       <Box sx={{ padding: isMobile ? 1 : 2 }}>
@@ -87,32 +71,16 @@ export default function JobInfo() {
             <Typography sx={{ fontWeight: 600 }}>Job Link</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {isOpenEdit ? (
-              <EditionFormJobLink onClose={handleCloseEditForm} />
+            {application.job_link ? (
+              <Link
+                href={application.job_link}
+                target="_blank"
+                sx={textLinkStyles}
+              >
+                {application.job_link}
+              </Link>
             ) : (
-              <Stack sx={stackStyles}>
-                {application.job_link ? (
-                  <Link
-                    href={application.job_link}
-                    target="_blank"
-                    sx={textLinkStyles}
-                  >
-                    {application.job_link}
-                  </Link>
-                ) : (
-                  <Typography sx={{ color: 'secondary.main' }}>
-                    Add a job link
-                  </Typography>
-                )}
-                <IconButton
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    handleOpenEditForm()
-                  }}
-                >
-                  <EditIcon sx={{ color: 'secondary.main', fontSize: 20 }} />
-                </IconButton>
-              </Stack>
+              <Typography sx={{ color: 'secondary.main' }}>Job link</Typography>
             )}
           </AccordionDetails>
         </Accordion>
@@ -127,7 +95,7 @@ export default function JobInfo() {
             Dates
           </AccordionSummary>
           <AccordionDetails>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form>
               <Box
                 sx={{
                   display: 'flex',
@@ -166,9 +134,6 @@ export default function JobInfo() {
           >
             <Stack sx={stackStyles}>
               <Typography sx={{ fontWeight: 600 }}>Job Description</Typography>
-              <IconButton>
-                <EditIcon sx={{ color: 'secondary.main', fontSize: 20 }} />
-              </IconButton>
             </Stack>
           </AccordionSummary>
           <AccordionDetails

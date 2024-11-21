@@ -52,7 +52,7 @@ function Content() {
           <Box>
             <ControlButton />
             <ApplicationHeader />
-            <StatusPanel />
+            {/* <StatusPanel /> */}
             <ManagePanel />
           </Box>
         </ResponsiveWrapper>

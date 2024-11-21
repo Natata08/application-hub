@@ -5,7 +5,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 import ConfirmDeleteApplication from './ConfirmDeleteApplication'
-import EditionFormApplication from './EditionFormApplication'
+import EditionFormApplication from './EditFormApplication'
 
 const stylesIconButton = {
   color: 'secondary.main',
