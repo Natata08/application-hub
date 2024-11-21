@@ -21,9 +21,9 @@ import { addApplication } from '@/utils/api'
 import { fetchStatuses } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 
-export default function AddApplicationForm({ openModal, onClose }) {
+export default function AddApplicationForm() {
   const theme = useTheme()
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+
   const [statuses, setStatuses] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -64,19 +64,10 @@ export default function AddApplicationForm({ openModal, onClose }) {
     try {
       const result = await addApplication(appData)
       router.push(`/applications/${result.application_id}`)
-      setIsConfirmOpen(true)
     } catch (error) {
       setError(error.message)
     } finally {
       setLoading(false)
-    }
-  }
-
-  // Handle confirmation modal close
-  const handleConfirmClose = () => {
-    setIsConfirmOpen(false)
-    if (onClose) {
-      onClose()
     }
   }
 
@@ -235,51 +226,6 @@ export default function AddApplicationForm({ openModal, onClose }) {
           </Paper>
         </Box>
       </LocalizationProvider>
-
-      {/* Confirmation Modal*/}
-      <Modal
-        open={isConfirmOpen}
-        onClose={handleConfirmClose}
-        aria-labelledby="confirm-modal-title"
-        aria-describedby="confirm-modal-description"
-      >
-        <Paper
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: {
-              xs: '80%',
-              sm: 400,
-            },
-            bgcolor: 'background.paper',
-            boxShadow: 24,
-            p: { xs: 2, sm: 4 },
-          }}
-        >
-          <Typography
-            variant="h6"
-            gutterBottom
-            sx={{
-              textAlign: 'center',
-              fontSize: '1.25rem',
-            }}
-          >
-            Application Added Successfully!
-          </Typography>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleConfirmClose}
-            sx={{
-              mt: 2,
-            }}
-          >
-            Close
-          </Button>
-        </Paper>
-      </Modal>
     </>
   )
 }
