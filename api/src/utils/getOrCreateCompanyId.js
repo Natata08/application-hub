@@ -7,7 +7,10 @@ export const getOrCreateCompanyId = async (companyName, user_id) => {
 
     // case-insensitive check for company name
     const existingCompany = await knex('company')
-      .whereRaw('LOWER(name) = ?', trimmedCompanyName.toLowerCase())
+      .whereRaw('LOWER(name) = ? AND user_id = ?', [
+        trimmedCompanyName.toLowerCase(),
+        user_id,
+      ])
       .first()
 
     // Checking if the company name exists and if it does, whether it belongs to the same user
@@ -23,11 +26,13 @@ export const getOrCreateCompanyId = async (companyName, user_id) => {
             user_id: user_id,
           })
           .returning('company_id') // Get the inserted company's ID
+
         company_id = newCompany.company_id
-        console.log(newCompany)
+
         return company_id
       } catch (error) {
         console.error('Error adding new company:', error)
+        throw new Error('An error occurred while processing your request.')
       }
     }
   } catch (error) {

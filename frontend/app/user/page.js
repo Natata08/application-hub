@@ -15,8 +15,8 @@ import MotivationalQuote from './MotivationalQuote'
 import { getLocalStorageItem } from '@/utils/localStorage'
 import { useApplications } from '../hooks/useApplications'
 import { sortApplications } from '@/utils/sortApplications'
-import AddApplicationForm from './ApplicationAddForm'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import { useRouter } from 'next/navigation'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
@@ -29,6 +29,7 @@ export default function DashboardPage() {
     direction: SORT_DIRECTIONS.DESC,
   })
   const { applications, isLoading, error } = useApplications()
+  const router = useRouter()
 
   useDebounce(
     () => {
@@ -42,12 +43,6 @@ export default function DashboardPage() {
     const userInfo = getLocalStorageItem('userInfo')
     setUserName(userInfo?.first_name || '')
   }, [])
-  const handleOpenModal = () => {
-    setOpenModal(true)
-  }
-  const handleCloseModal = () => {
-    setOpenModal(false)
-  }
 
   const getFilteredApplications = () => {
     if (!debouncedSearchQuery.trim()) return applications
@@ -71,6 +66,10 @@ export default function DashboardPage() {
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue)
+  }
+
+  const handleAddApplicationClick = () => {
+    router.push('/applications/add')
   }
 
   return (
@@ -110,17 +109,13 @@ export default function DashboardPage() {
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
-                onClick={handleOpenModal}
+                onClick={handleAddApplicationClick}
                 sx={{
                   textTransform: 'none',
                 }}
               >
                 Add a job
               </Button>
-              <AddApplicationForm
-                openModal={openModal}
-                onClose={handleCloseModal}
-              />
             </Stack>
             <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
           </Box>
