@@ -11,7 +11,7 @@ const FeaturesLine = () => {
     <Box
       sx={{
         padding: '0 100px',
-        backgroundColor: '#334c4c',
+        backgroundColor: 'background.defaultSecond',
         marginBottom: '200px',
         padding: isMobile ? '100px 0 100px 0' : '50px 0 50px 0',
       }}
