@@ -1,7 +1,8 @@
 import { Box } from '@mui/material'
 import PropTypes from 'prop-types'
+import { memo } from 'react'
 
-export default function TabPanel(props) {
+const TabPanel = memo(function TabPanel(props) {
   const { children, value, index, ...other } = props
 
   return (
@@ -15,10 +16,12 @@ export default function TabPanel(props) {
       {value === index && <Box sx={{ pt: 2 }}>{children}</Box>}
     </div>
   )
-}
+})
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 }
+
+export default TabPanel

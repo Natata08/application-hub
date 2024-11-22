@@ -5,6 +5,8 @@ import {
   getUserApplications,
   getUserApplicationsById,
   postUserApplications,
+  patchUserApplication,
+  patchUserApplicationCompany,
 } from '../controllers/userController.js'
 import verifyAuthToken from '../middleware/tokenAuthentication.js'
 
@@ -15,5 +17,11 @@ user.get('/me', verifyAuthToken, getUserProfile)
 user.get('/applications', verifyAuthToken, getUserApplications)
 user.get('/applications/:id', verifyAuthToken, getUserApplicationsById)
 user.post('/applications', verifyAuthToken, postUserApplications)
+user.patch('/applications/:id', verifyAuthToken, patchUserApplication)
+user.patch(
+  '/applications/:id/company',
+  verifyAuthToken,
+  patchUserApplicationCompany
+)
 
 export default user
