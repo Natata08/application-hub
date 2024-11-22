@@ -1,4 +1,5 @@
 import { Tabs, Tab } from '@mui/material'
+import { memo } from 'react'
 
 function a11yProps(index) {
   return {
@@ -7,7 +8,7 @@ function a11yProps(index) {
   }
 }
 
-export default function TabsControl({ tabValue, onTabChange }) {
+export default memo(function TabsControl({ tabValue, onTabChange }) {
   return (
     <Tabs
       value={tabValue}
@@ -42,4 +43,4 @@ export default function TabsControl({ tabValue, onTabChange }) {
       <Tab label="Done" {...a11yProps(1)} />
     </Tabs>
   )
-}
+})

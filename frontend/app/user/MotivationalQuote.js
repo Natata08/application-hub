@@ -99,6 +99,13 @@ export default function MotivationalQuote() {
 
   useEffect(() => {
     fetchQuote(setQuote, setIsLoading, setError)
+
+    return () => {
+      // Cleanup function to cancel any pending requests
+      setQuote(null)
+      setIsLoading(false)
+      setError(null)
+    }
   }, [refresh])
 
   const handleRefresh = () => {
