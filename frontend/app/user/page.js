@@ -1,7 +1,7 @@
 'use client'
 
 import { SORT_FIELDS, SORT_DIRECTIONS } from '@/constants/sort'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense, useCallback } from 'react'
 import { useDebounce } from 'react-use'
 import { Container, Box, Button, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
@@ -11,24 +11,20 @@ import SearchField from './SearchField'
 import SortControl from './SortControl'
 import TabPanel from './tabs/TabPanel'
 import ApplicationsBoard from './board/ApplicationsBoard'
-import MotivationalQuote from './MotivationalQuote'
+const MotivationalQuote = lazy(() => import('./MotivationalQuote'))
 import { getLocalStorageItem } from '@/utils/localStorage'
-import { useApplications } from '../hooks/useApplications'
-import { sortApplications } from '@/utils/sortApplications'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { useRouter } from 'next/navigation'
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [userName, setUserName] = useState('')
-  const [openModal, setOpenModal] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('')
   const [sortConfig, setSortConfig] = useState({
     field: SORT_FIELDS.CREATED_DATE,
     direction: SORT_DIRECTIONS.DESC,
   })
-  const { applications, isLoading, error } = useApplications()
   const router = useRouter()
 
   useDebounce(
@@ -44,29 +40,9 @@ export default function DashboardPage() {
     setUserName(userInfo?.first_name || '')
   }, [])
 
-  const getFilteredApplications = () => {
-    if (!debouncedSearchQuery.trim()) return applications
-
-    return applications.filter((app) => {
-      const searchKeyword = debouncedSearchQuery.toLowerCase()
-      const companyName = app.company_name.toLowerCase()
-      const jobTitle = app.job_title.toLowerCase()
-
-      return (
-        companyName.includes(searchKeyword) || jobTitle.includes(searchKeyword)
-      )
-    })
-  }
-
-  // Process applications: first search, then sort
-  const processApplications = () => {
-    const searchedApplications = getFilteredApplications(applications)
-    return sortApplications(searchedApplications, sortConfig)
-  }
-
-  const handleTabChange = (event, newValue) => {
+  const handleTabChange = useCallback((event, newValue) => {
     setActiveTab(newValue)
-  }
+  }, [])
 
   const handleAddApplicationClick = () => {
     router.push('/applications/add')
@@ -119,19 +95,20 @@ export default function DashboardPage() {
             </Stack>
             <TabsControl tabValue={activeTab} onTabChange={handleTabChange} />
           </Box>
+
           {[true, false].map((isActive, index) => (
             <TabPanel key={`tab-${index}`} value={activeTab} index={index}>
               <ApplicationsBoard
                 isActive={isActive}
-                applications={processApplications()}
-                isLoading={isLoading}
-                error={error}
                 searchQuery={debouncedSearchQuery}
+                sortConfig={sortConfig}
               />
             </TabPanel>
           ))}
 
-          <MotivationalQuote />
+          <Suspense fallback={null}>
+            <MotivationalQuote />
+          </Suspense>
         </Container>
       </Box>
     </ProtectedRoute>
