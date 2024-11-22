@@ -140,10 +140,7 @@ export const fetchStatuses = async () => {
   }
 }
 
-export const editApplicationAndCompany = async ({
-  id,
-  updatedApplicationAndCompanyData,
-}) => {
+export const editApplication = async ({ id, updatedData }) => {
   const token = getLocalStorageItem('authToken')
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/applications/${id}`,
@@ -153,7 +150,32 @@ export const editApplicationAndCompany = async ({
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(updatedApplicationAndCompanyData),
+      body: JSON.stringify(updatedData),
+    }
+  )
+
+  if (!response.ok) {
+    let errorData
+    try {
+      errorData = await response.json()
+    } catch {
+      errorData = { message: response.json() || 'Unknown' }
+    }
+    throw new Error(`Error ${response.status}: ${errorData.message}`)
+  }
+}
+
+export const editCompany = async ({ id, updatedData }) => {
+  const token = getLocalStorageItem('authToken')
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/applications/${id}/company`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedData),
     }
   )
 

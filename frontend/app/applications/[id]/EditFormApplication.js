@@ -1,4 +1,9 @@
 'use client'
+import { useForm, Controller } from 'react-hook-form'
+import { useState, useEffect, memo } from 'react'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { enGB } from 'date-fns/locale'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import {
   Typography,
   Button,
@@ -11,43 +16,17 @@ import {
   MenuItem,
   Stack,
 } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
 import DatePickerField from '@/components/ui/DatePickerField'
-import { useForm, Controller } from 'react-hook-form'
-import { useState, useEffect } from 'react'
-import { LocalizationProvider } from '@mui/x-date-pickers'
-import { enGB } from 'date-fns/locale'
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { addApplication } from '@/utils/api'
-import { fetchStatuses } from '@/utils/api'
-import { useRouter } from 'next/navigation'
-import LoadingButton from '@mui/lab/LoadingButton'
+import { editApplication, fetchStatuses } from '@/utils/api'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
-import { editApplicationAndCompany } from '@/utils/api'
+import { useNotification } from '@/components/Context/NotificationContext'
+import { ModalWrapper } from '@/components/ui/ModalWrapper'
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 800,
-  border: '0px solid #FFFF',
-  borderRadius: 2,
-  boxShadow: 24,
-  p: 4,
-  overflow: 'hidden',
-  maxHeight: 600,
-  height: 'auto',
-  overflowY: 'auto',
-  padding: '16px',
-  width: '100%',
-  '@media (max-width: 900px)': {
-    maxWidth: '90%',
-  },
-}
-
-export default function EditFormApplication({ openModal, onClose }) {
+export default memo(function EditFormApplication({ openModal, onClose }) {
   const { application, updateApplication } = useApplicationContext()
+  const { showNotification } = useNotification()
   const [statuses, setStatuses] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -60,7 +39,7 @@ export default function EditFormApplication({ openModal, onClose }) {
     watch,
   } = useForm()
 
-  const updatedApplicationAndCompanyData = watch()
+  const updatedData = watch()
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -78,12 +57,13 @@ export default function EditFormApplication({ openModal, onClose }) {
     setLoading(true)
     setError('')
     try {
-      await editApplicationAndCompany({
+      await editApplication({
         id: application.application_id,
-        updatedApplicationAndCompanyData,
+        updatedData,
       })
+      updateApplication(updatedData)
       onClose()
-      updateApplication(updatedApplicationAndCompanyData)
+      showNotification('Application updated successfully!')
     } catch (error) {
       setError(error.message)
     } finally {
@@ -93,26 +73,17 @@ export default function EditFormApplication({ openModal, onClose }) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
-      <Modal open={openModal} onClose={onClose}>
-        <Paper
-          sx={style}
+      <ModalWrapper
+        open={openModal}
+        handleClose={onClose}
+        title="Edit a Job Application"
+      >
+        <Box
           component="form"
           onSubmit={handleSubmit(handleEditApplicationSubmit)}
           noValidate
           autoComplete="off"
         >
-          <Typography
-            gutterBottom
-            variant="h4"
-            sx={{
-              marginBottom: 0,
-              paddingY: 2,
-              textAlign: 'center',
-              fontSize: { xs: '1.5rem', sm: '2rem' },
-            }}
-          >
-            Edit a Job Application
-          </Typography>
           {error && (
             <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
               {error}
@@ -136,7 +107,6 @@ export default function EditFormApplication({ openModal, onClose }) {
             errors={errors}
             minLength={2}
           />
-          {/* Date Picker Wrapper */}
           <Box
             sx={{
               display: 'flex',
@@ -149,7 +119,11 @@ export default function EditFormApplication({ openModal, onClose }) {
             <DatePickerField
               control={control}
               name="applied_date"
-              defaultValue={new Date(application.applied_date)}
+              defaultValue={
+                application.applied_date
+                  ? new Date(application.applied_date)
+                  : ''
+              }
               label="Application Date"
               errors={errors}
               sx={{ width: { xs: '100%', sm: '50%' } }}
@@ -157,13 +131,16 @@ export default function EditFormApplication({ openModal, onClose }) {
             <DatePickerField
               control={control}
               name="deadline_date"
-              defaultValue={new Date(application.deadline_date)}
+              defaultValue={
+                application.deadline_date
+                  ? new Date(application.deadline_date)
+                  : ''
+              }
               label="Deadline Date"
               errors={errors}
               sx={{ width: { xs: '100%', sm: '50%' } }}
             />
           </Box>
-          {/* Status Select Field */}
           <FormControl
             fullWidth
             margin="normal"
@@ -249,8 +226,8 @@ export default function EditFormApplication({ openModal, onClose }) {
               </Button>
             )}
           </Stack>
-        </Paper>
-      </Modal>
+        </Box>
+      </ModalWrapper>
     </LocalizationProvider>
   )
-}
+})

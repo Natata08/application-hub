@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, useMemo } from 'react'
 import { useApplicationById } from '@/app/hooks/useApplicationById'
 
 const ApplicationContext = createContext(null)
@@ -21,15 +21,18 @@ export const ApplicationProvider = ({ id, children }) => {
     }))
   }
 
+  const contextValue = useMemo(
+    () => ({
+      application: updatedApplication,
+      isLoading,
+      error,
+      updateApplication,
+    }),
+    [updatedApplication, isLoading, error]
+  )
+
   return (
-    <ApplicationContext.Provider
-      value={{
-        application: updatedApplication,
-        isLoading,
-        error,
-        updateApplication,
-      }}
-    >
+    <ApplicationContext.Provider value={contextValue}>
       {children}
     </ApplicationContext.Provider>
   )

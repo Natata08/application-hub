@@ -1,33 +1,25 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { memo } from 'react'
 import { useParams } from 'next/navigation'
 import { Box, CircularProgress, Alert } from '@mui/material'
 import ApplicationHeader from './ApplicationHeader'
 import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
 import ControlButton from './ControlButton'
-import StatusPanel from './StatusPanel'
 import ManagePanel from './ManagePanel'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import {
   ApplicationProvider,
   useApplicationContext,
 } from '@/components/Context/ApplicationContext'
+import {
+  NotificationProvider,
+  useNotification,
+} from '@/components/Context/NotificationContext'
+import Notification from '../../../components/ui/Notification'
 
-function Content() {
+const Content = memo(function Content() {
   const { application, isLoading, error } = useApplicationContext()
-  const [showError, setShowError] = useState(false)
-
-  useEffect(() => {
-    let timeout
-    if (isLoading) {
-      timeout = setTimeout(() => {
-        setShowError(true)
-      }, 5000)
-    } else {
-      setShowError(false)
-    }
-    return () => clearTimeout(timeout)
-  }, [isLoading])
+  const { open, message, hideNotification } = useNotification()
 
   if (isLoading) {
     return (
@@ -37,29 +29,36 @@ function Content() {
     )
   }
 
-  if (error || (showError && !application)) {
+  if (error) {
     return (
       <Alert severity="error" sx={{ m: 4 }}>
-        {error || 'No application data available'}
+        {error}
       </Alert>
     )
   }
 
-  if (application) {
-    return (
-      <Box component="main" sx={{ marginBottom: 4 }}>
-        <ResponsiveWrapper>
-          <Box>
-            <ControlButton />
-            <ApplicationHeader />
-            {/* <StatusPanel /> */}
-            <ManagePanel />
-          </Box>
-        </ResponsiveWrapper>
-      </Box>
-    )
-  }
-}
+  return (
+    <Box component="main" sx={{ marginBottom: 4 }}>
+      <ResponsiveWrapper>
+        <Box>
+          <Notification
+            open={open}
+            onClose={hideNotification}
+            message={message}
+          />
+
+          {application && (
+            <>
+              <ControlButton />
+              <ApplicationHeader />
+              <ManagePanel />
+            </>
+          )}
+        </Box>
+      </ResponsiveWrapper>
+    </Box>
+  )
+})
 
 export default function Application() {
   const params = useParams()
@@ -67,9 +66,11 @@ export default function Application() {
 
   return (
     <ProtectedRoute>
-      <ApplicationProvider id={id}>
-        <Content />
-      </ApplicationProvider>
+      <NotificationProvider>
+        <ApplicationProvider id={id}>
+          <Content />
+        </ApplicationProvider>
+      </NotificationProvider>
     </ProtectedRoute>
   )
 }

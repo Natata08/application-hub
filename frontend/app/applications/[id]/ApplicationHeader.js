@@ -1,10 +1,21 @@
 'use client'
+import { useState, useCallback, memo } from 'react'
 import { Typography, Stack, Link, Box, IconButton, Paper } from '@mui/material'
-import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import EditIcon from '@mui/icons-material/Edit'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
+import EditFormCompany from './EditFormCompany'
 
-export default function ApplicationHeader() {
+export default memo(function ApplicationHeader() {
   const { application } = useApplicationContext()
+  const [openModal, setOpenModal] = useState(false)
+
+  const handleOpenModal = useCallback(() => {
+    setOpenModal(true)
+  }, [])
+
+  const handleCloseModal = useCallback(() => {
+    setOpenModal(false)
+  }, [])
 
   return (
     <Box>
@@ -30,7 +41,7 @@ export default function ApplicationHeader() {
           <Typography
             component="h2"
             sx={{
-              fontSize: { xs: '1rem', sm: '1.2rem' },
+              fontSize: '1rem',
               p: { xs: 0.5, sm: 1 },
               paddingX: 2,
               fontWeight: 600,
@@ -74,7 +85,7 @@ export default function ApplicationHeader() {
                 location
               </Typography>
             )}
-            <IconButton>
+            <IconButton onClick={handleOpenModal}>
               <EditIcon sx={{ color: 'secondary.main', fontSize: 20 }} />
             </IconButton>
           </Stack>
@@ -82,7 +93,6 @@ export default function ApplicationHeader() {
           {application.company_website ? (
             <Link
               href={application.company_website}
-              passHref
               sx={{
                 display: application.company_website ? 'block' : 'none',
                 pb: { xs: 1, md: 2 },
@@ -121,6 +131,7 @@ export default function ApplicationHeader() {
           )}
         </Typography>
       </Stack>
+      <EditFormCompany openModal={openModal} onClose={handleCloseModal} />
     </Box>
   )
-}
+})

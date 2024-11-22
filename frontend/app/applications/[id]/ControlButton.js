@@ -1,35 +1,37 @@
 'use client'
-import { useState } from 'react'
-import { IconButton, Stack, Box, Link } from '@mui/material'
+import { useState, useCallback, memo } from 'react'
+import Link from 'next/link'
+import { IconButton, Stack, Box } from '@mui/material'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 import ConfirmDeleteApplication from './ConfirmDeleteApplication'
-import EditionFormApplication from './EditFormApplication'
+import EditFormApplication from './EditFormApplication'
 
 const stylesIconButton = {
   color: 'secondary.main',
   fontSize: { xs: 20, sm: 24 },
 }
 
-const ControlButton = () => {
+export default memo(function ControlButton() {
   const [openModalDeletion, setOpenModalDeletion] = useState(false)
   const [openModalEdition, setOpenModalEdition] = useState(false)
-  const handleOpenModalDeletion = () => {
+
+  const handleOpenModalDeletion = useCallback(() => {
     setOpenModalDeletion(true)
-  }
+  }, [])
 
-  const handleCloseModalDeletion = () => {
+  const handleCloseModalDeletion = useCallback(() => {
     setOpenModalDeletion(false)
-  }
+  }, [])
 
-  const handleOpenModalEdition = () => {
+  const handleOpenModalEdition = useCallback(() => {
     setOpenModalEdition(true)
-  }
+  }, [])
 
-  const handleCloseModalEdition = () => {
+  const handleCloseModalEdition = useCallback(() => {
     setOpenModalEdition(false)
-  }
+  }, [])
 
   return (
     <Stack
@@ -41,11 +43,7 @@ const ControlButton = () => {
         paddingTop: { xs: 0, sm: 2 },
       }}
     >
-      <Link
-        href={`/user`}
-        passHref
-        style={{ textDecoration: 'none', display: 'block' }}
-      >
+      <Link href="/user" passHref>
         <IconButton>
           <ArrowBackIcon sx={stylesIconButton} />
         </IconButton>
@@ -55,20 +53,21 @@ const ControlButton = () => {
         <IconButton onClick={handleOpenModalEdition}>
           <BorderColorIcon sx={stylesIconButton} />
         </IconButton>
-        <EditionFormApplication
-          openModal={openModalEdition}
-          onClose={handleCloseModalEdition}
-        />
+
         <IconButton onClick={handleOpenModalDeletion}>
           <DeleteRoundedIcon sx={stylesIconButton} />
         </IconButton>
-        <ConfirmDeleteApplication
-          openModal={openModalDeletion}
-          onClose={handleCloseModalDeletion}
-        />
       </Box>
+
+      <EditFormApplication
+        openModal={openModalEdition}
+        onClose={handleCloseModalEdition}
+      />
+
+      <ConfirmDeleteApplication
+        openModal={openModalDeletion}
+        onClose={handleCloseModalDeletion}
+      />
     </Stack>
   )
-}
-
-export default ControlButton
+})
