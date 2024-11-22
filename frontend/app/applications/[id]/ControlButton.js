@@ -5,8 +5,8 @@ import { IconButton, Stack, Box } from '@mui/material'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
-import ConfirmDeleteApplication from './ConfirmDeleteApplication'
-import EditFormApplication from './EditFormApplication'
+import ConfirmDeleteApplication from './forms/ConfirmDeleteApplication'
+import EditFormApplication from './forms/EditFormApplication'
 
 const stylesIconButton = {
   color: 'secondary.main',

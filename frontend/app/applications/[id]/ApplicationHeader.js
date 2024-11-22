@@ -3,7 +3,7 @@ import { useState, useCallback, memo } from 'react'
 import { Typography, Stack, Link, Box, IconButton, Paper } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
-import EditFormCompany from './EditFormCompany'
+import EditFormCompany from './forms/EditFormCompany'
 
 export default memo(function ApplicationHeader() {
   const { application } = useApplicationContext()
