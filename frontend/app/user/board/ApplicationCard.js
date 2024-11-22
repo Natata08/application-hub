@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { Card, Typography, Box } from '@mui/material'
 import formatRelativeTime from '@/utils/formatDate'
-
-export default function ApplicationCard({ application }) {
+import { memo } from 'react'
+export default memo(function ApplicationCard({ application }) {
   return (
     <Link
       href={`/applications/${application.application_id}`}
@@ -46,4 +46,4 @@ export default function ApplicationCard({ application }) {
       </Card>
     </Link>
   )
-}
+})

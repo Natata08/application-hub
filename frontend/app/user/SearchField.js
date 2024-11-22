@@ -1,8 +1,9 @@
 import { InputBase, Box, CircularProgress, IconButton } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import ClearIcon from '@mui/icons-material/Clear'
+import { memo } from 'react'
 
-export default function SearchField({ value, onChange, isSearching }) {
+export default memo(function SearchField({ value, onChange, isSearching }) {
   const handleChange = (event) => {
     onChange(event.target.value)
   }
@@ -72,4 +73,4 @@ export default function SearchField({ value, onChange, isSearching }) {
       </Box>
     </Box>
   )
-}
+})

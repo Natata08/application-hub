@@ -2,8 +2,9 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { memo } from 'react'
 
-export default function DashboardHeader({ name }) {
+export default memo(function DashboardHeader({ name }) {
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -33,4 +34,4 @@ export default function DashboardHeader({ name }) {
       </Typography>
     </Box>
   )
-}
+})
