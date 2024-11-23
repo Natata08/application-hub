@@ -8,7 +8,7 @@ import { ModalWrapper } from '@/components/ui/ModalWrapper'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 
-export default function ApplicationDeleteModal({ openModal, onClose}) {
+export default function ApplicationDeleteModal({ openModal, onClose }) {
   const { application } = useApplicationContext()
   const { showNotification } = useNotification()
   const [loading, setLoading] = useState(false)
@@ -31,7 +31,11 @@ export default function ApplicationDeleteModal({ openModal, onClose}) {
   }
 
   return (
-    <ModalWrapper open={openModal} onClose={onClose} title='Are you sure you want to delete this application?'>
+    <ModalWrapper
+      open={openModal}
+      onClose={onClose}
+      title="Are you sure you want to delete this application?"
+    >
       <Box>
         {error && (
           <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
