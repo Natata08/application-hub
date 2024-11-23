@@ -25,5 +25,4 @@ user.patch(
   patchUserApplicationCompany
 )
 user.delete('/applications/:id', verifyAuthToken, deleteUserApplicationsById)
-
 export default user
