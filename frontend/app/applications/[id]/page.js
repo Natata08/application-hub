@@ -1,25 +1,24 @@
 'use client'
 import { useParams } from 'next/navigation'
-import {
-  Box,
-  Container,
-  Typography,
-  CircularProgress,
-  Alert,
-} from '@mui/material'
+import { Box, CircularProgress, Alert } from '@mui/material'
 import ApplicationHeader from './ApplicationHeader'
-import { useApplicationById } from '@/app/hooks/useApplicationById'
 import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
 import ControlButton from './ControlButton'
-import StatusPanel from './StatusPanel'
 import ManagePanel from './ManagePanel'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import {
+  ApplicationProvider,
+  useApplicationContext,
+} from '@/components/Context/ApplicationContext'
+import {
+  NotificationProvider,
+  useNotification,
+} from '@/components/Context/NotificationContext'
+import Notification from '../../../components/ui/Notification'
 
-export default function Application() {
-  const params = useParams()
-  const { id } = params
-  const { application, isLoading, error } = useApplicationById(id)
-  console.log(application)
+const Content = () => {
+  const { application, isLoading, error } = useApplicationContext()
+  const { open, message, hideNotification } = useNotification()
 
   if (isLoading) {
     return (
@@ -28,6 +27,7 @@ export default function Application() {
       </Box>
     )
   }
+
   if (error) {
     return (
       <Alert severity="error" sx={{ m: 4 }}>
@@ -36,32 +36,40 @@ export default function Application() {
     )
   }
 
-  if (!application) {
-    return <Typography>No application data available</Typography>
-  }
+  return (
+    <Box component="main" sx={{ marginBottom: 4 }}>
+      <ResponsiveWrapper>
+        <Box>
+          <Notification
+            open={open}
+            onClose={hideNotification}
+            message={message}
+          />
 
-  if (error) {
-    return (
-      <Container>
-        <Typography variant="h6" color="error">
-          {error}
-        </Typography>
-      </Container>
-    )
-  }
+          {application && (
+            <>
+              <ControlButton />
+              <ApplicationHeader />
+              <ManagePanel />
+            </>
+          )}
+        </Box>
+      </ResponsiveWrapper>
+    </Box>
+  )
+}
+
+export default function Application() {
+  const params = useParams()
+  const { id } = params
 
   return (
     <ProtectedRoute>
-      <Box component="main" sx={{ marginBottom: 4 }}>
-        <ResponsiveWrapper>
-          <Box>
-            <ControlButton application={application} />
-            <ApplicationHeader application={application} />
-            <StatusPanel application={application} />
-            <ManagePanel application={application} />
-          </Box>
-        </ResponsiveWrapper>
-      </Box>
+      <NotificationProvider>
+        <ApplicationProvider id={id}>
+          <Content />
+        </ApplicationProvider>
+      </NotificationProvider>
     </ProtectedRoute>
   )
 }

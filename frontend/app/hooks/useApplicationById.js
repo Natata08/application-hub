@@ -13,9 +13,10 @@ export function useApplicationById(id) {
       return
     }
 
+    setIsLoading(true)
+    setError(null)
+
     try {
-      setIsLoading(true)
-      setError(null)
       const data = await fetchApplicationById(id)
       setApplication(data)
     } catch (err) {
