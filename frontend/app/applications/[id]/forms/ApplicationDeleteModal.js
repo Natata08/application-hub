@@ -1,35 +1,16 @@
 'use client'
 import { useState } from 'react'
 import { deleteApplication } from '@/utils/api'
-import { Typography, Paper, Modal, Button, Stack } from '@mui/material'
+import { Typography, Button, Stack, Box } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useRouter } from 'next/navigation'
+import { ModalWrapper } from '@/components/ui/ModalWrapper'
+import { useNotification } from '@/components/Context/NotificationContext'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  maxWidth: 800,
-  border: '0px solid #FFFF',
-  borderRadius: 2,
-  boxShadow: 24,
-  p: 4,
-  overflow: 'hidden',
-  maxHeight: 600,
-  overflowY: 'auto',
-  padding: '16px',
-  width: '100%',
-  '@media (max-width: 900px)': {
-    maxWidth: '90%',
-  },
-}
-
-export default function ConfirmDeleteApplication({
-  openModal,
-  onClose,
-  application,
-}) {
+export default function ApplicationDeleteModal({ openModal, onClose}) {
+  const { application } = useApplicationContext()
+  const { showNotification } = useNotification()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
@@ -41,6 +22,7 @@ export default function ConfirmDeleteApplication({
       await deleteApplication(application.application_id)
       router.push(`/user`)
       onClose()
+      showNotification('Application was deleted!')
     } catch (error) {
       setError(error.message)
     } finally {
@@ -49,25 +31,13 @@ export default function ConfirmDeleteApplication({
   }
 
   return (
-    <Modal open={openModal} onClose={onClose}>
-      <Paper sx={style}>
+    <ModalWrapper open={openModal} onClose={onClose} title='Are you sure you want to delete this application?'>
+      <Box>
         {error && (
           <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
             {error}
           </Typography>
         )}
-        <Typography
-          gutterBottom
-          variant="h4"
-          sx={{
-            marginBottom: 0,
-            paddingY: 4,
-            textAlign: 'center',
-            fontSize: { xs: '1.5rem', sm: '2rem' },
-          }}
-        >
-          Are you sure you want to delete this application?
-        </Typography>
         <Stack
           sx={{
             justifyContent: 'center',
@@ -107,7 +77,7 @@ export default function ConfirmDeleteApplication({
             </Button>
           )}
         </Stack>
-      </Paper>
-    </Modal>
+      </Box>
+    </ModalWrapper>
   )
 }

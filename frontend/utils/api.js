@@ -216,6 +216,6 @@ export const deleteApplication = async (id) => {
     }
     return await response.json()
   } catch (err) {
-    throw new Error(`Failed to delete application: ${err.message}`)
+    throw new Error(`Failed to delete application`)
   }
 }
