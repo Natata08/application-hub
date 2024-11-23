@@ -118,7 +118,6 @@ export const patchUserApplication = async (req, res) => {
   if (!id || isNaN(id)) {
     return res.status(400).json({ message: 'Invalid application ID' })
   }
-
   const {
     job_title,
     status,
@@ -237,5 +236,34 @@ export const patchUserApplicationCompany = async (req, res) => {
     res.status(500).json({
       error: `Error updating company data: ${error.message}`,
     })
+  }
+}
+
+//delete Application
+export const deleteUserApplicationsById = async (req, res) => {
+  const user_id = req.userInfo.userId
+  const id = parseInt(req.params.id)
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ message: 'Invalid application ID' })
+  }
+  try {
+    // Attempt to delete the application
+    const rowsDeleted = await knex('application')
+      .where({
+        'application.application_id': id,
+        'application.user_id': user_id,
+      })
+      .del()
+
+    if (rowsDeleted) {
+      return res.json({ message: 'Application was deleted' })
+    } else {
+      return res.status(404).json({ error: 'Application not found' })
+    }
+  } catch (error) {
+    console.error(error)
+    return res
+      .status(500)
+      .json({ error: `Error deleting application: ${error.message}` })
   }
 }
