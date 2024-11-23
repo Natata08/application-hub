@@ -46,6 +46,9 @@ const Notes = ({ applicationId }) => {
         color: `${theme.palette.text.primary} !important`,
         border: `1px solid ${theme.palette.divider}`,
       },
+      '.ql-toolbar.ql-snow .ql-formats': {
+        marginRight: '10px',
+      },
       // Style for active buttons
       '.ql-active': {
         '.ql-stroke': {
