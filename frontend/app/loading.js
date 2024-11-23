@@ -9,7 +9,7 @@ export default function Loading() {
       alignItems="center"
       height="100vh"
     >
-      <CircularProgress />
+      <CircularProgress color="text.primary" />
     </Box>
   )
 }
