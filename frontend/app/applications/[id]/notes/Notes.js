@@ -13,75 +13,83 @@ const Notes = ({ applicationId }) => {
   const [isSaving, setIsSaving] = useState(false)
   const theme = useTheme()
 
-  const editorStyles = {
-    '.ql-container': {
-      height: '300px',
-      backgroundColor: theme.palette.background.paper,
-      borderRadius: '0 0 4px 4px',
-      border: `1px solid ${theme.palette.divider}`,
-      borderTop: 0,
-      fontSize: '0.8rem',
-    },
-    '.ql-toolbar': {
-      backgroundColor: theme.palette.background.paper,
-      borderRadius: '4px 4px 0 0',
-      border: `1px solid ${theme.palette.divider}`,
-    },
-    '.ql-stroke': {
-      stroke: `${theme.palette.text.primary} !important`,
-    },
-    '.ql-fill': {
-      fill: `${theme.palette.text.primary} !important`,
-    },
-    '.ql-picker': {
-      color: `${theme.palette.text.primary} !important`,
-    },
-    '.ql-picker-options': {
-      backgroundColor: `${theme.palette.background.paper} !important`,
-      border: `1px solid ${theme.palette.divider}`,
-    },
-    '.ql-tooltip': {
-      backgroundColor: `${theme.palette.background.paper} !important`,
-      color: `${theme.palette.text.primary} !important`,
-      border: `1px solid ${theme.palette.divider}`,
-    },
-    // Style for active buttons
-    '.ql-active': {
+  const editorStyles = useMemo(
+    () => ({
+      '.ql-container': {
+        height: '300px',
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: '0 0 4px 4px',
+        border: `1px solid ${theme.palette.divider}`,
+        borderTop: 0,
+        fontSize: '0.8rem',
+      },
+      '.ql-toolbar': {
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: '4px 4px 0 0',
+        border: `1px solid ${theme.palette.divider}`,
+      },
       '.ql-stroke': {
-        stroke: `${theme.palette.secondary.main} !important`,
+        stroke: `${theme.palette.text.primary} !important`,
       },
       '.ql-fill': {
-        fill: `${theme.palette.secondary.main} !important`,
+        fill: `${theme.palette.text.primary} !important`,
       },
-    },
-    // Hover states
-    '.ql-toolbar button:hover': {
-      '.ql-stroke': {
-        stroke: `${theme.palette.secondary.main} !important`,
+      '.ql-picker': {
+        color: `${theme.palette.text.primary} !important`,
       },
-      '.ql-fill': {
-        fill: `${theme.palette.secondary.main} !important`,
+      '.ql-picker-options': {
+        backgroundColor: `${theme.palette.background.paper} !important`,
+        border: `1px solid ${theme.palette.divider}`,
       },
-    },
-    '.ql-toolbar .ql-picker-label:hover': {
-      color: `${theme.palette.secondary.main} !important`,
-    },
-    // Style for header dropdown
-    '.ql-picker.ql-header': {
-      '.ql-picker-label:hover': {
+      '.ql-tooltip': {
+        backgroundColor: `${theme.palette.background.paper} !important`,
+        color: `${theme.palette.text.primary} !important`,
+        border: `1px solid ${theme.palette.divider}`,
+      },
+      // Style for active buttons
+      '.ql-active': {
+        '.ql-stroke': {
+          stroke: `${theme.palette.secondary.main} !important`,
+        },
+        '.ql-fill': {
+          fill: `${theme.palette.secondary.main} !important`,
+        },
+      },
+      // Hover states
+      '.ql-toolbar button:hover': {
+        '.ql-stroke': {
+          stroke: `${theme.palette.secondary.main} !important`,
+        },
+        '.ql-fill': {
+          fill: `${theme.palette.secondary.main} !important`,
+        },
+      },
+      '.ql-toolbar .ql-picker-label:hover': {
         color: `${theme.palette.secondary.main} !important`,
       },
-      '.ql-picker-item:hover': {
-        color: `${theme.palette.secondary.main} !important`,
+      // Style for header dropdown
+      '.ql-picker.ql-header': {
+        '.ql-picker-label:hover': {
+          color: `${theme.palette.secondary.main} !important`,
+        },
+        '.ql-picker-item:hover': {
+          color: `${theme.palette.secondary.main} !important`,
+        },
+        '.ql-picker-item.ql-selected': {
+          color: `${theme.palette.secondary.main} !important`,
+        },
+        '.ql-picker-label.ql-active': {
+          color: `${theme.palette.secondary.main} !important`,
+        },
       },
-      '.ql-picker-item.ql-selected': {
-        color: `${theme.palette.secondary.main} !important`,
-      },
-      '.ql-picker-label.ql-active': {
-        color: `${theme.palette.secondary.main} !important`,
-      },
-    },
-  }
+    }),
+    [
+      theme.palette.background.paper,
+      theme.palette.divider,
+      theme.palette.text.primary,
+      theme.palette.secondary.main,
+    ]
+  )
 
   const { quill, quillRef } = useQuill({
     modules: {
@@ -140,7 +148,7 @@ const Notes = ({ applicationId }) => {
     theme.palette.divider,
   ])
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     setIsSaving(true)
     try {
       console.log('notes:', value)
@@ -151,13 +159,13 @@ const Notes = ({ applicationId }) => {
     } finally {
       setIsSaving(false)
     }
-  }
+  }, [quill, value])
 
-  const handleEdit = () => {
+  const handleEdit = useCallback(() => {
     setIsEditing(true)
-  }
+  }, [])
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setIsEditing(false)
     if (quill) {
       quill.enable(false)
@@ -168,7 +176,7 @@ const Notes = ({ applicationId }) => {
         setValue('')
       }
     }
-  }
+  }, [quill, lastSavedContent])
 
   const renderEditor = useMemo(
     () => (
@@ -181,7 +189,7 @@ const Notes = ({ applicationId }) => {
         <div ref={quillRef} />
       </Box>
     ),
-    [editorStyles, hasContent, isEditing]
+    [editorStyles, hasContent, isEditing, quillRef]
   )
 
   const renderEmptyState = useMemo(
