@@ -1,15 +1,15 @@
 'use client'
 import { useForm } from 'react-hook-form'
-import { useState, memo } from 'react'
+import { useState } from 'react'
 import { Typography, Button, Stack, Box } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
-import { editCompany } from '@/utils/api'
+import { patchCompany } from '@/utils/api'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
 
-export default memo(function EditFormApplication({ openModal, onClose }) {
+export default function CompanyEditForm({ openModal, onClose }) {
   const { application, updateApplication } = useApplicationContext()
   const { showNotification } = useNotification()
   const [loading, setLoading] = useState(false)
@@ -28,7 +28,7 @@ export default memo(function EditFormApplication({ openModal, onClose }) {
     setLoading(true)
     setError('')
     try {
-      await editCompany({
+      await patchCompany({
         id: application.application_id,
         updatedData,
       })
@@ -124,4 +124,4 @@ export default memo(function EditFormApplication({ openModal, onClose }) {
       </Box>
     </ModalWrapper>
   )
-})
+}

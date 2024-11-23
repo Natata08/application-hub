@@ -1,11 +1,11 @@
 'use client'
-import { useState, useCallback, memo } from 'react'
+import { useState, useCallback } from 'react'
 import { Typography, Stack, Link, Box, IconButton, Paper } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
-import EditFormCompany from './forms/EditFormCompany'
+import CompanyEditForm from './forms/CompanyEditForm'
 
-export default memo(function ApplicationHeader() {
+export default function ApplicationHeader() {
   const { application } = useApplicationContext()
   const [openModal, setOpenModal] = useState(false)
 
@@ -93,6 +93,7 @@ export default memo(function ApplicationHeader() {
           {application.company_website ? (
             <Link
               href={application.company_website}
+              target="_blank"
               sx={{
                 display: application.company_website ? 'block' : 'none',
                 pb: { xs: 1, md: 2 },
@@ -118,7 +119,7 @@ export default memo(function ApplicationHeader() {
             fontSize: { xs: '1rem', sm: '1.5rem' },
           }}
         >
-          {Number(application.salary || 0) === 0 ? (
+          {Number(application.salary ?? 0) === 0 ? (
             application.salary ? (
               'Unpaid'
             ) : (
@@ -131,7 +132,8 @@ export default memo(function ApplicationHeader() {
           )}
         </Typography>
       </Stack>
-      <EditFormCompany openModal={openModal} onClose={handleCloseModal} />
+
+      <CompanyEditForm openModal={openModal} onClose={handleCloseModal} />
     </Box>
   )
-})
+}

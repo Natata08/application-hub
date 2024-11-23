@@ -140,7 +140,7 @@ export const fetchStatuses = async () => {
   }
 }
 
-export const editApplication = async ({ id, updatedData }) => {
+export const patchApplication = async ({ id, updatedData }) => {
   const token = getLocalStorageItem('authToken')
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/applications/${id}`,
@@ -165,7 +165,7 @@ export const editApplication = async ({ id, updatedData }) => {
   }
 }
 
-export const editCompany = async ({ id, updatedData }) => {
+export const patchCompany = async ({ id, updatedData }) => {
   const token = getLocalStorageItem('authToken')
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/applications/${id}/company`,

@@ -1,5 +1,4 @@
 'use client'
-import { memo } from 'react'
 import { useParams } from 'next/navigation'
 import { Box, CircularProgress, Alert } from '@mui/material'
 import ApplicationHeader from './ApplicationHeader'
@@ -17,7 +16,7 @@ import {
 } from '@/components/Context/NotificationContext'
 import Notification from '../../../components/ui/Notification'
 
-const Content = memo(function Content() {
+const Content = () => {
   const { application, isLoading, error } = useApplicationContext()
   const { open, message, hideNotification } = useNotification()
 
@@ -58,7 +57,7 @@ const Content = memo(function Content() {
       </ResponsiveWrapper>
     </Box>
   )
-})
+}
 
 export default function Application() {
   const params = useParams()

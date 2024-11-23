@@ -1,5 +1,4 @@
 'use client'
-import { memo } from 'react'
 import {
   Box,
   Accordion,
@@ -13,7 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 
-export default memo(function JobInfo() {
+export default function JobInfo() {
   const { application } = useApplicationContext()
   const isMobile = useIsMobile()
 
@@ -97,7 +96,7 @@ export default memo(function JobInfo() {
               {application.applied_date ? (
                 <Typography variant={isMobile ? 'body2' : 'body1'}>
                   {new Date(application.applied_date).toLocaleDateString(
-                    'en-US'
+                    'en-GB'
                   )}
                 </Typography>
               ) : (
@@ -119,7 +118,7 @@ export default memo(function JobInfo() {
               {application.deadline_date ? (
                 <Typography variant={isMobile ? 'body2' : 'body1'}>
                   {new Date(application.deadline_date).toLocaleDateString(
-                    'en-US'
+                    'en-GB'
                   )}
                 </Typography>
               ) : (
@@ -157,4 +156,4 @@ export default memo(function JobInfo() {
       </Accordion>
     </Box>
   )
-})
+}

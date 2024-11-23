@@ -1,19 +1,19 @@
 'use client'
-import { useState, useCallback, memo } from 'react'
+import { useState, useCallback } from 'react'
 import Link from 'next/link'
 import { IconButton, Stack, Box } from '@mui/material'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 import ConfirmDeleteApplication from './forms/ConfirmDeleteApplication'
-import EditFormApplication from './forms/EditFormApplication'
+import ApplicationEditForm from './forms/ApplicationEditForm'
 
 const stylesIconButton = {
   color: 'secondary.main',
   fontSize: { xs: 20, sm: 24 },
 }
 
-export default memo(function ControlButton() {
+export default function ControlButton() {
   const [openModalDeletion, setOpenModalDeletion] = useState(false)
   const [openModalEdition, setOpenModalEdition] = useState(false)
 
@@ -59,7 +59,7 @@ export default memo(function ControlButton() {
         </IconButton>
       </Box>
 
-      <EditFormApplication
+      <ApplicationEditForm
         openModal={openModalEdition}
         onClose={handleCloseModalEdition}
       />
@@ -70,4 +70,4 @@ export default memo(function ControlButton() {
       />
     </Stack>
   )
-})
+}

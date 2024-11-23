@@ -1,15 +1,13 @@
 'use client'
 import { useForm, Controller } from 'react-hook-form'
-import { useState, useEffect, memo } from 'react'
+import { useState, useEffect } from 'react'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { enGB } from 'date-fns/locale'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import {
   Typography,
   Button,
-  Paper,
   Box,
-  Modal,
   Select,
   FormControl,
   InputLabel,
@@ -19,12 +17,12 @@ import {
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
 import DatePickerField from '@/components/ui/DatePickerField'
-import { editApplication, fetchStatuses } from '@/utils/api'
+import { patchApplication, fetchStatuses } from '@/utils/api'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
 
-export default memo(function EditFormApplication({ openModal, onClose }) {
+export default function ApplicationEditForm({ openModal, onClose }) {
   const { application, updateApplication } = useApplicationContext()
   const { showNotification } = useNotification()
   const [statuses, setStatuses] = useState([])
@@ -57,7 +55,7 @@ export default memo(function EditFormApplication({ openModal, onClose }) {
     setLoading(true)
     setError('')
     try {
-      await editApplication({
+      await patchApplication({
         id: application.application_id,
         updatedData,
       })
@@ -230,4 +228,4 @@ export default memo(function EditFormApplication({ openModal, onClose }) {
       </ModalWrapper>
     </LocalizationProvider>
   )
-})
+}
