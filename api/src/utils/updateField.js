@@ -5,7 +5,7 @@ export const updateField = (
   isDate = false,
   isInt = false
 ) => {
-  if (value !== undefined) {
+  if (value !== undefined && value !== null) {
     const trimmedValue = value.trim()
     if (trimmedValue === '') {
       data[key] = null
