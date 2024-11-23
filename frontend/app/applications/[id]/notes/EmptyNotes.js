@@ -1,27 +1,26 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, Button } from '@mui/material'
 import NotesIcon from '@mui/icons-material/Notes'
 
-const EmptyNotes = () => (
+const EmptyNotes = ({ onEdit }) => (
   <Box
     sx={{
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      gap: 1,
       py: 4,
-      height: '300px',
     }}
   >
-    <NotesIcon
-      sx={{
-        fontSize: 48,
-        color: 'text.secondary',
-        mb: 2,
-      }}
-    />
     <Typography variant="body1" color="text.secondary" align="center">
-      No notes yet. Click Edit to add some notes.
+      No notes yet.
     </Typography>
+    <Typography variant="body1" color="text.secondary" align="center">
+      Click Edit to add some notes.
+    </Typography>
+    <Button variant="contained" size="small" onClick={onEdit}>
+      Edit
+    </Button>
   </Box>
 )
 
