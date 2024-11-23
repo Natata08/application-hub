@@ -1,8 +1,9 @@
 import knex from '../database_client.js'
+import config from '../config.js'
 import jwt from 'jsonwebtoken'
 
 // JWT's secret Key
-const SECRET_KEY = process.env.JWT_SECRET
+const SECRET_KEY = config.JWT_SECRET
 
 // Middleware to verify the token for restrict outside reach to the db
 const verifyAuthToken = async (req, res, next) => {

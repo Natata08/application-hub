@@ -10,6 +10,7 @@ import logout from './routers/logout.js'
 import refreshToken from './routers/refreshToken.js'
 import user from './routers/user.js'
 import publicApi from './routers/publicApi.js'
+import config from './config.js'
 
 const app = express()
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
@@ -43,6 +44,6 @@ apiRouter.get('/check-db', async (req, res) => {
     console.error('Database connection error :', error)
   }
 })
-app.listen(process.env.PORT, () => {
-  console.log(`API listening on port ${process.env.PORT}`)
+app.listen(config.PORT, () => {
+  console.log(`API listening on port ${config.PORT}`)
 })

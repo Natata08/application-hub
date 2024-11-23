@@ -3,8 +3,9 @@ import jwt from 'jsonwebtoken'
 import knex from '../database_client.js'
 import { generateAuthResponse } from '../utils/auth.js'
 import { invalidateAuthToken, cleanupInvalidatedTokens } from '../utils/auth.js'
+import config from '../config.js'
 
-const SECRET_KEY = process.env.JWT_SECRET
+const SECRET_KEY = config.JWT_SECRET
 
 const refreshToken = express.Router()
 
