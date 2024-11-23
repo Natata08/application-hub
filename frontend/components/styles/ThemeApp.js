@@ -29,7 +29,7 @@ const sharedColors = {
   primary: { main: '#134B48' },
   secondary: { main: '#BB8266' },
   accent: { main: '#F4A261' },
-  paperCommon: { main: '#F7F7F7' },
+  comment: { main: '#6B6B6B' },
   dashboard: { main: '#C5D5D4' },
 }
 

@@ -118,7 +118,6 @@ export const patchUserApplication = async (req, res) => {
   if (!id || isNaN(id)) {
     return res.status(400).json({ message: 'Invalid application ID' })
   }
-
   const {
     job_title,
     status,
