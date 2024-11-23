@@ -7,12 +7,16 @@ const ApplicationContext = createContext(null)
 export const useApplicationContext = () => useContext(ApplicationContext)
 
 export const ApplicationProvider = ({ id, children }) => {
-  const { application, isLoading, error } = useApplicationById(id)
-  const [updatedApplication, setUpdatedApplication] = useState(null)
+  const {
+    application: initialApplicationData,
+    isLoading,
+    error,
+  } = useApplicationById(id)
+  const [application, setUpdatedApplication] = useState(null)
 
   useEffect(() => {
-    setUpdatedApplication(application || null)
-  }, [application])
+    setUpdatedApplication(initialApplicationData || null)
+  }, [initialApplicationData])
 
   const updateApplication = (newData) => {
     setUpdatedApplication((prevData) => ({
@@ -24,7 +28,7 @@ export const ApplicationProvider = ({ id, children }) => {
   return (
     <ApplicationContext.Provider
       value={{
-        application: updatedApplication,
+        application,
         isLoading,
         error,
         updateApplication,

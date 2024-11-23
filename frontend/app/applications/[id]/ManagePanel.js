@@ -17,10 +17,8 @@ import Notes from './tabs/Notes'
 import Interview from './tabs/Interview'
 import Documents from './tabs/Documents'
 import { useThemeContext } from '@/components/styles/ThemeApp'
-import { useApplicationContext } from '@/components/Context/ApplicationContext'
 
 export default function ManagePanel() {
-  const { application } = useApplicationContext()
   const { isLightMode } = useThemeContext()
   const isMobileSmall = useIsMobileSmall()
   const [value, setValue] = useState('Job Info')
@@ -51,31 +49,31 @@ export default function ManagePanel() {
       label: 'Job Info',
       value: 'Job Info',
       icon: <PreviewIcon />,
-      component: (application) => <JobInfo application={application} />,
+      component: <JobInfo />,
     },
     {
       label: 'Notes',
       value: 'Notes',
       icon: <NotesIcon />,
-      component: (application) => <Notes application={application} />,
+      component: <Notes />,
     },
     {
       label: 'Interview',
       value: 'Interview',
       icon: <PeopleIcon />,
-      component: (application) => <Interview application={application} />,
+      component: <Interview />,
     },
     {
       label: 'Documents',
       value: 'Documents',
       icon: <InsertDriveFileIcon />,
-      component: (application) => <Documents application={application} />,
+      component: <Documents />,
     },
     {
       label: 'Contacts',
       value: 'Contacts',
       icon: <PermContactCalendarIcon />,
-      component: (application) => <Contacts application={application} />,
+      component: <Contacts />,
     },
   ]
 
@@ -111,7 +109,7 @@ export default function ManagePanel() {
             value={item.value}
             sx={{ padding: 0, paddingTop: 2 }}
           >
-            {item.component(application)}
+            {item.component}
           </TabPanel>
         ))}
       </TabContext>
