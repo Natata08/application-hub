@@ -19,6 +19,7 @@ export default function Application() {
   const params = useParams()
   const { id } = params
   const { application, isLoading, error } = useApplicationById(id)
+  console.log(application)
 
   if (isLoading) {
     return (
@@ -54,7 +55,7 @@ export default function Application() {
       <Box component="main" sx={{ marginBottom: 4 }}>
         <ResponsiveWrapper>
           <Box>
-            <ControlButton />
+            <ControlButton application={application} />
             <ApplicationHeader application={application} />
             <StatusPanel application={application} />
             <ManagePanel application={application} />

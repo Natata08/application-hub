@@ -239,3 +239,36 @@ export const patchUserApplicationCompany = async (req, res) => {
     })
   }
 }
+
+export const deleteUserApplicationsById = async (req, res) => {
+  const user_id = req.userInfo.userId
+  const id = parseInt(req.params.id)
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ message: 'Invalid application ID' })
+  }
+
+  try {
+    const application = await getApplication(id, user_id)
+    if (!application) {
+      return res.status(404).json({
+        error: 'Application not found',
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Error fetching application data' })
+  }
+
+  try {
+    const applicationDelete = await knex('application')
+      .where({ 'application.application_id': id })
+      .del()
+    if (applicationDelete) {
+      res.json({ message: 'Application was deleted' })
+    }
+  } catch (error) {
+    console.error(error)
+    res
+      .status(500)
+      .json({ error: `Error deleting application: ${error.message}` })
+  }
+}

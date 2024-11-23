@@ -11,7 +11,7 @@ const stylesIconButton = {
   fontSize: { xs: 20, sm: 24 },
 }
 
-const ControlButton = () => {
+const ControlButton = ({ application }) => {
   const [openModal, setOpenModal] = useState(false)
 
   const handleOpenModal = () => {
@@ -52,6 +52,7 @@ const ControlButton = () => {
         <ConfirmDeleteApplication
           openModal={openModal}
           onClose={handleCloseModal}
+          application={application}
         />
       </Box>
     </Stack>

@@ -1,4 +1,9 @@
+'use client'
+import { useState } from 'react'
+import { deleteApplication } from '@/utils/api'
 import { Typography, Paper, Modal, Button, Stack } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { useRouter } from 'next/navigation'
 
 const style = {
   position: 'absolute',
@@ -20,13 +25,37 @@ const style = {
   },
 }
 
-export default function ConfirmDeleteApplication({ openModal, onClose }) {
-  const handleDeleteApplication = () => {
-    //setOpenModal(false)
+export default function ConfirmDeleteApplication({
+  openModal,
+  onClose,
+  application,
+}) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const router = useRouter()
+
+  const handleDeleteApplication = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      await deleteApplication(application.application_id)
+      router.push(`/user`)
+      onClose()
+    } catch (error) {
+      setError(error.message)
+    } finally {
+      setLoading(false)
+    }
   }
+
   return (
     <Modal open={openModal} onClose={onClose}>
       <Paper sx={style}>
+        {error && (
+          <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
+            {error}
+          </Typography>
+        )}
         <Typography
           gutterBottom
           variant="h4"
@@ -57,15 +86,26 @@ export default function ConfirmDeleteApplication({ openModal, onClose }) {
           >
             No, keep the application
           </Button>
-          <Button
-            variant="contained"
-            sx={{
-              width: { xs: '100%', sm: 'auto' },
-            }}
-            onClick={handleDeleteApplication}
-          >
-            Yes, delete the application
-          </Button>
+          {loading ? (
+            <LoadingButton
+              size="small"
+              loading={loading}
+              variant="outlined"
+              disabled
+            >
+              Disabled
+            </LoadingButton>
+          ) : (
+            <Button
+              variant="contained"
+              sx={{
+                width: { xs: '100%', sm: 'auto' },
+              }}
+              onClick={handleDeleteApplication}
+            >
+              Yes, delete the application
+            </Button>
+          )}
         </Stack>
       </Paper>
     </Modal>
