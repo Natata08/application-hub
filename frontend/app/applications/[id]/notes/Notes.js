@@ -96,6 +96,8 @@ const Notes = ({ applicationId }) => {
     readOnly: !isEditing,
   })
 
+  const hasContent = value && value !== '<p><br></p>'
+
   useEffect(() => {
     if (quill) {
       quill.on('text-change', () => {
@@ -118,6 +120,7 @@ const Notes = ({ applicationId }) => {
       // Handle container styling
       const container = document.querySelector('.ql-container')
       if (container) {
+        console.log('container:')
         container.style.border = isEditing
           ? `1px solid ${theme.palette.divider}`
           : 'none'
@@ -151,22 +154,32 @@ const Notes = ({ applicationId }) => {
 
   const handleCancel = () => {
     setIsEditing(false)
-    if (quill && lastSavedContent) {
-      quill.setContents(lastSavedContent)
+    if (quill) {
+      quill.enable(false)
+      if (lastSavedContent) {
+        quill.setContents(lastSavedContent)
+      } else {
+        quill.setText('')
+        setValue('')
+      }
     }
   }
 
   return (
     <Box sx={{ marginTop: 2, padding: 1 }}>
-      <Box sx={editorStyles}>
-        {!value && !isEditing ? <EmptyNotes /> : <div ref={quillRef} />}
+      <Box
+        sx={{
+          ...editorStyles,
+          display: hasContent || isEditing ? 'block' : 'none',
+        }}
+      >
+        <div ref={quillRef} />
       </Box>
+
+      {!hasContent && !isEditing && <EmptyNotes onEdit={handleEdit} />}
+
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-        {!isEditing ? (
-          <Button variant="contained" size="small" onClick={handleEdit}>
-            Edit
-          </Button>
-        ) : (
+        {isEditing ? (
           <>
             <Button variant="outlined" size="small" onClick={handleCancel}>
               Cancel
@@ -180,6 +193,12 @@ const Notes = ({ applicationId }) => {
               {isSaving ? 'Saving...' : 'Save'}
             </Button>
           </>
+        ) : (
+          hasContent && (
+            <Button variant="contained" size="small" onClick={handleEdit}>
+              Edit
+            </Button>
+          )
         )}
       </Box>
     </Box>
