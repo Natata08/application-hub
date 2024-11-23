@@ -2,7 +2,7 @@
 import { Box, Button } from '@mui/material'
 import { useQuill } from 'react-quilljs'
 import 'quill/dist/quill.snow.css'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTheme } from '@mui/material'
 import EmptyNotes from './EmptyNotes'
 
@@ -170,8 +170,8 @@ const Notes = ({ applicationId }) => {
     }
   }
 
-  return (
-    <Box sx={{ marginTop: 2, padding: 1 }}>
+  const renderEditor = useMemo(
+    () => (
       <Box
         sx={{
           ...editorStyles,
@@ -180,31 +180,49 @@ const Notes = ({ applicationId }) => {
       >
         <div ref={quillRef} />
       </Box>
+    ),
+    [editorStyles, hasContent, isEditing]
+  )
 
-      {!hasContent && !isEditing && <EmptyNotes onEdit={handleEdit} />}
+  const renderEmptyState = useMemo(
+    () => <EmptyNotes onEdit={handleEdit} />,
+    [handleEdit]
+  )
 
+  const renderEditButton = useMemo(
+    () => (
+      <Button variant="contained" size="small" onClick={handleEdit}>
+        Edit
+      </Button>
+    ),
+    [handleEdit]
+  )
+
+  const renderSaveCancelButtons = useMemo(
+    () => (
+      <>
+        <Button variant="outlined" size="small" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={handleSave}
+          disabled={isSaving}
+        >
+          {isSaving ? 'Saving...' : 'Save'}
+        </Button>
+      </>
+    ),
+    [handleCancel, handleSave, isSaving]
+  )
+
+  return (
+    <Box sx={{ marginTop: 2, padding: 1 }}>
+      {renderEditor}
+      {!hasContent && !isEditing && renderEmptyState}
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-        {isEditing ? (
-          <>
-            <Button variant="outlined" size="small" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={handleSave}
-              disabled={isSaving}
-            >
-              {isSaving ? 'Saving...' : 'Save'}
-            </Button>
-          </>
-        ) : (
-          hasContent && (
-            <Button variant="contained" size="small" onClick={handleEdit}>
-              Edit
-            </Button>
-          )
-        )}
+        {isEditing ? renderSaveCancelButtons : hasContent && renderEditButton}
       </Box>
     </Box>
   )
