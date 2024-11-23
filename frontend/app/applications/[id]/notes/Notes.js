@@ -100,9 +100,15 @@ const Notes = ({ applicationId }) => {
 
   useEffect(() => {
     if (quill) {
-      quill.on('text-change', () => {
+      const handleTextChange = () => {
         setValue(quill.root.innerHTML)
-      })
+      }
+
+      quill.on('text-change', handleTextChange)
+
+      return () => {
+        quill.off('text-change', handleTextChange)
+      }
     }
   }, [quill])
 
@@ -120,7 +126,6 @@ const Notes = ({ applicationId }) => {
       // Handle container styling
       const container = document.querySelector('.ql-container')
       if (container) {
-        console.log('container:')
         container.style.border = isEditing
           ? `1px solid ${theme.palette.divider}`
           : 'none'
