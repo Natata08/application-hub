@@ -10,15 +10,11 @@ import {
   ApplicationProvider,
   useApplicationContext,
 } from '@/components/Context/ApplicationContext'
-import {
-  NotificationProvider,
-  useNotification,
-} from '@/components/Context/NotificationContext'
+import { NotificationProvider } from '@/components/Context/NotificationContext'
 import Notification from '../../../components/ui/Notification'
 
 const Content = () => {
   const { application, isLoading, error } = useApplicationContext()
-  const { open, message, hideNotification } = useNotification()
 
   if (isLoading) {
     return (
@@ -40,12 +36,6 @@ const Content = () => {
     <Box component="main" sx={{ marginBottom: 4 }}>
       <ResponsiveWrapper>
         <Box>
-          <Notification
-            open={open}
-            onClose={hideNotification}
-            message={message}
-          />
-
           {application && (
             <>
               <ControlButton />
@@ -67,6 +57,7 @@ export default function Application() {
     <ProtectedRoute>
       <NotificationProvider>
         <ApplicationProvider id={id}>
+          <Notification />
           <Content />
         </ApplicationProvider>
       </NotificationProvider>
