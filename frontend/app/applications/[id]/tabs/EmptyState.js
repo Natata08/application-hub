@@ -1,6 +1,6 @@
 import { Box, Typography, Button } from '@mui/material'
 
-const EmptyNotes = ({ onEdit }) => (
+const EmptyState = ({ onAction, subject = 'content', buttonText = 'Add' }) => (
   <Box
     sx={{
       display: 'flex',
@@ -12,15 +12,15 @@ const EmptyNotes = ({ onEdit }) => (
     }}
   >
     <Typography variant="body1" color="text.secondary" align="center">
-      No notes yet.
+      {`No ${subject} yet.`}
     </Typography>
     <Typography variant="body1" color="text.secondary" align="center">
-      Click Edit to add some notes.
+      {`Click button below to add some ${subject}.`}
     </Typography>
-    <Button variant="contained" size="small" onClick={onEdit}>
-      Edit
+    <Button variant="contained" size="small" onClick={onAction}>
+      {buttonText}
     </Button>
   </Box>
 )
 
-export default EmptyNotes
+export default EmptyState

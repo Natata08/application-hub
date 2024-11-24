@@ -4,7 +4,7 @@ import { useQuill } from 'react-quilljs'
 import 'quill/dist/quill.snow.css'
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTheme } from '@mui/material'
-import EmptyNotes from './EmptyNotes'
+import EmptyState from './EmptyState'
 
 const Notes = ({ applicationId }) => {
   const [value, setValue] = useState('')
@@ -196,7 +196,7 @@ const Notes = ({ applicationId }) => {
   )
 
   const renderEmptyState = useMemo(
-    () => <EmptyNotes onEdit={handleEdit} />,
+    () => <EmptyState onAction={handleEdit} subject="notes" buttonText="Add" />,
     [handleEdit]
   )
 
