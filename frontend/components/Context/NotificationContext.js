@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useState, useContext, useCallback } from 'react'
+import { createContext, useState, useContext } from 'react'
 
 const NotificationContext = createContext()
 
@@ -9,14 +9,12 @@ export const NotificationProvider = ({ children }) => {
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
 
-  const showNotification = useCallback((msg) => {
+  const showNotification = (msg) => {
     setMessage(msg)
     setOpen(true)
-  }, [])
+  }
 
-  const hideNotification = useCallback(() => {
-    setOpen(false)
-  }, [])
+  const hideNotification = () => setOpen(false)
 
   return (
     <NotificationContext.Provider
