@@ -27,12 +27,9 @@ export default function LogInForm() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm()
 
-  const contactData = watch()
-
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (contactData) => {
     setLoading(true)
     setError('')
 
