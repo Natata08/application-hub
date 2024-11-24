@@ -1,5 +1,4 @@
 import { Box, Typography, Button } from '@mui/material'
-import NotesIcon from '@mui/icons-material/Notes'
 
 const EmptyNotes = ({ onEdit }) => (
   <Box
