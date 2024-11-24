@@ -130,7 +130,6 @@ This project assumes that there is a database already set up with tables and dat
    DB_PASSWORD=mysecretpassword
    DB_DATABASE_NAME=app_hub_db_local
    DB_USE_SSL=false
-   DATABASE_URL=postgresql://postgres:mysecretpassword@localhost:5432/app_hub_db_local?sslmode=disable
    ```
 
 7. Configure Frontend Environment Variables:
