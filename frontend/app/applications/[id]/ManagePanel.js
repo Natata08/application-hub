@@ -11,14 +11,14 @@ import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
 import PeopleIcon from '@mui/icons-material/People'
 import PreviewIcon from '@mui/icons-material/Preview'
 import { useIsMobileSmall } from '@/app/hooks/useIsMobile'
-import JobInfo from './JobInfo'
-import Contacts from './Contacts'
-import Notes from './notes/Notes'
-import Interview from './Interview'
-import Documents from './Documents'
+import JobInfo from './tabs/JobInfo'
+import Contacts from './tabs/Contacts'
+import Notes from './tabs/Notes'
+import Interview from './tabs/Interview'
+import Documents from './tabs/Documents'
 import { useThemeContext } from '@/components/styles/ThemeApp'
 
-export default function ManagePanel({ application }) {
+export default function ManagePanel() {
   const { isLightMode } = useThemeContext()
   const isMobileSmall = useIsMobileSmall()
   const [value, setValue] = useState('Job Info')
@@ -49,31 +49,31 @@ export default function ManagePanel({ application }) {
       label: 'Job Info',
       value: 'Job Info',
       icon: <PreviewIcon />,
-      component: (application) => <JobInfo application={application} />,
+      component: <JobInfo />,
     },
     {
       label: 'Notes',
       value: 'Notes',
       icon: <NotesIcon />,
-      component: (application) => <Notes application={application} />,
+      component: <Notes />,
     },
     {
       label: 'Interview',
       value: 'Interview',
       icon: <PeopleIcon />,
-      component: (application) => <Interview application={application} />,
+      component: <Interview />,
     },
     {
       label: 'Documents',
       value: 'Documents',
       icon: <InsertDriveFileIcon />,
-      component: (application) => <Documents application={application} />,
+      component: <Documents />,
     },
     {
       label: 'Contacts',
       value: 'Contacts',
       icon: <PermContactCalendarIcon />,
-      component: (application) => <Contacts application={application} />,
+      component: <Contacts />,
     },
   ]
 
@@ -109,7 +109,7 @@ export default function ManagePanel({ application }) {
             value={item.value}
             sx={{ padding: 0, paddingTop: 2 }}
           >
-            {item.component(application)}
+            {item.component}
           </TabPanel>
         ))}
       </TabContext>
