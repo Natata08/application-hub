@@ -267,3 +267,24 @@ export const deleteUserApplicationsById = async (req, res) => {
       .json({ error: `Error deleting application: ${error.message}` })
   }
 }
+
+export const getUserApplicationNotes = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id)
+    console.log(id)
+    if (!id || isNaN(id)) {
+      return res.status(400).json({ message: 'Invalid application ID' })
+    }
+    const notes = await knex('application_note')
+      .where('application_id', id)
+      .first()
+    if (!notes) {
+      return res.status(404).json({ message: "Application can't find" })
+    }
+    return res.json(notes)
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: `Error on getting notes : ${error.message}` })
+  }
+}
