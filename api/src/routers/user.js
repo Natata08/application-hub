@@ -9,6 +9,7 @@ import {
   patchUserApplicationCompany,
   deleteUserApplicationsById,
   getUserApplicationNotes,
+  postUserApplicationNotes,
 } from '../controllers/userController.js'
 import verifyAuthToken from '../middleware/tokenAuthentication.js'
 
@@ -28,5 +29,6 @@ user.patch(
 user.delete('/applications/:id', verifyAuthToken, deleteUserApplicationsById)
 
 user.get('/applications/:id/notes', verifyAuthToken, getUserApplicationNotes)
+user.post('/applications/:id/notes', verifyAuthToken, postUserApplicationNotes)
 
 export default user
