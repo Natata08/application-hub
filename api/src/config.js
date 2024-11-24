@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import envalid from 'envalid'
 
 const env = envalid.cleanEnv(process.env, {
@@ -9,7 +10,6 @@ const env = envalid.cleanEnv(process.env, {
   DB_PASSWORD: envalid.str(),
   DB_DATABASE_NAME: envalid.str(),
   DB_USE_SSL: envalid.bool(),
-  DATABASE_URL: envalid.url(),
   JWT_SECRET: envalid.str(),
   JWT_EXPIRY_IN_SECONDS: envalid.num({ default: 3600, min: 60 }),
 })
