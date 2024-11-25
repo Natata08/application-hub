@@ -10,6 +10,61 @@ const buildAbsoluteUrl = (relativeUrl) => {
   return new URL(relativeUrl, API_URL)
 }
 
+const apiRequest = async ({
+  relativeUrl,
+  method = 'GET',
+  data = null,
+  isAuthenticated = true,
+  customHeaders = {},
+}) => {
+  const url = buildAbsoluteUrl(relativeUrl)
+  const headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+    ...customHeaders,
+  }
+
+  if (isAuthenticated) {
+    const authToken = getLocalStorageItem('authToken')
+    if (!authToken) {
+      throw new Error('Authentication token not found')
+    }
+    headers.Authorization = `Bearer ${authToken}`
+  }
+
+  const config = {
+    method,
+    headers,
+    ...(data && { body: JSON.stringify(data) }),
+  }
+
+  try {
+    const response = await fetch(url, config)
+
+    switch (response.status) {
+      case 401:
+        throw new Error('Session expired. Please login again.')
+      case 403:
+        throw new Error('You do not have permission to perform this action.')
+      case 404:
+        throw new Error('Resource not found.')
+    }
+
+    if (response.ok) {
+      return response.json()
+    }
+
+    const errorData = await response.json().catch(() => ({
+      message: response.statusText || 'Unknown error occurred',
+    }))
+
+    throw new Error(errorData.message)
+  } catch (error) {
+    console.error('API Request Error:', error)
+    throw error
+  }
+}
+
 export const fetchQuote = async (setQuote, setIsLoading, setError) => {
   try {
     setIsLoading(true)
