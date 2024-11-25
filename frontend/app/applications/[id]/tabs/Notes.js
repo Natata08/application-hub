@@ -109,6 +109,26 @@ const Notes = ({ applicationId }) => {
         [{ header: [1, 2, 3, false] }],
         ['clean'],
       ],
+      clipboard: {
+        matchers: [
+          [
+            Node.ELEMENT_NODE,
+            function (node, delta) {
+              return delta.compose(
+                new Delta().retain(delta.length(), {
+                  color: false,
+                  background: false,
+                  font: false,
+                  size: false,
+                  indent: false,
+                  align: false,
+                  direction: false,
+                })
+              )
+            },
+          ],
+        ],
+      },
     },
     theme: 'snow',
     readOnly: !isEditing,
