@@ -1,14 +1,16 @@
 'use client'
 import { useState, useCallback } from 'react'
+import NextLink from 'next/link'
 import {
   Typography,
   Stack,
   Link,
   Box,
   IconButton,
-  Paper,
   Divider,
+  Button,
 } from '@mui/material'
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import EditIcon from '@mui/icons-material/Edit'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import CompanyEditForm from './forms/CompanyEditForm'
@@ -28,6 +30,16 @@ export default function ApplicationHeader() {
 
   return (
     <Box>
+      <NextLink href="/user" passHref>
+        <Button>
+          <KeyboardArrowLeft
+            sx={{ color: 'secondary.main', fontSize: { xs: 20, sm: 24 } }}
+          />{' '}
+          <Typography variant="button" color="secondary.main">
+            back
+          </Typography>
+        </Button>
+      </NextLink>
       <Stack
         sx={{
           justifyContent: 'space-between',
@@ -37,6 +49,7 @@ export default function ApplicationHeader() {
           paddingBottom: 1,
         }}
       >
+        {/* Job title */}
         <Typography
           component="h1"
           sx={{
@@ -46,6 +59,7 @@ export default function ApplicationHeader() {
         >
           {application.job_title}
         </Typography>
+
         <MenuButton />
       </Stack>
 
@@ -58,32 +72,32 @@ export default function ApplicationHeader() {
         }}
       >
         <Box>
-          <Stack
+          {/* Company name */}
+          <Typography
+            component="h3"
             sx={{
-              flexDirection: 'row',
-              gap: 1,
+              fontSize: { xs: '1rem', sm: '1.2rem' },
+              textTransform: 'uppercase',
             }}
           >
+            {application.company_name}
+          </Typography>
+
+          {/* Company location  */}
+          {application.company_location ? (
             <Typography
-              component="h3"
+              component="h2"
               sx={{ fontSize: { xs: '1rem', sm: '1.2rem' } }}
             >
-              {application.company_name}
+              {application.company_location}
             </Typography>
-            {application.company_location ? (
-              <Typography
-                component="h2"
-                sx={{ fontSize: { xs: '1rem', sm: '1.2rem' } }}
-              >
-                - {application.company_location}
-              </Typography>
-            ) : (
-              <Typography variant="overline" color="comment.main">
-                location
-              </Typography>
-            )}
-          </Stack>
+          ) : (
+            <Typography variant="overline" color="comment.main">
+              location
+            </Typography>
+          )}
 
+          {/* Company website  */}
           {application.company_website ? (
             <Link
               href={application.company_website}
@@ -143,6 +157,7 @@ export default function ApplicationHeader() {
           </Typography>
         </Stack>
 
+        {/* Salary */}
         <Stack
           sx={{
             alignItems: 'flex-end',

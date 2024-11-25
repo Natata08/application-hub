@@ -3,7 +3,6 @@ import { useParams } from 'next/navigation'
 import { Box, CircularProgress, Alert } from '@mui/material'
 import ApplicationHeader from './ApplicationHeader'
 import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
-import ControlButton from './ControlButton'
 import ManagePanel from './ManagePanel'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import {
@@ -38,7 +37,6 @@ const Content = () => {
         <Box>
           {application && (
             <>
-              <ControlButton />
               <ApplicationHeader />
               <ManagePanel />
             </>
