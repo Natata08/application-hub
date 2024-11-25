@@ -3,7 +3,7 @@ import { getLocalStorageItem } from './localStorage'
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const buildAbsoluteUrl = (relativeUrl) => {
-  if (relativeUrl.startsWith('http://')) {
+  if (relativeUrl.startsWith('http')) {
     return relativeUrl
   }
 
@@ -50,15 +50,13 @@ const apiRequest = async ({
         throw new Error('Resource not found.')
     }
 
+    const data = await response.json()
+
     if (response.ok) {
-      return response.json()
+      return data
     }
 
-    const errorData = await response.json().catch(() => ({
-      message: response.statusText || 'Unknown error occurred',
-    }))
-
-    throw new Error(errorData.message)
+    throw new Error(data.error || response.statusText || 'Request failed')
   } catch (error) {
     console.error('API Request Error:', error)
     throw error
@@ -66,24 +64,13 @@ const apiRequest = async ({
 }
 
 export const fetchQuote = async () => {
-  try {
-    const response = await fetch(
-      'https://api.api-ninjas.com/v1/quotes?category=success',
-      {
-        headers: {
-          'X-Api-Key': process.env.NEXT_PUBLIC_API_NINJAS_KEY,
-        },
-      }
-    )
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch quote')
-    }
-
-    return await response.json()
-  } catch (err) {
-    throw new Error(err.message)
-  }
+  return apiRequest({
+    relativeUrl: 'https://api.api-ninjas.com/v1/quotes?category=success',
+    isAuthenticated: false,
+    customHeaders: {
+      'X-Api-Key': process.env.NEXT_PUBLIC_API_NINJAS_KEY,
+    },
+  })
 }
 
 export const fetchApplications = async () => {
