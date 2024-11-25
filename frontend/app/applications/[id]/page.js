@@ -16,14 +16,6 @@ import Notification from '../../../components/ui/Notification'
 const Content = () => {
   const { application, isLoading, error } = useApplicationContext()
 
-  if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
-        <CircularProgress />
-      </Box>
-    )
-  }
-
   if (error) {
     return (
       <Alert severity="error" sx={{ m: 4 }}>
@@ -32,17 +24,24 @@ const Content = () => {
     )
   }
 
+  // it may take a while for `useState` to update the value for `application`
+  if (isLoading || !application) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+        <CircularProgress />
+      </Box>
+    )
+  }
+
   return (
     <Box component="main" sx={{ marginBottom: 4 }}>
       <ResponsiveWrapper>
         <Box>
-          {application && (
-            <>
-              <ControlButton />
-              <ApplicationHeader />
-              <ManagePanel />
-            </>
-          )}
+          <>
+            <ControlButton />
+            <ApplicationHeader />
+            <ManagePanel />
+          </>
         </Box>
       </ResponsiveWrapper>
     </Box>
