@@ -2,6 +2,14 @@ import { getLocalStorageItem } from './localStorage'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
+const buildAbsoluteUrl = (relativeUrl) => {
+  if (relativeUrl.startsWith('http://')) {
+    return relativeUrl
+  }
+
+  return new URL(relativeUrl, API_URL)
+}
+
 export const fetchQuote = async (setQuote, setIsLoading, setError) => {
   try {
     setIsLoading(true)
