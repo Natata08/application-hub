@@ -1,6 +1,6 @@
 import { getLocalStorageItem } from './localStorage'
 
-const API_URL = process.env.NEXT_PUBLIC_UPSTREAM_API_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const buildAbsoluteUrl = (relativeUrl) => {
   if (relativeUrl.startsWith('http')) {
