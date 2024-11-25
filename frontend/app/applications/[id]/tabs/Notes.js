@@ -5,6 +5,8 @@ import 'quill/dist/quill.snow.css'
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useTheme } from '@mui/material'
 import EmptyState from './EmptyState'
+import Quill from 'quill'
+const Delta = Quill.import('delta')
 
 const Notes = ({ applicationId }) => {
   const [value, setValue] = useState('')
@@ -16,7 +18,7 @@ const Notes = ({ applicationId }) => {
   const editorStyles = useMemo(
     () => ({
       '.ql-container': {
-        height: '300px',
+        minHeight: '200px',
         backgroundColor: theme.palette.background.paper,
         borderRadius: '0 0 4px 4px',
         border: `1px solid ${theme.palette.divider}`,
@@ -27,6 +29,11 @@ const Notes = ({ applicationId }) => {
         backgroundColor: theme.palette.background.paper,
         borderRadius: '4px 4px 0 0',
         border: `1px solid ${theme.palette.divider}`,
+      },
+      '.ql-editor': {
+        minHeight: '200px',
+        height: 'auto',
+        overflow: 'hidden', // Change from 'auto' to 'hidden'
       },
       '.ql-stroke': {
         stroke: `${theme.palette.text.primary} !important`,
