@@ -1,13 +1,12 @@
 import { getLocalStorageItem } from './localStorage'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+const API_URL = process.env.NEXT_PUBLIC_UPSTREAM_API_URL
 
 const buildAbsoluteUrl = (relativeUrl) => {
   if (relativeUrl.startsWith('http')) {
     return relativeUrl
   }
-
-  return new URL(relativeUrl, API_URL)
+  return `${API_URL}${relativeUrl}`
 }
 
 const apiRequest = async ({
@@ -18,6 +17,7 @@ const apiRequest = async ({
   customHeaders = {},
 }) => {
   const url = buildAbsoluteUrl(relativeUrl)
+
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -73,194 +73,45 @@ export const fetchQuote = async () => {
   })
 }
 
-export const fetchApplications = async () => {
-  try {
-    const authToken = getLocalStorageItem('authToken')
+export const fetchStatuses = async () =>
+  apiRequest({
+    relativeUrl: '/publicApi/application/status',
+    isAuthenticated: false,
+  })
 
-    if (!authToken) {
-      throw new Error('Authentication token not found')
-    }
+export const fetchApplications = async () =>
+  apiRequest({
+    relativeUrl: '/user/applications',
+  })
 
-    const response = await fetch(`${API_URL}/user/applications`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    })
-    // For unauthorized
-    if (response.status === 401) {
-      throw new Error('Session expired. Please login again.')
-    }
+export const fetchApplicationById = async (id) =>
+  apiRequest({
+    relativeUrl: `/user/applications/${id}`,
+  })
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.statusText}`, response.status)
-    }
+export const addApplication = async (appData) =>
+  apiRequest({
+    relativeUrl: '/user/applications',
+    method: 'POST',
+    data: appData,
+  })
 
-    return await response.json()
-  } catch (err) {
-    throw new Error('Failed to fetch applications')
-  }
-}
+export const patchApplication = async ({ id, updatedData }) =>
+  apiRequest({
+    relativeUrl: `/user/applications/${id}`,
+    method: 'PATCH',
+    data: updatedData,
+  })
 
-export const fetchApplicationById = async (id) => {
-  try {
-    const authToken = getLocalStorageItem('authToken')
+export const patchCompany = async ({ id, updatedData }) =>
+  apiRequest({
+    relativeUrl: `/user/applications/${id}/company`,
+    method: 'PATCH',
+    data: updatedData,
+  })
 
-    if (!authToken) {
-      throw new Error('Authentication token not found')
-    }
-
-    const response = await fetch(`${API_URL}/user/applications/${id}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    })
-    // For unauthorized
-    if (response.status === 401) {
-      throw new Error('Session expired. Please login again.')
-    }
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.statusText}`, response.status)
-    }
-    return await response.json()
-  } catch (err) {
-    throw new Error('Failed to fetch applications')
-  }
-}
-
-export const addApplication = async (appData) => {
-  const token = getLocalStorageItem('authToken')
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/user/applications`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`, // Sending token for verification
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(appData),
-    }
-  )
-
-  if (!response.ok) {
-    let errorData
-    try {
-      errorData = await response.json()
-    } catch {
-      errorData = { message: response.json() || 'Unknown' }
-    }
-    throw new Error(`Error ${response.status}: ${errorData.message}`)
-  }
-  const result = await response.json()
-  return result
-}
-
-export const fetchStatuses = async () => {
-  try {
-    const response = await fetch(`${API_URL}/publicApi/application/status`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    })
-
-    // Check if the response is successful (status code 200)
-    if (!response.ok) {
-      throw new Error('Failed to fetch statuses')
-    }
-
-    // Parse the response JSON and return it
-    const statuses = await response.json()
-    return statuses
-  } catch (error) {
-    console.error(error)
-    throw new Error('Failed to fetch statuses')
-  }
-}
-
-export const patchApplication = async ({ id, updatedData }) => {
-  const token = getLocalStorageItem('authToken')
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/user/applications/${id}`,
-    {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedData),
-    }
-  )
-
-  if (!response.ok) {
-    let errorData
-    try {
-      errorData = await response.json()
-    } catch {
-      errorData = { message: response.json() || 'Unknown' }
-    }
-    throw new Error(`Error ${response.status}: ${errorData.message}`)
-  }
-}
-
-export const patchCompany = async ({ id, updatedData }) => {
-  const token = getLocalStorageItem('authToken')
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/user/applications/${id}/company`,
-    {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedData),
-    }
-  )
-
-  if (!response.ok) {
-    let errorData
-    try {
-      errorData = await response.json()
-    } catch {
-      errorData = { message: response.json() || 'Unknown' }
-    }
-    throw new Error(`Error ${response.status}: ${errorData.message}`)
-  }
-}
-
-export const deleteApplication = async (id) => {
-  try {
-    const authToken = getLocalStorageItem('authToken')
-
-    if (!authToken) {
-      throw new Error('Authentication token not found')
-    }
-
-    const response = await fetch(`${API_URL}/user/applications/${id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    })
-    // For unauthorized
-    if (response.status === 401) {
-      throw new Error('Session expired. Please login again.')
-    }
-
-    if (!response.ok) {
-      throw new Error(`API error: ${response.statusText}`, response.status)
-    }
-    return await response.json()
-  } catch (err) {
-    throw new Error(`Failed to delete application`)
-  }
-}
+export const deleteApplication = async (id) =>
+  apiRequest({
+    relativeUrl: `/user/applications/${id}`,
+    method: 'DELETE',
+  })
