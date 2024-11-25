@@ -93,18 +93,32 @@ const QuoteDisplay = ({ quote }) => (
 export default function MotivationalQuote() {
   const [quote, setQuote] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [isError, setIsError] = useState(false)
   const [refresh, setRefresh] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    fetchQuote(setQuote, setIsLoading, setError)
+    const getQuote = async () => {
+      setIsLoading(true)
+      setIsError(false)
+
+      try {
+        const data = await fetchQuote()
+        setQuote(data[0])
+      } catch (err) {
+        console.error('Quote fetch error:', err.message)
+        setIsError(true)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    getQuote()
 
     return () => {
-      // Cleanup function to cancel any pending requests
       setQuote(null)
       setIsLoading(false)
-      setError(null)
+      setIsError(false)
     }
   }, [refresh])
 
@@ -221,8 +235,8 @@ export default function MotivationalQuote() {
               }}
             >
               {isLoading && <Loading />}
-              {error && <ErrorMessage />}
-              {!isLoading && !error && <QuoteDisplay quote={quote} />}
+              {isError && <ErrorMessage />}
+              {!isLoading && !isError && <QuoteDisplay quote={quote} />}
             </Box>
           </CardContent>
         </Card>

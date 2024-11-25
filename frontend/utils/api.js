@@ -65,10 +65,8 @@ const apiRequest = async ({
   }
 }
 
-export const fetchQuote = async (setQuote, setIsLoading, setError) => {
+export const fetchQuote = async () => {
   try {
-    setIsLoading(true)
-    setError(null)
     const response = await fetch(
       'https://api.api-ninjas.com/v1/quotes?category=success',
       {
@@ -82,12 +80,9 @@ export const fetchQuote = async (setQuote, setIsLoading, setError) => {
       throw new Error('Failed to fetch quote')
     }
 
-    const data = await response.json()
-    setQuote(data[0])
+    return await response.json()
   } catch (err) {
-    setError(err.message)
-  } finally {
-    setIsLoading(false)
+    throw new Error(err.message)
   }
 }
 
