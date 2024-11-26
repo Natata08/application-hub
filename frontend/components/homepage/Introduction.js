@@ -144,8 +144,8 @@ export default function Introduction() {
                 ? '/desktopDark.png'
                 : '/desktopLight.png'
           }
+          priority={true}
           alt="Example Image"
-          layout="responsive"
           width={isMobile ? 420 : 1000}
           height={isMobile ? 600 : 500}
           style={{

@@ -6,7 +6,6 @@ import { useIsMobile } from '@/app/hooks/useIsMobile'
 const FeaturesLine = () => {
   const isMobile = useIsMobile()
 
-  console.log(isMobile)
   return (
     <Box
       sx={{
