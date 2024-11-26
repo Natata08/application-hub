@@ -18,7 +18,7 @@ import {
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
 import DatePickerField from '@/components/ui/DatePickerField'
-import { patchApplication, fetchStatuses } from '@/utils/api'
+import { patchApplication, fetchApplicationStatuses } from '@/utils/api'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
@@ -40,7 +40,7 @@ export default function ApplicationEditForm({ openModal, onClose }) {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const statusData = await fetchStatuses()
+        const statusData = await fetchApplicationStatuses()
         setStatuses(statusData)
       } catch (err) {
         setError('Failed to fetch statuses')

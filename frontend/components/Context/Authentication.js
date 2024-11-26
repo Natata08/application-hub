@@ -8,7 +8,7 @@ import React, {
   useCallback,
 } from 'react'
 import { useRouter } from 'next/navigation'
-import { makeLogoutApiCall, makeRefreshTokenApiCall } from '@/utils/authApi.js'
+import { logoutUser, refreshToken } from '@/utils/api'
 import { jwtDecode } from 'jwt-decode'
 
 const AuthContext = createContext()
@@ -71,10 +71,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = useCallback(async () => {
     try {
-      const token = localStorage.getItem('authToken')
-      if (token) {
-        await makeLogoutApiCall(token)
-      }
+      await logoutUser()
     } catch (err) {
       console.error('Logout failed:', err)
     } finally {
@@ -88,10 +85,7 @@ export const AuthProvider = ({ children }) => {
 
   const refreshAuthToken = async () => {
     try {
-      const currentToken = localStorage.getItem('authToken')
-      if (!currentToken) return false
-
-      const data = await makeRefreshTokenApiCall(currentToken)
+      const data = await refreshToken()
       if (data.token) {
         localStorage.setItem('authToken', data.token)
         return true
