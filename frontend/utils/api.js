@@ -102,7 +102,7 @@ export const logoutUser = () =>
     isAuthenticated: true,
   })
 
-export const fetchStatuses = () =>
+export const fetchApplicationStatuses = () =>
   apiRequest({
     url: '/publicApi/application/status',
     isAuthenticated: false,
