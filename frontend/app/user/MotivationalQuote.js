@@ -23,21 +23,14 @@ import { fetchQuote } from '@/utils/api'
 
 // Loading Component
 const Loading = () => (
-  <Box
-    sx={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: 100,
-    }}
-  >
+  <Box>
     <CircularProgress size={24} />
   </Box>
 )
 
 // Error Component
 const ErrorMessage = () => (
-  <Box sx={{ width: '100%', textAlign: 'center' }}>
+  <Box sx={{ textAlign: 'center' }}>
     <Typography color="error" sx={{ mb: 1 }}>
       Sorry, no quotes today
     </Typography>
@@ -54,6 +47,7 @@ const QuoteDisplay = ({ quote }) => (
       sx={{
         fontSize: 40,
         opacity: 0.2,
+        alignSelf: 'flex-start',
       }}
     />
     <Typography
@@ -227,16 +221,20 @@ export default function MotivationalQuote() {
               sx={{
                 mt: 4,
                 gap: 2,
-                minHeight: 100,
+                minHeight: 120,
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: isLoading ? 'center' : 'flex-start',
-                alignItems: isLoading ? 'center' : 'flex-start',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              {isLoading && <Loading />}
-              {isError && <ErrorMessage />}
-              {!isLoading && !isError && <QuoteDisplay quote={quote} />}
+              {isLoading ? (
+                <Loading />
+              ) : isError ? (
+                <ErrorMessage />
+              ) : (
+                <QuoteDisplay quote={quote} />
+              )}
             </Box>
           </CardContent>
         </Card>
