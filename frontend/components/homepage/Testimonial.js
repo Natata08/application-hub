@@ -62,7 +62,7 @@ export default function TestimonialComponent() {
                   </Grid>
                   <Box>
                     <Typography variant="h6">{testimonial.name}</Typography>
-                    <Typography variant="body2">
+                    <Typography variant="body2" sx={{ color: 'text.footer' }}>
                       {testimonial.position}
                     </Typography>
                   </Box>
