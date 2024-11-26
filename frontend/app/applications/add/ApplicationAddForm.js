@@ -3,12 +3,10 @@ import {
   Button,
   Paper,
   Box,
-  Modal,
   Select,
   FormControl,
   InputLabel,
   MenuItem,
-  Fade,
 } from '@mui/material'
 import InputField from '@/components/ui/InputField'
 import DatePickerField from '@/components/ui/DatePickerField'
@@ -21,17 +19,16 @@ import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/utils/api'
 import { fetchStatuses } from '@/utils/api'
 import { useRouter } from 'next/navigation'
+import UnsavedChangesModal from './UnsavedChangesModal'
 
 export default function AddApplicationForm() {
   const theme = useTheme()
+  const router = useRouter()
 
   const [statuses, setStatuses] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [dirtyState, setDirtyState] = useState(false)
-  const [showModal, setShowModal] = useState(false)
-  const [nextRoute, setNextRoute] = useState(null)
-  const router = useRouter()
 
   const {
     register,
@@ -64,24 +61,6 @@ export default function AddApplicationForm() {
     }
   }, [statuses, setValue])
 
-  // Intercept internal navigation
-  useEffect(() => {
-    const originalPush = router.push
-    router.push = async (url, as, options) => {
-      if (Object.keys(dirtyFields).length !== 0 && dirtyState) {
-        setNextRoute(() => () => originalPush(url, as, options)) // Storing next route
-        setShowModal(true) // Showing warning modal
-
-        return // Abort navigation
-      }
-
-      originalPush(url, as, options)
-    }
-    return () => {
-      router.push = originalPush // Restore original push method
-    }
-  }, [dirtyState, router])
-
   const handleAppFormSubmit = async (appData) => {
     setDirtyState(false)
     setLoading(true)
@@ -94,17 +73,6 @@ export default function AddApplicationForm() {
     } finally {
       setLoading(false)
     }
-  }
-
-  // Modal Handlers
-  const handleConfirmLeave = () => {
-    setShowModal(false)
-
-    if (nextRoute) nextRoute() // Proceed with the stored route
-  }
-
-  const handleCancelLeave = () => {
-    setShowModal(false)
   }
 
   return (
@@ -262,57 +230,7 @@ export default function AddApplicationForm() {
           </Paper>
         </Box>
       </LocalizationProvider>
-
-      {/*  Unsaved Changes Modal  */}
-      <Modal open={showModal} onClose={handleCancelLeave} closeAfterTransition>
-        <Fade in={showModal}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: 400,
-              bgcolor: 'background.paper',
-              boxShadow: 24,
-              p: 3,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '30px',
-              padding: '30px',
-            }}
-          >
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              You have unsaved changes. Are you sure you want to leave without
-              saving?
-            </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '100%',
-              }}
-            >
-              <Button
-                variant="contained"
-                onClick={handleCancelLeave}
-                color="primary"
-              >
-                Stay
-              </Button>
-              <Button
-                variant="contained"
-                onClick={handleConfirmLeave}
-                color="secondary"
-              >
-                Leave
-              </Button>
-            </Box>
-          </Box>
-        </Fade>
-      </Modal>
+      <UnsavedChangesModal dirtyFields={dirtyFields} dirtyState={dirtyState} />
     </>
   )
 }
