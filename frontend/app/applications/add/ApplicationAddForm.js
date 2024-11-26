@@ -17,7 +17,7 @@ import { enGB } from 'date-fns/locale'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { useTheme } from '@mui/material/styles'
 import { addApplication } from '@/utils/api'
-import { fetchStatuses } from '@/utils/api'
+import { fetchApplicationStatuses } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import UnsavedChangesModal from './UnsavedChangesModal'
 
@@ -46,7 +46,7 @@ export default function AddApplicationForm() {
   useEffect(() => {
     const fetchStatus = async () => {
       try {
-        const statusData = await fetchStatuses()
+        const statusData = await fetchApplicationStatuses()
         setStatuses(statusData)
       } catch (err) {
         setError('Failed to fetch statuses')
