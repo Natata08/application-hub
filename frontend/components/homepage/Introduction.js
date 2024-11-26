@@ -3,11 +3,13 @@ import { Grid, Typography, Button, Container } from '@mui/material'
 import Image from 'next/image'
 import { useTheme } from '@mui/material/styles'
 import { useIsMobileSmall } from '@/app/hooks/useIsMobile'
+import { useAuth } from '../Context/Authentication'
 
 export default function Introduction() {
   const theme = useTheme()
   const isDarkMode = theme.palette.mode === 'dark'
   const isMobile = useIsMobileSmall()
+  const { isLoggedIn } = useAuth()
 
   return (
     <Grid
@@ -101,7 +103,7 @@ export default function Introduction() {
           <Button
             variant="contained"
             color="primary"
-            href="/register"
+            href={isLoggedIn ? '/user' : '/register'}
             sx={{
               px: { xs: 3, sm: 2 },
               py: { xs: 1, sm: 1 },
@@ -109,7 +111,7 @@ export default function Introduction() {
               alignSelf: 'center',
             }}
           >
-            Sign Up
+            {isLoggedIn ? 'DashBoard' : 'Sign Up'}
           </Button>
         </Container>
       </Grid>
