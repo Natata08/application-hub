@@ -49,7 +49,6 @@ export default function ApplicationHeader() {
           paddingBottom: 1,
         }}
       >
-        {/* Job title */}
         <Typography
           component="h1"
           sx={{
@@ -72,7 +71,6 @@ export default function ApplicationHeader() {
         }}
       >
         <Box>
-          {/* Company name */}
           <Typography
             component="h3"
             sx={{
@@ -83,7 +81,6 @@ export default function ApplicationHeader() {
             {application.company_name}
           </Typography>
 
-          {/* Company location  */}
           {application.company_location ? (
             <Typography
               component="h2"
@@ -97,7 +94,6 @@ export default function ApplicationHeader() {
             </Typography>
           )}
 
-          {/* Company website  */}
           {application.company_website ? (
             <Link
               href={application.company_website}
@@ -133,7 +129,6 @@ export default function ApplicationHeader() {
           paddingY: 1,
         }}
       >
-        {/* Status */}
         <Stack
           sx={{
             alignItems: 'flex-start',
@@ -157,7 +152,6 @@ export default function ApplicationHeader() {
           </Typography>
         </Stack>
 
-        {/* Salary */}
         <Stack
           sx={{
             alignItems: 'flex-end',

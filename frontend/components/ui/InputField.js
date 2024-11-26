@@ -50,19 +50,24 @@ export default function InputField({
         required: required ? `${label} is required` : undefined,
       })}
       helperText={errors[id] ? errors[id].message : helperText}
-      InputProps={{
-        endAdornment: type === 'password' && (
-          <InputAdornment position="end">
-            <IconButton
-              aria-label={showPassword ? 'Hide password' : 'Show password'}
-              onClick={handleClickShowPassword}
-              onMouseDown={handleMouseDownPassword}
-              edge="end"
-            >
-              {showPassword ? <Visibility /> : <VisibilityOff />}
-            </IconButton>
-          </InputAdornment>
-        ),
+      slotProps={{
+        input: {
+          endAdornment: type === 'password' && (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          ),
+          startAdornment: id === 'salary' && (
+            <InputAdornment position="start">DKK</InputAdornment>
+          ),
+        },
       }}
       autoComplete={type === 'password' ? 'current-password' : 'off'}
     />
