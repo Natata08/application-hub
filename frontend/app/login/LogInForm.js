@@ -12,9 +12,9 @@ import {
   Alert,
 } from '@mui/material'
 import InputField from '@/components/ui/InputField'
-import { loginUser } from '@/utils/api'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SaveIcon from '@mui/icons-material/Save'
+import { loginUser } from '@/utils/api'
 import { useAuth } from '@/components/Context/Authentication'
 
 export default function LogInForm() {

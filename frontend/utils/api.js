@@ -80,6 +80,14 @@ export const loginUser = (contactData) =>
     isAuthenticated: false,
   })
 
+export const registerUser = (userData) =>
+  apiRequest({
+    url: '/register',
+    method: 'POST',
+    data: userData,
+    isAuthenticated: false,
+  })
+
 export const fetchStatuses = () =>
   apiRequest({
     url: '/publicApi/application/status',
