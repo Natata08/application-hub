@@ -23,18 +23,23 @@ const testimonials = [
 export default function TestimonialComponent() {
   return (
     <>
-      <Box marginTop={10}>
+      <Box>
         <Grid
           container
           spacing={4}
-          style={{ maxWidth: '1200px', margin: '0 auto' }}
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
         >
           {testimonials.map((testimonial, index) => (
             <Grid
               xs={12}
               md={4}
               key={index}
-              style={{ minWidth: '300px', maxWidth: '350px' }}
+              style={{ minWidth: '300px', maxWidth: '350px', display: 'flex' }}
             >
               <Card
                 sx={{
