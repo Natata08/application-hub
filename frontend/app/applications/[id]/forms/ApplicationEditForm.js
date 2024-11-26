@@ -21,6 +21,7 @@ import { patchApplication, fetchStatuses } from '@/utils/api'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
+import JobDescriptionInput from '@/components/ui/JobDescriptionInput'
 
 export default function ApplicationEditForm({ openModal, onClose }) {
   const { application, updateApplication } = useApplicationContext()
@@ -163,16 +164,6 @@ export default function ApplicationEditForm({ openModal, onClose }) {
             />
           </FormControl>
           <InputField
-            id="job_description"
-            label="Job Description"
-            defaultValue={application.job_description}
-            register={register}
-            errors={errors}
-            multiline
-            rows={3}
-          />
-
-          <InputField
             id="salary"
             label="Salary"
             defaultValue={application.salary}
@@ -182,6 +173,20 @@ export default function ApplicationEditForm({ openModal, onClose }) {
               value: /^(?:0|[1-9]\d*)([.,]\d+)?$/,
               message: 'Salary must be a positive number or zero',
             }}
+          />
+
+          <Controller
+            name="job_description"
+            control={control}
+            render={({ field: { onChange } }) => (
+              <JobDescriptionInput
+                id="job_description"
+                label="Job Description"
+                defaultValue={application.job_description || ''}
+                onChange={onChange}
+                error={errors.job_description}
+              />
+            )}
           />
 
           <Stack
