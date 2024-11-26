@@ -81,7 +81,7 @@ export default function Introduction() {
           >
             Make your job search much easier!
             <Typography
-              variant="h5"
+              variant="body1"
               sx={{
                 color: '#FFB384',
                 mb: 0,
