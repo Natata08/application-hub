@@ -72,6 +72,14 @@ export const fetchQuote = () =>
     },
   })
 
+export const loginUser = (contactData) =>
+  apiRequest({
+    url: '/login',
+    method: 'POST',
+    data: contactData,
+    isAuthenticated: false,
+  })
+
 export const fetchStatuses = () =>
   apiRequest({
     url: '/publicApi/application/status',
