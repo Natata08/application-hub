@@ -33,7 +33,7 @@ export default function ApplicationDeleteModal({ openModal, onClose }) {
   return (
     <ModalWrapper
       open={openModal}
-      onClose={onClose}
+      handleClose={onClose}
       title="Are you sure you want to delete this application?"
     >
       <Box>

@@ -80,6 +80,17 @@ export default function CompanyEditForm({ openModal, onClose }) {
           errors={errors}
         />
 
+        <Typography
+          variant="body2"
+          sx={{
+            p: 2,
+            color: 'text.secondary',
+          }}
+        >
+          *Note: Changes made to this company&apos;s details will apply to all
+          applications associated with the same company.
+        </Typography>
+
         <Stack
           spacing={2}
           direction="row"
