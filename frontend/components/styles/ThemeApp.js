@@ -10,6 +10,8 @@ const colors = {
   accent: '#FF8F5C', // Slightly warmer accent shade
   neutralLight: '#FFFFFF', // White for light background
   neutralDark: '#1F3A3A', // Softened dark green for dark background
+  neutralSecondLight: '#d2e8d46e', // Light green with transparent
+  neutralSecondDark: '#334c4c', //
   textPrimaryLight: '#126C62', // Primary text in light theme
   textSecondaryLight: '#6B6B6B', // Secondary text in light theme
   textPrimaryDark: '#FFFFFF', // Primary text in dark theme
@@ -92,6 +94,7 @@ export const lightTheme = createTheme({
     },
     background: {
       default: colors.neutralLight,
+      defaultSecond: colors.neutralSecondLight,
       paper: colors.paperLight,
       footer: colors.footerDark,
       cardYellow: colors.cardYellow,
@@ -145,6 +148,7 @@ export const darkTheme = createTheme({
     },
     background: {
       default: colors.neutralDark,
+      defaultSecond: colors.neutralSecondDark,
       paper: colors.paperDark,
       footer: colors.paperDark,
       cardBlue: colors.cardBlueDark,

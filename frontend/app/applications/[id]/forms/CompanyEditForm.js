@@ -19,12 +19,9 @@ export default function CompanyEditForm({ openModal, onClose }) {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm()
 
-  const updatedData = watch()
-
-  const handleEditCompanySubmit = async () => {
+  const handleEditCompanySubmit = async (updatedData) => {
     setLoading(true)
     setError('')
     try {

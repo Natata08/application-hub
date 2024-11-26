@@ -7,12 +7,13 @@ import Grid from '@mui/material/Grid2'
 import Introduction from './Introduction'
 import CardLeftCurve from '../ui/CardLeftCurve'
 import CardRightCurve from '../ui/CardRightCurve'
+import FeaturesLine from './FeaturesLine'
 
 export default function HomePage() {
   return (
     <Box>
       <Introduction />
-
+      <FeaturesLine />
       <CardLeftCurve
         width="100vw"
         backgroundColor="background.cardYellow"

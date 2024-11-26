@@ -35,10 +35,7 @@ export default function ApplicationEditForm({ openModal, onClose }) {
     handleSubmit,
     control,
     formState: { errors },
-    watch,
   } = useForm()
-
-  const updatedData = watch()
 
   useEffect(() => {
     const fetchStatus = async () => {
@@ -52,7 +49,7 @@ export default function ApplicationEditForm({ openModal, onClose }) {
     fetchStatus()
   }, [])
 
-  const handleEditApplicationSubmit = async () => {
+  const handleEditApplicationSubmit = async (updatedData) => {
     setLoading(true)
     setError('')
     try {

@@ -27,12 +27,9 @@ export default function SignUpForm() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm()
 
-  const userData = watch()
-
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (userData) => {
     setLoading(true)
     setError('')
 
