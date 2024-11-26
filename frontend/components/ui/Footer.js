@@ -101,6 +101,7 @@ export default function Footer() {
             justifyContent: { xs: 'none', sm: 'space-between' },
             flexDirection: 'row',
             alignItems: 'flex-start',
+            padding: '15px',
           }}
         >
           <Box paddingX="10px">
