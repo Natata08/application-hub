@@ -2,21 +2,21 @@ import { getLocalStorageItem } from './localStorage'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-const buildAbsoluteUrl = (relativeUrl) => {
-  if (relativeUrl.startsWith('http')) {
-    return relativeUrl
+const buildAbsoluteUrl = (url) => {
+  if (/^https?:\/\//i.test(url)) {
+    return url
   }
-  return `${API_URL}${relativeUrl}`
+  return `${API_URL}${url}`
 }
 
 const apiRequest = async ({
-  relativeUrl,
+  url,
   method = 'GET',
   data = null,
   isAuthenticated = true,
   customHeaders = {},
 }) => {
-  const url = buildAbsoluteUrl(relativeUrl)
+  const absoluteUrl = buildAbsoluteUrl(url)
 
   const headers = {
     'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ const apiRequest = async ({
   }
 
   try {
-    const response = await fetch(url, config)
+    const response = await fetch(absoluteUrl, config)
 
     switch (response.status) {
       case 401:
@@ -63,55 +63,54 @@ const apiRequest = async ({
   }
 }
 
-export const fetchQuote = async () => {
-  return apiRequest({
-    relativeUrl: 'https://api.api-ninjas.com/v1/quotes?category=success',
+export const fetchQuote = () =>
+  apiRequest({
+    url: 'https://api.api-ninjas.com/v1/quotes?category=success',
     isAuthenticated: false,
     customHeaders: {
       'X-Api-Key': process.env.NEXT_PUBLIC_API_NINJAS_KEY,
     },
   })
-}
 
-export const fetchStatuses = async () =>
+export const fetchStatuses = () =>
   apiRequest({
-    relativeUrl: '/publicApi/application/status',
+    url: '/publicApi/application/status',
     isAuthenticated: false,
   })
 
-export const fetchApplications = async () =>
+export const fetchApplications = () =>
   apiRequest({
-    relativeUrl: '/user/applications',
+    url: '/user/applications',
   })
 
-export const fetchApplicationById = async (id) =>
+export const fetchApplicationById = (id) =>
   apiRequest({
-    relativeUrl: `/user/applications/${id}`,
+    url: `/user/applications/${id}`,
   })
 
-export const addApplication = async (appData) =>
+export const addApplication = (appData) =>
   apiRequest({
-    relativeUrl: '/user/applications',
+    url: '/user/applications',
     method: 'POST',
     data: appData,
   })
 
-export const patchApplication = async ({ id, updatedData }) =>
+export const patchApplication = ({ id, updatedData }) =>
   apiRequest({
-    relativeUrl: `/user/applications/${id}`,
+    url: `/user/applications/${id}`,
     method: 'PATCH',
     data: updatedData,
   })
 
-export const patchCompany = async ({ id, updatedData }) =>
+export const patchCompany = ({ id, updatedData }) =>
   apiRequest({
-    relativeUrl: `/user/applications/${id}/company`,
+    url: `/user/applications/${id}/company`,
     method: 'PATCH',
     data: updatedData,
   })
 
-export const deleteApplication = async (id) =>
+export const deleteApplication = (id) =>
   apiRequest({
-    relativeUrl: `/user/applications/${id}`,
+    url: `/user/applications/${id}`,
     method: 'DELETE',
   })
