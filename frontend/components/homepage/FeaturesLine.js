@@ -12,7 +12,7 @@ const FeaturesLine = () => {
       sx={{
         padding: '0 100px',
         backgroundColor: 'background.defaultSecond',
-        marginBottom: { xs: '0.75rem', sm: '40px', md: '75px', lg: '200px' },
+        marginBottom: { xs: '0.75rem', sm: '40px', md: '75px', lg: '100px' },
         padding: isMobile ? '100px 0 100px 0' : '50px 0 50px 0',
       }}
     >
