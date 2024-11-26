@@ -3,6 +3,7 @@ import NavBar from '@/components/ui/NavBar'
 import Footer from '@/components/ui/Footer'
 import { Box } from '@mui/material'
 import { AuthProvider } from '@/components/Context/Authentication'
+import SecondaryFooter from '@/components/ui/SecondaryFooter'
 
 export const metadata = {
   title: 'ApplicationHub App',
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
                 {children}
               </Box>
               <Footer />
+              <SecondaryFooter />
             </ThemeApp>
           </Box>
         </AuthProvider>

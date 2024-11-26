@@ -1,11 +1,9 @@
 'use client'
 
 import React from 'react'
-import { Box, Typography, Link, IconButton } from '@mui/material'
-import LinkedInIcon from '@mui/icons-material/LinkedIn'
-import FacebookIcon from '@mui/icons-material/Facebook'
-import TwitterIcon from '@mui/icons-material/Twitter'
+import { Box, Typography, Link } from '@mui/material'
 import Logo from './Logo'
+import Grid from '@mui/material/Grid2'
 
 export default function Footer() {
   return (
@@ -14,165 +12,152 @@ export default function Footer() {
       sx={{
         backgroundColor: 'background.footer',
         color: 'text.footer',
-        py: { xs: 1, sm: 1 },
         boxShadow: '0px -1px 6px rgba(0, 0, 0, 0.4)',
-        width: '100vw',
+        width: '100%',
       }}
     >
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: { xs: 'center', sm: 'space-between' },
-          alignItems: { xs: 'center', sm: 'flex-start' },
-          flexDirection: { xs: 'column', sm: 'row' },
-          flexWrap: 'wrap',
           maxWidth: '1200px',
-          margin: '0 auto',
+          margin: '5px auto',
+          padding: '10px',
+          justifyContent: { xs: 'center', sm: 'space-between' },
           textAlign: { xs: 'center', sm: 'left' },
         }}
       >
-        <Box sx={{ mb: { xs: 2, sm: 3 } }}>
-          <Logo />
-          <Typography
-            variant="body2"
-            color="text.footer"
-            sx={{
-              fontSize: { xs: '0.8rem', sm: '1rem' },
-            }}
-          >
-            &copy; {new Date().getFullYear()} ApplicationHub
-          </Typography>
-          <Box
-            sx={{
-              mt: { xs: 1, sm: 2 },
-              display: 'flex',
-              justifyContent: { xs: 'center', sm: 'flex-start' },
-            }}
-          >
-            <IconButton
-              href="https://www.linkedin.com"
-              target="_blank"
-              color="inherit"
-              size="small"
-            >
-              <LinkedInIcon />
-            </IconButton>
-            <IconButton
-              href="https://www.facebook.com"
-              target="_blank"
-              color="inherit"
-              size="small"
-            >
-              <FacebookIcon />
-            </IconButton>
-            <IconButton
-              href="https://www.twitter.com"
-              target="_blank"
-              color="inherit"
-              size="small"
-            >
-              <TwitterIcon />
-            </IconButton>
+        {/* For small screen logo and other link will display in grid */}
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            display: { xs: 'flex', sm: 'none' },
+            justifyContent: { xs: 'space-between', sm: 'none' },
+          }}
+        >
+          <Grid item xs={12}>
+            <Box paddingX="10px" marginTop="20px">
+              <Logo />
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box paddingX="10px">
+              <Link
+                href="/"
+                color="inherit"
+                sx={{
+                  display: 'block',
+                  fontSize: { xs: '0.7rem', sm: '1rem' },
+                }}
+                underline="none"
+              >
+                Home
+              </Link>
+              <Link
+                href="/about"
+                color="inherit"
+                sx={{
+                  display: 'block',
+                  fontSize: { xs: '0.7rem', sm: '1rem' },
+                }}
+                underline="none"
+              >
+                About
+              </Link>
+            </Box>
+
+            <Box paddingX="10px">
+              <Typography
+                variant="h6"
+                sx={{
+                  color: 'text.footer',
+                  fontSize: { xs: '0.7rem', sm: '1rem' },
+                }}
+              >
+                Contact us
+              </Typography>
+
+              <Typography
+                variant="body2"
+                sx={{
+                  fontSize: { xs: '0.7rem', sm: '1rem' },
+                }}
+              >
+                <Link
+                  href="mailto:support@applicationhub.com"
+                  color="inherit"
+                  underline="none"
+                >
+                  support@applicationhub.com
+                </Link>
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+
+        {/* For default layout */}
+        <Box
+          sx={{
+            display: { xs: 'none', sm: 'flex' },
+            justifyContent: { xs: 'none', sm: 'space-between' },
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+          }}
+        >
+          <Box paddingX="10px">
+            <Logo />
           </Box>
-        </Box>
 
-        <Box sx={{ mb: { xs: 2, sm: 3 } }}>
-          <Typography
-            variant="h6"
-            sx={{
-              color: 'text.footer',
-              mb: 1,
-              fontSize: { xs: '1rem', sm: '1.25rem' },
-            }}
-          >
-            Learn
-          </Typography>
-
-          <Link
-            color="inherit"
-            sx={{
-              display: 'block',
-              mb: { xs: 0.4, sm: 0.5 },
-              fontSize: { xs: '0.9rem', sm: '1rem' },
-            }}
-            underline="none"
-          >
-            Schedule a demo
-          </Link>
-          <Link
-            color="inherit"
-            sx={{
-              display: 'block',
-              mb: { xs: 0.4, sm: 0.5 },
-              fontSize: { xs: '0.9rem', sm: '1rem' },
-            }}
-            underline="none"
-          >
-            Help Center
-          </Link>
-        </Box>
-
-        <Box sx={{ mb: { xs: 2, sm: 3 } }}>
-          <Typography
-            variant="h6"
-            sx={{
-              color: 'text.footer',
-              mb: 1,
-              fontSize: { xs: '1rem', sm: '1.25rem' },
-            }}
-          >
-            Our company
-          </Typography>
-          <Link
-            color="inherit"
-            sx={{
-              display: 'block',
-              mb: { xs: 0.4, sm: 0.5 },
-              fontSize: { xs: '0.9rem', sm: '1rem' },
-            }}
-            underline="none"
-          >
-            Privacy Policy
-          </Link>
-          <Link
-            color="inherit"
-            sx={{
-              display: 'block',
-              mb: { xs: 0.4, sm: 0.5 },
-              fontSize: { xs: '0.9rem', sm: '1rem' },
-            }}
-            underline="none"
-          >
-            User Terms
-          </Link>
-        </Box>
-
-        <Box sx={{ mb: { xs: 2, sm: 3 } }}>
-          <Typography
-            variant="h6"
-            sx={{
-              color: 'text.footer',
-              mb: 1,
-              fontSize: { xs: '1rem', sm: '1.25rem' },
-            }}
-          >
-            Contact us
-          </Typography>
-
-          <Typography
-            variant="body2"
-            sx={{
-              fontSize: { xs: '0.9rem', sm: '1rem' },
-            }}
-          >
+          <Box paddingX="10px">
             <Link
-              href="mailto:support@applicationhub.com"
+              href="/"
               color="inherit"
+              sx={{
+                display: 'block',
+                fontSize: { xs: '0.7rem', sm: '1rem' },
+              }}
               underline="none"
             >
-              support@applicationhub.com
+              Home
             </Link>
-          </Typography>
+            <Link
+              href="/about"
+              color="inherit"
+              sx={{
+                display: 'block',
+                fontSize: { xs: '0.7rem', sm: '1rem' },
+              }}
+              underline="none"
+            >
+              About
+            </Link>
+          </Box>
+
+          <Box paddingX="10px">
+            <Typography
+              variant="h6"
+              sx={{
+                color: 'text.footer',
+                fontSize: { xs: '0.7rem', sm: '1rem' },
+              }}
+            >
+              Contact us
+            </Typography>
+
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: { xs: '0.7rem', sm: '1rem' },
+              }}
+            >
+              <Link
+                href="mailto:support@applicationhub.com"
+                color="inherit"
+                underline="none"
+              >
+                support@applicationhub.com
+              </Link>
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Box>
