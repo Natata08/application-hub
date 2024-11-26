@@ -28,7 +28,7 @@ export default function AddApplicationForm() {
   const [statuses, setStatuses] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [unsavedChanges, setUnsavedChanges] = useState(false)
+  const [dirtyState, setDirtyState] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [nextRoute, setNextRoute] = useState(null)
   const router = useRouter()
@@ -36,26 +36,16 @@ export default function AddApplicationForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, dirtyFields },
     control,
-    watch,
     setValue,
   } = useForm()
-  // All inputs are saved in appData object
-  const appData = watch()
 
-  // Helper function for check if the form is empty
+  useEffect(() => {
+    setDirtyState(isDirty)
+  }, [isDirty])
 
-  const isFormEmpty = (data) => {
-    return Object.entries(data).every(
-      ([key, value]) =>
-        value === undefined ||
-        value === '' ||
-        value === null ||
-        key === 'status' // Status selection makes form unempty which comes as default, this is for bypassing it
-    )
-  }
-
+  // Fetch status data
   useEffect(() => {
     const fetchStatus = async () => {
       try {
@@ -70,44 +60,32 @@ export default function AddApplicationForm() {
 
   useEffect(() => {
     if (statuses.length > 0) {
-      setValue('status', statuses[0].value) // Set default value for the 'status' field
+      setValue('status', statuses[0].value)
     }
-  }, [statuses, setValue]) // This runs when 'statuses' changes
-
-  useEffect(() => {
-    // Subscribe to form data changes with watch
-    const subscription = watch((appData) => {
-      if (!isFormEmpty(appData)) {
-        setUnsavedChanges(true)
-      } else {
-        setUnsavedChanges(false)
-      }
-    })
-    // Cleanup the subscription when the component unmounts or when 'watch' changes
-    return () => subscription.unsubscribe()
-  }, [watch])
+  }, [statuses, setValue])
 
   // Intercept internal navigation
   useEffect(() => {
     const originalPush = router.push
     router.push = async (url, as, options) => {
-      if (unsavedChanges) {
+      if (Object.keys(dirtyFields).length !== 0 && dirtyState) {
         setNextRoute(() => () => originalPush(url, as, options)) // Storing next route
         setShowModal(true) // Showing warning modal
+
         return // Abort navigation
       }
+
       originalPush(url, as, options)
     }
     return () => {
       router.push = originalPush // Restore original push method
     }
-  }, [unsavedChanges, router])
+  }, [dirtyState, router])
 
-  const handleAppFormSubmit = async () => {
-    setUnsavedChanges(false)
+  const handleAppFormSubmit = async (appData) => {
+    setDirtyState(false)
     setLoading(true)
     setError('')
-
     try {
       const result = await addApplication(appData)
       router.push(`/applications/${result.application_id}`)
@@ -119,10 +97,9 @@ export default function AddApplicationForm() {
   }
 
   // Modal Handlers
-
   const handleConfirmLeave = () => {
     setShowModal(false)
-    setUnsavedChanges(false)
+
     if (nextRoute) nextRoute() // Proceed with the stored route
   }
 
