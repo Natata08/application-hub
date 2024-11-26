@@ -3,7 +3,6 @@ import { useParams } from 'next/navigation'
 import { Box, CircularProgress, Alert } from '@mui/material'
 import ApplicationHeader from './ApplicationHeader'
 import ResponsiveWrapper from '@/components/ui/ResponsiveWrapper'
-import ControlButton from './ControlButton'
 import ManagePanel from './ManagePanel'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import {
@@ -36,13 +35,8 @@ const Content = () => {
   return (
     <Box component="main" sx={{ marginBottom: 4 }}>
       <ResponsiveWrapper>
-        <Box>
-          <>
-            <ControlButton />
-            <ApplicationHeader />
-            <ManagePanel />
-          </>
-        </Box>
+        <ApplicationHeader />
+        <ManagePanel />
       </ResponsiveWrapper>
     </Box>
   )
