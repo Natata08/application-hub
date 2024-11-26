@@ -1,5 +1,4 @@
 'use client'
-import DOMPurify from 'dompurify'
 import {
   Box,
   Accordion,
@@ -12,11 +11,6 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
-
-export const SafeHtml = ({ htmlContent }) => {
-  const cleanHtml = DOMPurify.sanitize(htmlContent)
-  return <div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
-}
 
 export default function JobInfo() {
   const { application } = useApplicationContext()
@@ -147,11 +141,11 @@ export default function JobInfo() {
           <Typography sx={{ fontWeight: 600 }}>Job Description</Typography>
         </AccordionSummary>
         <AccordionDetails
-          sx={{ maxHeight: 'auto', minHeight: '300px', overflowY: 'auto' }}
+          sx={{ maxHeight: '300px', height: 'auto', overflowY: 'auto' }}
         >
           {application.job_description ? (
             <Typography variant={isMobile ? 'body2' : 'body1'}>
-              <SafeHtml htmlContent={application.job_description} />
+              {application.job_description}
             </Typography>
           ) : (
             <Typography variant="overline" color="comment.main">
