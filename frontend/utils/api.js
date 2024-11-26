@@ -88,6 +88,20 @@ export const registerUser = (userData) =>
     isAuthenticated: false,
   })
 
+export const refreshToken = () =>
+  apiRequest({
+    url: '/refresh-token',
+    method: 'POST',
+    isAuthenticated: true,
+  })
+
+export const logoutUser = () =>
+  apiRequest({
+    url: '/logout',
+    method: 'POST',
+    isAuthenticated: true,
+  })
+
 export const fetchStatuses = () =>
   apiRequest({
     url: '/publicApi/application/status',
