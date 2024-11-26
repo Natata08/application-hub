@@ -3,6 +3,7 @@ import NavBar from '@/components/ui/NavBar'
 import Footer from '@/components/ui/Footer'
 import { Box } from '@mui/material'
 import { AuthProvider } from '@/components/Context/Authentication'
+import RouteGuard from '@/components/RouteGuard'
 
 export const metadata = {
   title: 'ApplicationHub App',
@@ -13,15 +14,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: '100vh',
-            }}
-          >
-            <ThemeApp>
+        <ThemeApp>
+          <AuthProvider>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100vh',
+              }}
+            >
               <NavBar />
               <Box
                 component="main"
@@ -29,12 +30,12 @@ export default function RootLayout({ children }) {
                   flexGrow: 1,
                 }}
               >
-                {children}
+                <RouteGuard>{children}</RouteGuard>
               </Box>
               <Footer />
-            </ThemeApp>
-          </Box>
-        </AuthProvider>
+            </Box>
+          </AuthProvider>
+        </ThemeApp>
       </body>
     </html>
   )

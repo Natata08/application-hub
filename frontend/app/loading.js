@@ -1,15 +1,5 @@
-import Box from '@mui/material/Box'
-import CircularProgress from '@mui/material/CircularProgress'
+import Loader from '@/components/ui/Loader'
 
 export default function Loading() {
-  return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-    >
-      <CircularProgress color="text.primary" />
-    </Box>
-  )
+  return <Loader />
 }
