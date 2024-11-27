@@ -11,10 +11,10 @@ import {
   Alert,
 } from '@mui/material'
 import InputField from '@/components/ui/InputField'
-import { makeSignUpApiCall } from '@/utils/makeSignUpApiCall'
 import { useRouter } from 'next/navigation'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SaveIcon from '@mui/icons-material/Save'
+import { registerUser } from '@/utils/api'
 import { useAuth } from '@/components/Context/Authentication'
 
 export default function SignUpForm() {
@@ -27,17 +27,14 @@ export default function SignUpForm() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm()
 
-  const userData = watch()
-
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (userData) => {
     setLoading(true)
     setError('')
 
     try {
-      const data = await makeSignUpApiCall(userData)
+      const data = await registerUser(userData)
       login(data.userInfo, data.token)
       router.push('/user')
     } catch (error) {

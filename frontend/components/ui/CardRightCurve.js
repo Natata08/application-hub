@@ -4,7 +4,7 @@ export default function CardRightCurve({
   width = '100vw',
   backgroundColor,
   padding = '40px 0',
-  margin = '20px 0',
+  margin = '0',
   children,
 }) {
   return (

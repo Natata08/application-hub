@@ -12,9 +12,9 @@ import {
   Alert,
 } from '@mui/material'
 import InputField from '@/components/ui/InputField'
-import { makeLoginApiCall } from '@/utils/makeLoginApiCall'
 import LoadingButton from '@mui/lab/LoadingButton'
 import SaveIcon from '@mui/icons-material/Save'
+import { loginUser } from '@/utils/api'
 import { useAuth } from '@/components/Context/Authentication'
 
 export default function LogInForm() {
@@ -27,17 +27,14 @@ export default function LogInForm() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm()
 
-  const contactData = watch()
-
-  const handleFormSubmit = async () => {
+  const handleFormSubmit = async (contactData) => {
     setLoading(true)
     setError('')
 
     try {
-      const data = await makeLoginApiCall(contactData)
+      const data = await loginUser(contactData)
       login(data.userInfo, data.token)
       router.push('/user')
     } catch (error) {

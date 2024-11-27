@@ -45,7 +45,7 @@ export const ModalWrapper = ({ open, handleClose, title, children }) => {
           variant="h4"
           sx={{
             marginBottom: 0,
-            paddingY: 2,
+            paddingY: 4,
             textAlign: 'center',
             fontSize: { xs: '1.5rem', sm: '2rem' },
           }}
