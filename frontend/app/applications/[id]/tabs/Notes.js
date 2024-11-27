@@ -1,29 +1,60 @@
 'use client'
 import { Box, Button } from '@mui/material'
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import EmptyState from './EmptyState'
 import RichTextEditor from '@/components/ui/RichTextEditor'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
+import {
+  getNoteByApplicationId,
+  createOrUpdateNote,
+  deleteNote,
+} from '@/utils/api'
 
-const Notes = ({ applicationId }) => {
+const Notes = () => {
   const [value, setValue] = useState('')
   const [lastSavedContent, setLastSavedContent] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [error, setError] = useState(null)
+
+  const { application } = useApplicationContext()
+  const applicationId = application.application_id
+
+  useEffect(() => {
+    const fetchNote = async () => {
+      try {
+        const note = await getNoteByApplicationId(applicationId)
+        if (note) {
+          setValue(note.content)
+          setLastSavedContent(note.content)
+        }
+      } catch (error) {
+        console.error('Error fetching note:', error)
+        setError(error.message)
+      }
+    }
+
+    fetchNote()
+  }, [applicationId])
 
   const hasContent = value && value !== '<p><br></p>'
 
   const handleSave = useCallback(async () => {
     setIsSaving(true)
     try {
-      console.log('notes:', value)
+      await createOrUpdateNote({
+        id: applicationId,
+        content: value,
+      })
       setLastSavedContent(value)
       setIsEditing(false)
     } catch (error) {
       console.error('Error saving notes:', error)
+      setError(error.message)
     } finally {
       setIsSaving(false)
     }
-  }, [value])
+  }, [value, applicationId])
 
   const handleEdit = useCallback(() => {
     setIsEditing(true)
@@ -38,9 +69,22 @@ const Notes = ({ applicationId }) => {
     }
   }, [lastSavedContent])
 
+  const handleDelete = useCallback(async () => {
+    try {
+      await deleteNote(applicationId)
+      setValue('')
+      setLastSavedContent(null)
+      setIsEditing(false)
+    } catch (error) {
+      console.error('Error deleting note:', error)
+      setError(error.message)
+    }
+  }, [applicationId])
+
   const renderEditor = useMemo(
     () => (
       <RichTextEditor
+        value={value}
         onChange={setValue}
         isEditing={isEditing}
         sx={{
@@ -48,48 +92,47 @@ const Notes = ({ applicationId }) => {
         }}
       />
     ),
-    [hasContent, isEditing]
-  )
-
-  const renderEmptyState = useMemo(
-    () => <EmptyState onAction={handleEdit} subject="notes" buttonText="Add" />,
-    [handleEdit]
-  )
-
-  const renderEditButton = useMemo(
-    () => (
-      <Button variant="contained" size="small" onClick={handleEdit}>
-        Edit
-      </Button>
-    ),
-    [handleEdit]
-  )
-
-  const renderSaveCancelButtons = useMemo(
-    () => (
-      <>
-        <Button variant="outlined" size="small" onClick={handleCancel}>
-          Cancel
-        </Button>
-        <Button
-          variant="contained"
-          size="small"
-          onClick={handleSave}
-          disabled={isSaving}
-        >
-          {isSaving ? 'Saving...' : 'Save'}
-        </Button>
-      </>
-    ),
-    [handleCancel, handleSave, isSaving]
+    [value, hasContent, isEditing]
   )
 
   return (
     <Box sx={{ marginTop: 2, padding: 1 }}>
       {renderEditor}
-      {!hasContent && !isEditing && renderEmptyState}
+      {!hasContent && !isEditing && (
+        <EmptyState onAction={handleEdit} subject="notes" buttonText="Add" />
+      )}
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-        {isEditing ? renderSaveCancelButtons : hasContent && renderEditButton}
+        {isEditing ? (
+          <>
+            <Button variant="outlined" size="small" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={handleSave}
+              disabled={isSaving}
+            >
+              {isSaving ? 'Saving...' : 'Save'}
+            </Button>
+          </>
+        ) : (
+          hasContent && (
+            <>
+              <Button
+                variant="outlined"
+                color="error"
+                size="small"
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+              <Button variant="contained" size="small" onClick={handleEdit}>
+                Edit
+              </Button>
+            </>
+          )
+        )}
       </Box>
     </Box>
   )
