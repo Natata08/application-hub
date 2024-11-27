@@ -11,6 +11,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
+import RichText from '@/components/ui/RichText'
 
 export default function JobInfo() {
   const { application } = useApplicationContext()
@@ -141,12 +142,12 @@ export default function JobInfo() {
           <Typography sx={{ fontWeight: 600 }}>Job Description</Typography>
         </AccordionSummary>
         <AccordionDetails
-          sx={{ maxHeight: '300px', height: 'auto', overflowY: 'auto' }}
+          sx={{ maxHeight: 'auto', minHeight: '300px', overflowY: 'auto' }}
         >
           {application.job_description ? (
-            <Typography variant={isMobile ? 'body2' : 'body1'}>
-              {application.job_description}
-            </Typography>
+            <Box>
+              <RichText htmlContent={application.job_description} />
+            </Box>
           ) : (
             <Typography variant="overline" color="comment.main">
               job description

@@ -1,10 +1,8 @@
 'use client'
 import { Box, Button } from '@mui/material'
-import { useQuill } from 'react-quilljs'
-import 'quill/dist/quill.snow.css'
-import { useState, useEffect, useMemo, useCallback } from 'react'
-import { useTheme } from '@mui/material'
+import { useState, useMemo, useCallback } from 'react'
 import EmptyState from './EmptyState'
+import RichTextEditor from '@/components/ui/RichTextEditor'
 import Quill from 'quill'
 const Delta = Quill.import('delta')
 
@@ -136,60 +134,18 @@ const Notes = ({ applicationId }) => {
 
   const hasContent = value && value !== '<p><br></p>'
 
-  useEffect(() => {
-    if (quill) {
-      const handleTextChange = () => {
-        setValue(quill.root.innerHTML)
-      }
-
-      quill.on('text-change', handleTextChange)
-
-      return () => {
-        quill.off('text-change', handleTextChange)
-      }
-    }
-  }, [quill])
-
-  useEffect(() => {
-    if (quill) {
-      // Set text color
-      quill.root.style.color = theme.palette.text.primary
-
-      // Handle toolbar visibility
-      const toolbar = document.querySelector('.ql-toolbar')
-      if (toolbar) {
-        toolbar.style.display = isEditing ? 'block' : 'none'
-      }
-
-      // Handle container styling
-      const container = document.querySelector('.ql-container')
-      if (container) {
-        container.style.border = isEditing
-          ? `1px solid ${theme.palette.divider}`
-          : 'none'
-        quill.enable(isEditing)
-      }
-    }
-  }, [
-    quill,
-    theme.palette.mode,
-    isEditing,
-    theme.palette.text.primary,
-    theme.palette.divider,
-  ])
-
   const handleSave = useCallback(async () => {
     setIsSaving(true)
     try {
       console.log('notes:', value)
-      setLastSavedContent(quill.getContents())
+      setLastSavedContent(value)
       setIsEditing(false)
     } catch (error) {
       console.error('Error saving notes:', error)
     } finally {
       setIsSaving(false)
     }
-  }, [quill, value])
+  }, [value])
 
   const handleEdit = useCallback(() => {
     setIsEditing(true)
@@ -197,29 +153,24 @@ const Notes = ({ applicationId }) => {
 
   const handleCancel = useCallback(() => {
     setIsEditing(false)
-    if (quill) {
-      quill.enable(false)
-      if (lastSavedContent) {
-        quill.setContents(lastSavedContent)
-      } else {
-        quill.setText('')
-        setValue('')
-      }
+    if (lastSavedContent) {
+      setValue(lastSavedContent)
+    } else {
+      setValue('')
     }
-  }, [quill, lastSavedContent])
+  }, [lastSavedContent])
 
   const renderEditor = useMemo(
     () => (
-      <Box
+      <RichTextEditor
+        onChange={setValue}
+        isEditing={isEditing}
         sx={{
-          ...editorStyles,
           display: hasContent || isEditing ? 'block' : 'none',
         }}
-      >
-        <div ref={quillRef} />
-      </Box>
+      />
     ),
-    [editorStyles, hasContent, isEditing, quillRef]
+    [hasContent, isEditing]
   )
 
   const renderEmptyState = useMemo(

@@ -7,17 +7,22 @@ import Grid from '@mui/material/Grid2'
 import Introduction from './Introduction'
 import CardLeftCurve from '../ui/CardLeftCurve'
 import CardRightCurve from '../ui/CardRightCurve'
+import FeaturesLine from './FeaturesLine'
+import HomePageParallax from './Parallax'
 
 export default function HomePage() {
   return (
     <Box>
       <Introduction />
-
+      <FeaturesLine />
       <CardLeftCurve
-        width="100vw"
+        width="100%"
         backgroundColor="background.cardYellow"
         padding="40px 0"
         margin="20px 0"
+        sx={{
+          overflowX: 'hidden', // Prevent horizontal scroll from child components
+        }}
       >
         <Grid
           container
@@ -34,6 +39,7 @@ export default function HomePage() {
           </Grid>
         </Grid>
       </CardLeftCurve>
+      <HomePageParallax />
       <Typography
         variant="h5"
         component="h2"
@@ -41,12 +47,16 @@ export default function HomePage() {
         color="text.primary"
         sx={{
           textAlign: 'center',
-          marginBottom: 4,
         }}
       >
         Testimonials
       </Typography>
-      <CardRightCurve>
+      <CardRightCurve
+        width="100%"
+        sx={{
+          overflowX: 'hidden', // Prevent horizontal scroll from child components
+        }}
+      >
         <TestimonialComponent />
       </CardRightCurve>
     </Box>

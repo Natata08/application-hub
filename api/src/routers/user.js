@@ -9,6 +9,11 @@ import {
   patchUserApplicationCompany,
   deleteUserApplicationsById,
 } from '../controllers/userController.js'
+import {
+  getUserApplicationNote,
+  postUserApplicationNote,
+  deleteUserApplicationNote,
+} from '../controllers/noteController.js'
 import verifyAuthToken from '../middleware/tokenAuthentication.js'
 
 const user = express.Router()
@@ -25,4 +30,13 @@ user.patch(
   patchUserApplicationCompany
 )
 user.delete('/applications/:id', verifyAuthToken, deleteUserApplicationsById)
+
+user.get('/applications/:id/note', verifyAuthToken, getUserApplicationNote)
+user.post('/applications/:id/note', verifyAuthToken, postUserApplicationNote)
+user.delete(
+  '/applications/:id/note',
+  verifyAuthToken,
+  deleteUserApplicationNote
+)
+
 export default user

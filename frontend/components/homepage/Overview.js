@@ -4,10 +4,10 @@ import { Card, CardContent, Typography } from '@mui/material'
 const OverviewImageCard = () => {
   return (
     <Card
-      style={{
-        maxWidth: '500px',
+      sx={{
+        maxWidth: { xs: '100%', sm: '100%', md: '400px', lg: '550px' },
         maxHeight: '500px',
-        minHeight: '360px',
+        minHeight: { xs: '100%', sm: '350px', md: '400px', lg: '450px' },
         margin: '20px',
         padding: '20px',
         borderRadius: '15px',
@@ -16,11 +16,19 @@ const OverviewImageCard = () => {
       }}
     >
       <CardContent>
-        <Typography variant="h4" component="p" color="background.primary">
+        <Typography
+          variant="h5"
+          component="h2"
+          gutterBottom
+          sx={{
+            textAlign: 'center',
+            fontSize: { xs: '0.75rem', sm: '1rem', md: '1.5rem', lg: '2rem' },
+          }}
+        >
           Overview
         </Typography>
         <div
-          style={{
+          sx={{
             height: '200px',
             backgroundColor: 'background.default',
             borderRadius: '8px',
@@ -30,7 +38,7 @@ const OverviewImageCard = () => {
           <Typography
             variant="body2"
             color="text.primary"
-            style={{ padding: '80px 0' }}
+            sx={{ padding: '80px 0' }}
           >
             Placeholder: we will place a picture of how does this app work,
             example just an image to show how
