@@ -1,6 +1,5 @@
 import { Box, Card, CardContent, Typography } from '@mui/material'
 import CardLeftCurve from '@/components/ui/CardLeftCurve'
-import CardRightCurve from '@/components/ui/CardRightCurve'
 
 export default function About() {
   return (
@@ -35,7 +34,7 @@ export default function About() {
             padding: '20px',
             borderRadius: '15px',
             boxShadow: '0px 4px 12px rgba(0,0,0,0.1)',
-            maxHeight: '1200px',
+            maxHeight: '100%',
           }}
         >
           <CardContent>

@@ -4,6 +4,7 @@ import { getOrCreateCompanyId } from '../utils/getOrCreateCompanyId.js'
 import { updateField } from '../utils/updateField.js'
 import { getCompany } from '../utils/getCompany.js'
 import { getApplication } from '../utils/getApplication.js'
+import { sanitizeData } from '../utils/sanitizeData.js'
 
 export const getUserProfile = async (req, res) => {
   try {
@@ -131,6 +132,8 @@ export const patchUserApplication = async (req, res) => {
   const user_id = req.userInfo.userId
   let updateData = {}
 
+  const sanitizeJobDescription = sanitizeData(job_description)
+
   try {
     const application = await getApplication(id, user_id)
     if (!application) {
@@ -145,7 +148,7 @@ export const patchUserApplication = async (req, res) => {
   try {
     updateField(updateData, 'job_title', job_title)
     updateField(updateData, 'status', status)
-    updateField(updateData, 'job_description', job_description)
+    updateField(updateData, 'job_description', sanitizeJobDescription)
     updateField(updateData, 'job_link', job_link)
     updateField(updateData, 'salary', salary, false, true)
     updateField(updateData, 'applied_date', applied_date, true)
