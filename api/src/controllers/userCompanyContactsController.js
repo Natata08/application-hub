@@ -1,5 +1,5 @@
 import knex from '../database_client.js'
-import { buildCompanyContactDto } from '../dtos/noteDto.js'
+import { buildCompanyContactDto } from '../dtos/companyContactDto.js'
 import { checkContactExists } from '../utils/checkContactExists.js'
 import { getCompanyId } from '../utils/getCompanyId.js'
 
