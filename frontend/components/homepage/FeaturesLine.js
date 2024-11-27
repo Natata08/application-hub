@@ -11,7 +11,7 @@ const FeaturesLine = () => {
       sx={{
         padding: '0 100px',
         backgroundColor: 'background.defaultSecond',
-        marginBottom: '200px',
+        marginBottom: { xs: '0.75rem', sm: '40px', md: '75px', lg: '100px' },
         padding: isMobile ? '100px 0 100px 0' : '50px 0 50px 0',
       }}
     >
@@ -22,7 +22,6 @@ const FeaturesLine = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-
                 marginTop: isMobile ? '50px' : '0',
                 justifyContent: 'center',
                 flexDirection: 'column',
@@ -33,6 +32,12 @@ const FeaturesLine = () => {
               <Typography
                 variant="h6"
                 sx={{
+                  fontSize: {
+                    xs: '',
+                    sm: '0.75rem',
+                    md: '0.75rem',
+                    lg: '1.25rem',
+                  },
                   color: 'text.footer',
                   margin: '10px 0',
                 }}
@@ -42,6 +47,12 @@ const FeaturesLine = () => {
               <Typography
                 variant="body2"
                 sx={{
+                  fontSize: {
+                    xs: '',
+                    sm: '0.5rem',
+                    md: '0.65rem',
+                    lg: '1rem',
+                  },
                   marginBottom: '30px',
                   maxWidth: '250px',
                   width: '100%',

@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Loader from './ui/Loader'
 
-const publicPaths = ['/', '/login', '/register']
+const publicPaths = ['/login', '/register']
 
 export default function RouteGuard({ children }) {
   const { isLoggedIn, isLoading } = useAuth()

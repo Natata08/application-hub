@@ -11,7 +11,7 @@ export default function CardRightCurve({
     <Box
       sx={{
         width,
-        backgroundColor: backgroundColor || 'background.cardBlue',
+
         borderRadius: '0 100px 0 0',
         padding,
         color: 'text.secondary',

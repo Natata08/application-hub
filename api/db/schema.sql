@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS "company_contact" (
 
 CREATE TABLE IF NOT EXISTS "application_note" (
     note_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    application_id INT NOT NULL REFERENCES "application" (application_id) ON DELETE CASCADE,
+    application_id INT NOT NULL UNIQUE REFERENCES "application" (application_id) ON DELETE CASCADE,
     CONTENT TEXT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

@@ -8,6 +8,7 @@ import Introduction from './Introduction'
 import CardLeftCurve from '../ui/CardLeftCurve'
 import CardRightCurve from '../ui/CardRightCurve'
 import FeaturesLine from './FeaturesLine'
+import HomePageParallax from './Parallax'
 
 export default function HomePage() {
   return (
@@ -38,6 +39,7 @@ export default function HomePage() {
           </Grid>
         </Grid>
       </CardLeftCurve>
+      <HomePageParallax />
       <Typography
         variant="h5"
         component="h2"
@@ -45,7 +47,6 @@ export default function HomePage() {
         color="text.primary"
         sx={{
           textAlign: 'center',
-          marginBottom: 4,
         }}
       >
         Testimonials
