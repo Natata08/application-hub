@@ -13,7 +13,6 @@ import {
   InputLabel,
   MenuItem,
   Stack,
-  InputAdornment,
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
@@ -22,6 +21,7 @@ import { patchApplication, fetchApplicationStatuses } from '@/utils/api'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
+import TextEditorInputField from '@/components/ui/TextEditorInputField'
 
 export default function ApplicationEditForm({ openModal, onClose }) {
   const { application, updateApplication } = useApplicationContext()
@@ -163,15 +163,6 @@ export default function ApplicationEditForm({ openModal, onClose }) {
               )}
             />
           </FormControl>
-          <InputField
-            id="job_description"
-            label="Job Description"
-            defaultValue={application.job_description}
-            register={register}
-            errors={errors}
-            multiline
-            rows={3}
-          />
 
           <InputField
             id="salary"
@@ -183,6 +174,20 @@ export default function ApplicationEditForm({ openModal, onClose }) {
               value: /^(?:0|[1-9]\d*)([.,]\d+)?$/,
               message: 'Salary must be a positive number or zero',
             }}
+          />
+
+          <Controller
+            name="job_description"
+            control={control}
+            render={({ field: { onChange } }) => (
+              <TextEditorInputField
+                id="job_description"
+                label="Job Description"
+                defaultValue={application.job_description || ''}
+                onChange={onChange}
+                error={errors.job_description}
+              />
+            )}
           />
 
           <Stack
