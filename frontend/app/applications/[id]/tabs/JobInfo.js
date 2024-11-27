@@ -145,9 +145,9 @@ export default function JobInfo() {
           sx={{ maxHeight: 'auto', minHeight: '300px', overflowY: 'auto' }}
         >
           {application.job_description ? (
-            <Typography variant={isMobile ? 'body2' : 'body1'}>
+            <Box>
               <RichText htmlContent={application.job_description} />
-            </Typography>
+            </Box>
           ) : (
             <Typography variant="overline" color="comment.main">
               job description
