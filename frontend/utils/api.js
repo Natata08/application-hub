@@ -72,7 +72,37 @@ export const fetchQuote = () =>
     },
   })
 
-export const fetchStatuses = () =>
+export const loginUser = (contactData) =>
+  apiRequest({
+    url: '/login',
+    method: 'POST',
+    data: contactData,
+    isAuthenticated: false,
+  })
+
+export const registerUser = (userData) =>
+  apiRequest({
+    url: '/register',
+    method: 'POST',
+    data: userData,
+    isAuthenticated: false,
+  })
+
+export const refreshToken = () =>
+  apiRequest({
+    url: '/refresh-token',
+    method: 'POST',
+    isAuthenticated: true,
+  })
+
+export const logoutUser = () =>
+  apiRequest({
+    url: '/logout',
+    method: 'POST',
+    isAuthenticated: true,
+  })
+
+export const fetchApplicationStatuses = () =>
   apiRequest({
     url: '/publicApi/application/status',
     isAuthenticated: false,
