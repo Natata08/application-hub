@@ -4,12 +4,10 @@ import { useState } from 'react'
 import { Typography, Button, Stack, Box } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
-import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
 
-export default function ContactAddForm({ openModal, onClose }) {
-  const { application } = useApplicationContext()
+export default function ContactForm({ openModal, onClose, mode }) {
   const { showNotification } = useNotification()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -20,32 +18,34 @@ export default function ContactAddForm({ openModal, onClose }) {
     formState: { errors },
   } = useForm()
 
-  const handleAddContactSubmit = async () => {
-    console.log('added')
-    onClose()
-    showNotification('Contact added successfully!')
-    // setLoading(true)
-    // setError('')
-    // try {
-    //   await postContact(console.log('added'))
-    //   onClose()
-    //   showNotification('Contact added successfully!')
-    // } catch (error) {
-    //   setError(error.message)
-    // } finally {
-    //   setLoading(false)
-    // }
+  const handleSubmitForm = async (data) => {
+    setLoading(true)
+    setError('')
+    try {
+      if (mode === 'edit') {
+        await patchContact(data)
+        showNotification('Contact updated successfully!')
+      } else if (mode === 'add') {
+        await postContact(data)
+        showNotification('Contact added successfully!')
+      }
+      onClose()
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <ModalWrapper
       open={openModal}
       handleClose={onClose}
-      title="Add Company Contact"
+      title={mode === 'edit' ? 'Edit Company Contact' : 'Add Company Contact'}
     >
       <Box
         component="form"
-        onSubmit={handleSubmit(handleAddContactSubmit)}
+        onSubmit={handleSubmit(handleSubmitForm)}
         noValidate
         autoComplete="off"
       >
@@ -59,24 +59,28 @@ export default function ContactAddForm({ openModal, onClose }) {
           id="name"
           label="Name"
           required
+          defaultValue={mode === 'edit' ? 'name' : ''}
           register={register}
           errors={errors}
         />
         <InputField
           id="role"
           label="Position"
+          defaultValue={mode === 'edit' ? 'role' : ''}
           register={register}
           errors={errors}
         />
         <InputField
           id="phone"
           label="Phone"
+          defaultValue={mode === 'edit' ? 'phone' : ''}
           register={register}
           errors={errors}
         />
         <InputField
           id="email"
           label="Email"
+          defaultValue={mode === 'edit' ? 'email' : ''}
           register={register}
           errors={errors}
         />
