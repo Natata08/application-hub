@@ -10,8 +10,9 @@ import {
   deleteUserApplicationsById,
 } from '../controllers/userController.js'
 import {
-  getUserApplicationNotes,
-  postUserApplicationNotes,
+  getUserApplicationNote,
+  postUserApplicationNote,
+  deleteUserApplicationNote,
 } from '../controllers/noteController.js'
 import verifyAuthToken from '../middleware/tokenAuthentication.js'
 
@@ -30,7 +31,12 @@ user.patch(
 )
 user.delete('/applications/:id', verifyAuthToken, deleteUserApplicationsById)
 
-user.get('/applications/:id/note', verifyAuthToken, getUserApplicationNotes)
-user.post('/applications/:id/note', verifyAuthToken, postUserApplicationNotes)
+user.get('/applications/:id/note', verifyAuthToken, getUserApplicationNote)
+user.post('/applications/:id/note', verifyAuthToken, postUserApplicationNote)
+user.delete(
+  '/applications/:id/note',
+  verifyAuthToken,
+  deleteUserApplicationNote
+)
 
 export default user
