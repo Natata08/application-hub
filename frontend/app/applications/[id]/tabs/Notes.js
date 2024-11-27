@@ -95,44 +95,52 @@ const Notes = () => {
     [value, hasContent, isEditing]
   )
 
+  const renderEditButtons = useMemo(
+    () => (
+      <>
+        <Button variant="outlined" size="small" onClick={handleCancel}>
+          Cancel
+        </Button>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={handleSave}
+          disabled={isSaving}
+        >
+          {isSaving ? 'Saving...' : 'Save'}
+        </Button>
+      </>
+    ),
+    [isSaving, handleCancel, handleSave]
+  )
+
+  const renderViewButtons = useMemo(
+    () => (
+      <>
+        <Button
+          variant="outlined"
+          color="error"
+          size="small"
+          onClick={handleDelete}
+        >
+          Delete
+        </Button>
+        <Button variant="contained" size="small" onClick={handleEdit}>
+          Edit
+        </Button>
+      </>
+    ),
+    [handleDelete, handleEdit]
+  )
+
   return (
-    <Box sx={{ marginTop: 2, padding: 1 }}>
+    <Box sx={{ padding: 1 }}>
       {renderEditor}
       {!hasContent && !isEditing && (
         <EmptyState onAction={handleEdit} subject="notes" buttonText="Add" />
       )}
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
-        {isEditing ? (
-          <>
-            <Button variant="outlined" size="small" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={handleSave}
-              disabled={isSaving}
-            >
-              {isSaving ? 'Saving...' : 'Save'}
-            </Button>
-          </>
-        ) : (
-          hasContent && (
-            <>
-              <Button
-                variant="outlined"
-                color="error"
-                size="small"
-                onClick={handleDelete}
-              >
-                Delete
-              </Button>
-              <Button variant="contained" size="small" onClick={handleEdit}>
-                Edit
-              </Button>
-            </>
-          )
-        )}
+        {isEditing ? renderEditButtons : hasContent && renderViewButtons}
       </Box>
     </Box>
   )
