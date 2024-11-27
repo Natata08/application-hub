@@ -52,7 +52,9 @@ const Notes = ({ applicationId }) => {
   )
 
   const renderEmptyState = useMemo(
-    () => <EmptyState onAction={handleEdit} subject="notes" buttonText="Add" />,
+    () => (
+      <EmptyState onAction={handleEdit} subject="notes" buttonText="Add Note" />
+    ),
     [handleEdit]
   )
 
