@@ -27,7 +27,7 @@ export default function TestimonialComponent() {
         <Grid
           container
           spacing={4}
-          style={{ maxWidth: '1200px', margin: '0 auto' }}
+          style={{ maxWidth: '100%', margin: '0 auto' }}
         >
           {testimonials.map((testimonial, index) => (
             <Grid
