@@ -1,7 +1,10 @@
 import knex from '../database_client.js'
-import { getOrCreateCompanyId } from '../utils/getOrCreateCompanyId.js'
 import { checkCompanyContactsExist } from '../utils/checkCompanyContactsExist.js'
+import { getCompanyContactId } from '../utils/getCompanyContactId.js'
+import { getCompanyId } from '../utils/getCompanyId.js'
+import { updateField } from '../utils/updateField.js'
 
+//get all contacts
 export const getUserApplicationsCompanyContacts = async (req, res) => {
   const user_id = req.userInfo.userId
   const id = parseInt(req.params.id)
@@ -28,49 +31,119 @@ export const getUserApplicationsCompanyContacts = async (req, res) => {
   }
 }
 
+//post contacts for the given application and company
 export const postUserApplicationsCompanyContacts = async (req, res) => {
+  const userId = req.userInfo.userId
+  const id = parseInt(req.params.id)
+  let companyId
+  const companyContactsData = req.body
+
+  if (!companyContactsData.name) {
+    return res.status(400).json({ message: 'Name is required' })
+  }
+
   try {
-    const companyContactsData = req.body
-    const user_id = req.userInfo.userId
-    try {
-      // If application exist throw error
-      await checkCompanyContactsExist(companyContactsData.name, user_id)
-    } catch (error) {
-      return res.status(400).json({ message: error.message })
-    }
-    let company_id
-    try {
-      company_id = await getOrCreateCompanyId(
-        companyContactsData.company_name,
-        user_id
-      )
-    } catch (error) {
-      return res.status(500).json({
-        error: 'Error on getting or creating company ID' + error.message,
-      })
-    }
+    companyId = await getCompanyId(id, userId)
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Error on getting company ID' + error.message,
+    })
+  }
 
-    // Insert the data for the new application and return the application id
+  try {
+    await checkCompanyContactsExist(companyContactsData.name, companyId, id)
+  } catch (error) {
+    return res.status(400).json({ message: error.message })
+  }
 
-    const [insertedApplication] = await knex('application')
+  try {
+    // Insert the data for the new contact
+    const [insertedCompanyContacts] = await knex('company_contact')
       .insert({
-        user_id: user_id,
-        job_title: companyContactsData.job_title,
-        company_id: company_id,
-        status: companyContactsData.status,
-        job_description: companyContactsData.job_description || null,
-        job_link: companyContactsData.job_link || null,
-        applied_date: companyContactsData.applied_date || null,
-        deadline_date: companyContactsData.deadline_date || null,
+        company_id: companyId,
+        application_id: id,
+        name: companyContactsData.name,
+        phone: companyContactsData.phone || null,
+        email: companyContactsData.email || null,
+        role: companyContactsData.role || null,
       })
-      .returning('application_id')
+      .returning('*')
     res.status(201).json({
-      message: 'Application added successfully',
-      application_id: insertedApplication.application_id,
+      message: 'Company contact added successfully',
+      company_contact: insertedCompanyContacts,
     })
   } catch (error) {
     res
       .status(500)
-      .json({ error: `Error on adding application : ${error.message}` })
+      .json({ error: `Error on adding company contacts : ${error.message}` })
+  }
+}
+
+// Update Company Contact
+export const patchUserApplicationCompanyContact = async (req, res) => {
+  const userId = req.userInfo.userId
+  const id = parseInt(req.params.id)
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ message: 'Invalid application ID' })
+  }
+
+  const { name, phone, email, role } = req.body
+
+  if (!name) {
+    return res.status(400).json({ message: 'Name is required' })
+  }
+
+  let updateData = {}
+  let companyId
+  let contactId
+
+  try {
+    companyId = await getCompanyId(id, userId)
+    if (!companyId) {
+      return res.status(404).json({
+        error: 'Company not found',
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Error fetching company data' })
+  }
+
+  try {
+    contactId = await getCompanyContactId(name, companyId, id)
+    if (!contactId) {
+      return res.status(404).json({ message: 'Contact not found' })
+    }
+  } catch (error) {
+    return res.status(500).json({ error: 'Error checking contact existence' })
+  }
+
+  try {
+    updateField(updateData, 'name', name)
+    updateField(updateData, 'phone', phone)
+    updateField(updateData, 'email', email)
+    updateField(updateData, 'role', role)
+  } catch (validationError) {
+    return res.status(400).json({ error: validationError.message })
+  }
+
+  try {
+    if (Object.keys(updateData).length > 0) {
+      await knex('company_contact')
+        .where({
+          'company_contact.contact_id': contactId,
+          'company_contact.company_id': companyId,
+          'company_contact.application_id': id,
+        })
+        .update(updateData)
+    }
+
+    res.status(200).json({
+      message: 'Company contact updated successfully',
+      updateData: updateData,
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: `Error updating company data: ${error.message}`,
+    })
   }
 }
