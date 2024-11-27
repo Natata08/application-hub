@@ -8,9 +8,11 @@ import {
   patchUserApplication,
   patchUserApplicationCompany,
   deleteUserApplicationsById,
+} from '../controllers/userController.js'
+import {
   getUserApplicationNotes,
   postUserApplicationNotes,
-} from '../controllers/userController.js'
+} from '../controllers/notesController.js'
 import verifyAuthToken from '../middleware/tokenAuthentication.js'
 
 const user = express.Router()
