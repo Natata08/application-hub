@@ -1,8 +1,9 @@
 'use client'
-import { Box, Button } from '@mui/material'
+import { Box, Button, Alert } from '@mui/material'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import EmptyState from './EmptyState'
 import RichTextEditor from '@/components/ui/RichTextEditor'
+import Loader from '@/components/ui/Loader'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import {
   getNoteByApplicationId,
@@ -15,6 +16,7 @@ const Notes = () => {
   const [lastSavedContent, setLastSavedContent] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
   const { application } = useApplicationContext()
@@ -24,13 +26,15 @@ const Notes = () => {
     const fetchNote = async () => {
       try {
         const note = await getNoteByApplicationId(applicationId)
-        if (note) {
+        if (note.content) {
           setValue(note.content)
           setLastSavedContent(note.content)
         }
       } catch (error) {
         console.error('Error fetching note:', error)
         setError(error.message)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -132,6 +136,14 @@ const Notes = () => {
     ),
     [handleDelete, handleEdit]
   )
+
+  if (isLoading) {
+    return <Loader height="200px" />
+  }
+
+  if (error) {
+    return <Alert severity="error">{error}</Alert>
+  }
 
   return (
     <Box sx={{ padding: 1 }}>
