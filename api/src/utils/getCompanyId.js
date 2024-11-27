@@ -10,7 +10,7 @@ export const getCompanyId = async (applicationId, userId) => {
       })
       .first()
 
-    if (existingCompany && existingCompany.user_id === userId) {
+    if (existingCompany) {
       return existingCompany.company_id
     } else {
       throw new Error('Company not found for the given application and user.')

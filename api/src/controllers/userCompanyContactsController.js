@@ -1,5 +1,6 @@
 import knex from '../database_client.js'
-import { checkContactExist } from '../utils/checkContactExist.js'
+import { buildCompanyContactDto } from '../dtos/noteDto.js'
+import { checkContactExists } from '../utils/checkContactExists.js'
 import { getCompanyId } from '../utils/getCompanyId.js'
 
 //get all contacts
@@ -26,7 +27,7 @@ export const getCompanyContacts = async (req, res) => {
         message: 'No company contacts found for the provided application.',
       })
     }
-    return res.json(companyContacts)
+    return res.json(buildCompanyContactDto(companyContacts))
   } catch (error) {
     console.error(error)
     res.status(500).json({
@@ -60,7 +61,7 @@ export const postCompanyContact = async (req, res) => {
   }
 
   try {
-    await checkContactExist(contactData.name, companyId, id)
+    await checkContactExists(contactData.name, companyId, id)
   } catch (error) {
     return res.status(400).json({
       message: `Contact with the name "${contactData.name}" already exists for this application.`,
@@ -81,7 +82,7 @@ export const postCompanyContact = async (req, res) => {
       .returning('*')
     res.status(201).json({
       message: 'Contact added successfully',
-      company_contact: insertedContact,
+      company_contact: buildCompanyContactDto(insertedContact),
     })
   } catch (error) {
     res.status(500).json({

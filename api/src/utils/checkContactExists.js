@@ -1,6 +1,6 @@
 import knex from '../database_client.js'
 
-export const checkContactExist = async (name, companyId, applicationId) => {
+export const checkContactExists = async (name, companyId, applicationId) => {
   const existingContact = await knex('company_contact')
     .join('company', 'company_contact.company_id', 'company.company_id')
     .where({
