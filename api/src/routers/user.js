@@ -11,9 +11,8 @@ import {
 } from '../controllers/userController.js'
 import verifyAuthToken from '../middleware/tokenAuthentication.js'
 import {
-  getUserApplicationsCompanyContacts,
-  patchUserApplicationCompanyContact,
-  postUserApplicationsCompanyContacts,
+  getCompanyContacts,
+  postCompanyContact,
 } from '../controllers/userCompanyContactsController.js'
 
 const user = express.Router()
@@ -33,17 +32,11 @@ user.delete('/applications/:id', verifyAuthToken, deleteUserApplicationsById)
 user.get(
   '/applications/:id/company/contacts',
   verifyAuthToken,
-  getUserApplicationsCompanyContacts
+  getCompanyContacts
 )
 user.post(
-  '/applications/:id/company/contacts',
+  '/applications/:id/company/contact',
   verifyAuthToken,
-  postUserApplicationsCompanyContacts
+  postCompanyContact
 )
-user.patch(
-  '/applications/:id/company/contacts',
-  verifyAuthToken,
-  patchUserApplicationCompanyContact
-)
-
 export default user

@@ -17,6 +17,6 @@ export const getCompanyId = async (applicationId, userId) => {
     }
   } catch (error) {
     console.error(error)
-    throw new Error('Error while fetching company ID: ' + error.message)
+    throw new Error('Error while fetching company: ' + error.message)
   }
 }
