@@ -49,7 +49,6 @@ export const postUserApplicationNote = async (req, res) => {
         .onConflict('application_id')
         .merge({
           content,
-          updated_at: knex.fn.now(),
         })
         .returning([
           'note_id',
