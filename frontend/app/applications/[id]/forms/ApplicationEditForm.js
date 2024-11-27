@@ -13,7 +13,6 @@ import {
   InputLabel,
   MenuItem,
   Stack,
-  InputAdornment,
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
@@ -22,7 +21,7 @@ import { patchApplication, fetchStatuses } from '@/utils/api'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
-import JobDescriptionInput from '@/components/ui/JobDescriptionInput'
+import TextEditorInputField from '@/components/ui/TextEditorInputField'
 
 export default function ApplicationEditForm({ openModal, onClose }) {
   const { application, updateApplication } = useApplicationContext()
@@ -164,6 +163,7 @@ export default function ApplicationEditForm({ openModal, onClose }) {
               )}
             />
           </FormControl>
+
           <InputField
             id="salary"
             label="Salary"
@@ -180,7 +180,7 @@ export default function ApplicationEditForm({ openModal, onClose }) {
             name="job_description"
             control={control}
             render={({ field: { onChange } }) => (
-              <JobDescriptionInput
+              <TextEditorInputField
                 id="job_description"
                 label="Job Description"
                 defaultValue={application.job_description || ''}

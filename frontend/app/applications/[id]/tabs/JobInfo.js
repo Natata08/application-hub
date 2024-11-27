@@ -1,5 +1,4 @@
 'use client'
-import DOMPurify from 'dompurify'
 import {
   Box,
   Accordion,
@@ -12,11 +11,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
-
-export const SafeHtml = ({ htmlContent }) => {
-  const cleanHtml = DOMPurify.sanitize(htmlContent)
-  return <div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
-}
+import RichText from '@/components/ui/RichText'
 
 export default function JobInfo() {
   const { application } = useApplicationContext()
@@ -151,7 +146,7 @@ export default function JobInfo() {
         >
           {application.job_description ? (
             <Typography variant={isMobile ? 'body2' : 'body1'}>
-              <SafeHtml htmlContent={application.job_description} />
+              <RichText htmlContent={application.job_description} />
             </Typography>
           ) : (
             <Typography variant="overline" color="comment.main">
