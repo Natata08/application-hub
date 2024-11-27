@@ -14,7 +14,7 @@ const env = envalid.cleanEnv(process.env, {
   JWT_EXPIRY_IN_SECONDS: envalid.num({ default: 3600, min: 60 }),
 })
 
-export default {
+export default Object.freeze({
   ...env,
   JWT_EXPIRY_WITH_UNIT: `${env.JWT_EXPIRY_IN_SECONDS}s`,
-}
+})

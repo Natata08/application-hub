@@ -83,7 +83,7 @@ export default function Introduction() {
           >
             Make your job search much easier!
             <Typography
-              variant="h5"
+              variant="body1"
               sx={{
                 color: '#FFB384',
                 mb: 0,
@@ -146,8 +146,8 @@ export default function Introduction() {
                 ? '/desktopDark.png'
                 : '/desktopLight.png'
           }
+          priority={true}
           alt="Example Image"
-          layout="responsive"
           width={isMobile ? 420 : 1000}
           height={isMobile ? 600 : 500}
           style={{
