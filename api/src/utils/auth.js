@@ -6,8 +6,6 @@ import config from '../config.js'
 const SECRET_KEY = config.JWT_SECRET
 
 export const generateAuthResponse = (user) => {
-  const expireTime = config.JWT_EXPIRY_WITH_UNIT
-
   if (!SECRET_KEY) {
     throw new Error('JWT_SECRET is not defined in environment variables')
   }
@@ -21,7 +19,7 @@ export const generateAuthResponse = (user) => {
   const jti = uuidv4()
 
   const token = jwt.sign({ userId: user.user_id, jti: jti }, SECRET_KEY, {
-    expiresIn: expireTime,
+    expiresIn: config.JWT_EXPIRY_WITH_UNIT,
   })
 
   return { userInfo, token }
