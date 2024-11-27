@@ -12,7 +12,7 @@ import {
 import {
   getUserApplicationNotes,
   postUserApplicationNotes,
-} from '../controllers/notesController.js'
+} from '../controllers/noteController.js'
 import verifyAuthToken from '../middleware/tokenAuthentication.js'
 
 const user = express.Router()
@@ -30,7 +30,7 @@ user.patch(
 )
 user.delete('/applications/:id', verifyAuthToken, deleteUserApplicationsById)
 
-user.get('/applications/:id/notes', verifyAuthToken, getUserApplicationNotes)
-user.post('/applications/:id/notes', verifyAuthToken, postUserApplicationNotes)
+user.get('/applications/:id/note', verifyAuthToken, getUserApplicationNotes)
+user.post('/applications/:id/note', verifyAuthToken, postUserApplicationNotes)
 
 export default user
