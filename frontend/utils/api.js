@@ -144,3 +144,21 @@ export const deleteApplication = (id) =>
     url: `/user/applications/${id}`,
     method: 'DELETE',
   })
+
+export const getNoteByApplicationId = (id) =>
+  apiRequest({
+    url: `/user/applications/${id}/note`,
+  })
+
+export const createOrUpdateNote = ({ id, content }) =>
+  apiRequest({
+    url: `/user/applications/${id}/note`,
+    method: 'POST',
+    data: { content },
+  })
+
+export const deleteNote = (id) =>
+  apiRequest({
+    url: `/user/applications/${id}/note`,
+    method: 'DELETE',
+  })
