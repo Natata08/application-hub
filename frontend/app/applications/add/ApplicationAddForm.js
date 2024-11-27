@@ -20,6 +20,7 @@ import { addApplication } from '@/utils/api'
 import { fetchApplicationStatuses } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import UnsavedChangesModal from './UnsavedChangesModal'
+import TextEditorInputField from '@/components/ui/TextEditorInputField'
 
 export default function AddApplicationForm() {
   const theme = useTheme()
@@ -62,6 +63,7 @@ export default function AddApplicationForm() {
   }, [statuses, setValue])
 
   const handleAppFormSubmit = async (appData) => {
+    console.log(appData)
     setDirtyState(false)
     setLoading(true)
     setError('')
@@ -203,14 +205,29 @@ export default function AddApplicationForm() {
                 )}
               />
             </FormControl>
-            <InputField
-              id="job_description"
-              label="Job Description"
-              register={register}
-              errors={errors}
-              multiline
-              rows={3}
+
+            <Controller
+              name="job_description"
+              control={control}
+              render={({ field: { onChange } }) => (
+                <>
+                  <Box
+                    sx={{
+                      mt: 2,
+                    }}
+                  >
+                    <TextEditorInputField
+                      id="job_description"
+                      label="Job Description"
+                      defaultValue={''}
+                      onChange={onChange}
+                      error={errors.job_description}
+                    />
+                  </Box>
+                </>
+              )}
             />
+
             <Typography
               sx={{
                 mt: 1,
