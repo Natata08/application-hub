@@ -99,7 +99,7 @@ export default function Contacts() {
         </Box>
       </Box>
     ),
-    [contacts, handleOpenAddModal, hasContent, isMobile]
+    [contacts, handleOpenAddModal, handleContactEdited, hasContent, isMobile]
   )
 
   if (isLoading) {
