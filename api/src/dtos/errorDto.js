@@ -1,4 +1,4 @@
-export const buildErrorDto = (statusCode, message, details = {}) => ({
+export const buildErrorDto = (message, details = {}) => ({
   status: 'error',
   message,
   details,
