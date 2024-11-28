@@ -1,5 +1,6 @@
 import knex from '../database_client.js'
 import { buildNoteDto } from '../dtos/noteDto.js'
+import { sanitizeData } from '../utils/sanitizeData.js'
 
 export const getUserApplicationNote = async (req, res) => {
   try {
@@ -48,15 +49,17 @@ export const postUserApplicationNote = async (req, res) => {
       return res.status(400).json({ message: 'Content is required' })
     }
 
+    const sanitizedContent = sanitizeData(content)
+
     try {
       const [note] = await knex('application_note')
         .insert({
           application_id,
-          content,
+          content: sanitizedContent,
         })
         .onConflict('application_id')
         .merge({
-          content,
+          content: sanitizedContent,
         })
         .returning([
           'note_id',
