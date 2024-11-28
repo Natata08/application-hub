@@ -1,4 +1,5 @@
 import { Box, Typography, Button } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
 
 const EmptyState = ({ onAction, subject = 'content', buttonText = 'Add' }) => (
   <Box
@@ -7,17 +8,24 @@ const EmptyState = ({ onAction, subject = 'content', buttonText = 'Add' }) => (
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      gap: 1,
+      gap: 2,
       py: 4,
     }}
   >
-    <Typography variant="body1" color="text.secondary" align="center">
+    <Typography variant="body1" align="center">
       {`No ${subject} yet.`}
     </Typography>
-    <Typography variant="body1" color="text.secondary" align="center">
+    <Typography variant="body1" align="center">
       {`Click button below to add some ${subject}.`}
     </Typography>
-    <Button variant="contained" size="small" onClick={onAction}>
+    <Button
+      onClick={onAction}
+      variant="outlined"
+      startIcon={<AddIcon />}
+      sx={{
+        textTransform: 'none',
+      }}
+    >
       {buttonText}
     </Button>
   </Box>

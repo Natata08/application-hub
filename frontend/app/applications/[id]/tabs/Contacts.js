@@ -1,5 +1,5 @@
 'use client'
-import * as React from 'react'
+import { useState, useCallback } from 'react'
 import {
   Box,
   Stack,
@@ -10,14 +10,23 @@ import {
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { useIsMobileSmall } from '@/app/hooks/useIsMobile'
+import MenuButtonContact from '../MenuButtonContact'
+import ContactForm from '../forms/ContactForm'
 
 export default function Contacts() {
+  const [value, setValue] = useState('')
   const isMobile = useIsMobileSmall()
+  const [openModalAdd, setOpenModalAdd] = useState(false)
+
+  const handleOpenAddModal = useCallback(() => {
+    setOpenModalAdd(true)
+  }, [])
+  const handleCloseAddModal = () => setOpenModalAdd(false)
+
   return (
     <Box>
       <Stack
         sx={{
-          display: 'flex',
           flexDirection: { xs: 'column', sm: 'row' },
           gap: { xs: 1, sm: 2 },
           justifyContent: 'start',
@@ -27,16 +36,27 @@ export default function Contacts() {
       >
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
-            <Typography
-              variant="h5"
-              component="h5"
+            <Stack
               sx={{
-                fontSize: { xs: '1rem', sm: '1.25rem' },
-                fontWeight: 600,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexDirection: 'row',
               }}
             >
-              Alice Johnson
-            </Typography>
+              <Typography
+                variant="h5"
+                component="h5"
+                sx={{
+                  fontSize: { xs: '1rem', sm: '1.25rem' },
+                  fontWeight: 600,
+                }}
+              >
+                Alice Johnson
+              </Typography>
+
+              <MenuButtonContact />
+            </Stack>
+
             <Typography
               sx={{
                 color: 'text.secondary',
@@ -59,44 +79,10 @@ export default function Contacts() {
             </Typography>
           </CardContent>
         </Card>
-
-        <Card sx={{ minWidth: 275 }}>
-          <CardContent>
-            <Typography
-              variant="h5"
-              component="div"
-              sx={{
-                fontSize: { xs: '1rem', sm: '1.25rem' },
-                fontWeight: 600,
-              }}
-            >
-              Bob Williams
-            </Typography>
-            <Typography
-              sx={{
-                color: 'text.secondary',
-                fontSize: { xs: '0.875rem', sm: '1rem' },
-              }}
-            >
-              Software Developer
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
-            >
-              +0987654321
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
-            >
-              bob.williams@itcompany.com
-            </Typography>
-          </CardContent>
-        </Card>
       </Stack>
 
       <Button
+        onClick={handleOpenAddModal}
         variant="outlined"
         startIcon={<AddIcon />}
         sx={{
@@ -106,6 +92,12 @@ export default function Contacts() {
       >
         Add Contact
       </Button>
+
+      <ContactForm
+        mode="add"
+        openModal={openModalAdd}
+        onClose={handleCloseAddModal}
+      />
     </Box>
   )
 }

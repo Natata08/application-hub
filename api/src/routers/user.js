@@ -16,7 +16,9 @@ import {
 } from '../controllers/noteController.js'
 import verifyAuthToken from '../middleware/tokenAuthentication.js'
 import {
+  deleteCompanyContact,
   getCompanyContacts,
+  patchCompanyContact,
   postCompanyContact,
 } from '../controllers/userCompanyContactsController.js'
 
@@ -50,5 +52,15 @@ user.post(
   '/applications/:id/company/contact',
   verifyAuthToken,
   postCompanyContact
+)
+user.patch(
+  '/applications/:id/company/contacts',
+  verifyAuthToken,
+  patchCompanyContact
+)
+user.delete(
+  '/applications/:id/company/contacts',
+  verifyAuthToken,
+  deleteCompanyContact
 )
 export default user
