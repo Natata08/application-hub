@@ -34,7 +34,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
-
+.slick-prev.slick-arrow::before,
+.slick-next.slick-arrow::before {
+  color: #e07a5f !important; /* Change to your desired color */
+}
+.slick-dots li.slick-active button:before {
+  color: #e07a5f;
+}
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
