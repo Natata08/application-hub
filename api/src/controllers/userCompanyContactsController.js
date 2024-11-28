@@ -29,7 +29,9 @@ export const getCompanyContacts = async (req, res) => {
         message: 'No company contacts found for the provided application.',
       })
     }
-    return res.json(buildCompanyContactDto(companyContacts))
+    return res.json(
+      companyContacts.map((contact) => buildCompanyContactDto(contact))
+    )
   } catch (error) {
     console.error(error)
     res.status(500).json({
@@ -82,10 +84,7 @@ export const postCompanyContact = async (req, res) => {
         role: contactData.role || null,
       })
       .returning('*')
-    res.status(201).json({
-      message: 'Contact added successfully',
-      company_contact: buildCompanyContactDto(insertedContact),
-    })
+    res.status(201).json(buildCompanyContactDto(insertedContact))
   } catch (error) {
     res.status(500).json({
       error: `An error occurred while adding the contact: ${error.message}`,
@@ -97,21 +96,24 @@ export const postCompanyContact = async (req, res) => {
 export const patchCompanyContact = async (req, res) => {
   const userId = req.userInfo.userId
   const id = parseInt(req.params.id)
+
   if (!id || isNaN(id)) {
     return res
       .status(400)
       .json({ message: 'Application ID must be a valid number.' })
   }
-  const { name, phone, email, role } = req.body
-  let updateData = {}
-  let companyId
-  let contactId
 
-  if (!name) {
+  const { currentName } = req.body
+  if (!currentName) {
     return res.status(400).json({
       message: 'Contact name is required to locate the contact for updating.',
     })
   }
+
+  const { name, phone, email, role } = req.body
+  let updateData = {}
+  let companyId
+  let contactId
 
   try {
     companyId = await getCompanyId(id, userId)
@@ -127,7 +129,7 @@ export const patchCompanyContact = async (req, res) => {
   }
 
   try {
-    contactId = await getCompanyContactId(name, companyId, id)
+    contactId = await getCompanyContactId(currentName, companyId, id)
     if (!contactId) {
       return res.status(404).json({
         message:
@@ -157,7 +159,7 @@ export const patchCompanyContact = async (req, res) => {
           company_id: companyId,
           application_id: id,
         })
-        .update(buildCompanyContactDto(updateData))
+        .update(updateData)
     }
 
     if (Object.keys(updateData).length === 0) {
@@ -166,10 +168,7 @@ export const patchCompanyContact = async (req, res) => {
         .json({ message: 'No valid fields provided for update.' })
     }
 
-    res.status(200).json({
-      message: 'Company contact updated successfully',
-      updateData: updateData,
-    })
+    res.status(200).json(buildCompanyContactDto(updateData))
   } catch (error) {
     res.status(500).json({
       error: `An error occurred while updating the contact: ${error.message}`,
@@ -181,14 +180,14 @@ export const patchCompanyContact = async (req, res) => {
 export const deleteCompanyContact = async (req, res) => {
   const userId = req.userInfo.userId
   const id = parseInt(req.params.id)
-  const { contact_name } = req.body
+  const { currentName } = req.body
   if (!id || isNaN(id)) {
     return res
       .status(400)
       .json({ message: 'Application ID must be a valid number.' })
   }
 
-  if (!contact_name) {
+  if (!currentName) {
     return res
       .status(400)
       .json({ message: 'Contact name is required to delete a contact.' })
@@ -212,7 +211,7 @@ export const deleteCompanyContact = async (req, res) => {
   try {
     const rowsDeleted = await knex('company_contact')
       .where({
-        name: contact_name,
+        name: currentName,
         company_id: companyId,
       })
       .del()
@@ -221,7 +220,7 @@ export const deleteCompanyContact = async (req, res) => {
       return res.json({ message: 'Contact was deleted' })
     } else {
       return res.status(404).json({
-        error: `No contact with the name "${contact_name}" was found for this company.`,
+        error: `No contact with the name "${currentName}" was found for this company.`,
       })
     }
   } catch (error) {

@@ -1,102 +1,130 @@
 'use client'
-import { useState, useCallback } from 'react'
-import {
-  Box,
-  Stack,
-  Card,
-  CardContent,
-  Button,
-  Typography,
-} from '@mui/material'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { Box, Stack, Button, Alert } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { useIsMobileSmall } from '@/app/hooks/useIsMobile'
-import MenuButtonContact from '../MenuButtonContact'
 import ContactForm from '../forms/ContactForm'
+import Loader from '@/components/ui/Loader'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
+import { getContactsByApplicationId } from '@/utils/api'
+import ContactCard from './ContactCard'
+import EmptyState from './EmptyState'
 
 export default function Contacts() {
-  const [value, setValue] = useState('')
+  const { application } = useApplicationContext()
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [contacts, setContacts] = useState([])
   const isMobile = useIsMobileSmall()
   const [openModalAdd, setOpenModalAdd] = useState(false)
+  const applicationId = application.application_id
+  const hasContent = contacts.length > 0
 
   const handleOpenAddModal = useCallback(() => {
     setOpenModalAdd(true)
   }, [])
   const handleCloseAddModal = () => setOpenModalAdd(false)
 
+  const handleAddContactSuccess = (newContact) => {
+    setContacts((prevContacts) => [...prevContacts, newContact])
+  }
+
+  const handleContactDeleted = (currentName) => {
+    setContacts((prevContacts) =>
+      prevContacts.filter((contact) => contact.name !== currentName)
+    )
+  }
+  const handleContactEdited = (updatedContact) => {
+    const updatedContacts = contacts.map((contact) => {
+      if (contact.contact_id === updatedContact.contact_id) {
+        return { ...contact, ...updatedContact }
+      }
+      return contact
+    })
+    setContacts(updatedContacts)
+  }
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      try {
+        const contacts = await getContactsByApplicationId(applicationId)
+        if (contacts) {
+          setContacts(contacts)
+        }
+      } catch (error) {
+        console.error('Error fetching contact:', error)
+        setError(error.message)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchContacts()
+  }, [applicationId])
+
+  const renderContacts = useMemo(
+    () => (
+      <Box sx={{ display: hasContent ? 'block' : 'none' }}>
+        <Stack
+          sx={{
+            flexDirection: { xs: 'column', sm: 'row' },
+            gap: { xs: 1, sm: 2 },
+            justifyContent: 'start',
+            alignItems: { xs: 'stretch', sm: 'center' },
+            pb: 2,
+            flexWrap: 'wrap',
+          }}
+        >
+          {contacts.map((contact) => (
+            <ContactCard
+              key={contact.contactId}
+              contact={contact}
+              onContactDeleted={handleContactDeleted}
+              onContactEdited={handleContactEdited}
+            />
+          ))}
+        </Stack>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            onClick={handleOpenAddModal}
+            variant="outlined"
+            startIcon={<AddIcon />}
+            sx={{
+              textTransform: 'none',
+              width: isMobile ? '100%' : 'auto',
+            }}
+          >
+            Add Contact
+          </Button>
+        </Box>
+      </Box>
+    ),
+    [contacts, handleOpenAddModal, hasContent, isMobile]
+  )
+
+  if (isLoading) {
+    return <Loader height="200px" />
+  }
+
+  if (error) {
+    return <Alert severity="error">{error}</Alert>
+  }
+
   return (
-    <Box>
-      <Stack
-        sx={{
-          flexDirection: { xs: 'column', sm: 'row' },
-          gap: { xs: 1, sm: 2 },
-          justifyContent: 'start',
-          alignItems: { xs: 'stretch', sm: 'center' },
-          pb: 2,
-        }}
-      >
-        <Card sx={{ minWidth: 275 }}>
-          <CardContent>
-            <Stack
-              sx={{
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}
-            >
-              <Typography
-                variant="h5"
-                component="h5"
-                sx={{
-                  fontSize: { xs: '1rem', sm: '1.25rem' },
-                  fontWeight: 600,
-                }}
-              >
-                Alice Johnson
-              </Typography>
-
-              <MenuButtonContact />
-            </Stack>
-
-            <Typography
-              sx={{
-                color: 'text.secondary',
-                fontSize: { xs: '0.875rem', sm: '1rem' },
-              }}
-            >
-              HR Manager
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
-            >
-              +123456789
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
-            >
-              alice.johnson@itcompany.com
-            </Typography>
-          </CardContent>
-        </Card>
-      </Stack>
-
-      <Button
-        onClick={handleOpenAddModal}
-        variant="outlined"
-        startIcon={<AddIcon />}
-        sx={{
-          textTransform: 'none',
-          width: isMobile ? '100%' : 'auto',
-        }}
-      >
-        Add Contact
-      </Button>
-
+    <Box sx={{ padding: 1 }}>
+      {renderContacts}
+      {!hasContent && (
+        <EmptyState
+          onAction={handleOpenAddModal}
+          subject="contacts"
+          buttonText="Add Contact"
+        />
+      )}
       <ContactForm
         mode="add"
         openModal={openModalAdd}
         onClose={handleCloseAddModal}
+        onContactAdd={handleAddContactSuccess}
       />
     </Box>
   )
