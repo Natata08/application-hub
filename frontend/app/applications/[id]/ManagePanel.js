@@ -6,7 +6,6 @@ import TabContext from '@mui/lab/TabContext'
 import TabList from '@mui/lab/TabList'
 import TabPanel from '@mui/lab/TabPanel'
 import NotesIcon from '@mui/icons-material/Notes'
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar'
 import PeopleIcon from '@mui/icons-material/People'
 import PreviewIcon from '@mui/icons-material/Preview'
@@ -15,7 +14,6 @@ import JobInfo from './tabs/JobInfo'
 import Contacts from './tabs/Contacts'
 import Notes from './tabs/Notes'
 import Interview from './tabs/Interview'
-import Documents from './tabs/Documents'
 import { useThemeContext } from '@/components/styles/ThemeApp'
 
 export default function ManagePanel() {
@@ -62,12 +60,6 @@ export default function ManagePanel() {
       value: 'Interview',
       icon: <PeopleIcon />,
       component: <Interview />,
-    },
-    {
-      label: 'Documents',
-      value: 'Documents',
-      icon: <InsertDriveFileIcon />,
-      component: <Documents />,
     },
     {
       label: 'Contacts',

@@ -6,15 +6,15 @@ import MenuItem from '@mui/material/MenuItem'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
-import ApplicationEditForm from './forms/ApplicationEditForm'
-import ApplicationDeleteModal from './forms/ApplicationDeleteModal'
+import ContactForm from './forms/ContactForm'
+import ContactDeleteModal from './forms/ContactDeleteModal'
 
 const stylesIconButton = {
   fontSize: 20,
   marginRight: 2,
 }
 
-export default function MenuButton() {
+export default function MenuButtonContact() {
   const [anchorEl, setAnchorEl] = useState(null)
   const [openModalEdition, setOpenModalEdition] = useState(false)
   const [openModalDeletion, setOpenModalDeletion] = useState(false)
@@ -79,11 +79,12 @@ export default function MenuButton() {
         </MenuItem>
       </Menu>
 
-      <ApplicationEditForm
+      <ContactForm
+        mode="edit"
         openModal={openModalEdition}
         onClose={handleCloseEditionModal}
       />
-      <ApplicationDeleteModal
+      <ContactDeleteModal
         openModal={openModalDeletion}
         onClose={handleCloseDeletionModal}
       />
