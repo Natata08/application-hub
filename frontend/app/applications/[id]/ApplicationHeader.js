@@ -14,7 +14,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import EditIcon from '@mui/icons-material/Edit'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import CompanyEditForm from './forms/CompanyEditForm'
-import MenuButton from './MenuButton'
+import MenuButtonApplication from './MenuButtonApplication'
 
 export default function ApplicationHeader() {
   const { application } = useApplicationContext()
@@ -59,7 +59,7 @@ export default function ApplicationHeader() {
           {application.job_title}
         </Typography>
 
-        <MenuButton />
+        <MenuButtonApplication />
       </Stack>
 
       <Stack
