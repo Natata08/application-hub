@@ -12,15 +12,13 @@ login.post('/', async (req, res) => {
   if (!email || !password) {
     return res
       .status(400)
-      .json(buildErrorDto(400, 'Email and password are required'))
+      .json(buildErrorDto('Email and password are required'))
   }
   try {
     const user = await knex('user').where({ email }).first()
     //Checking if user exist
     if (!user) {
-      return res
-        .status(401)
-        .json(buildErrorDto(401, 'Invalid email or password'))
+      return res.status(401).json(buildErrorDto('Invalid email or password'))
     }
 
     // Comparing hashed password from db with the provided password
@@ -33,11 +31,11 @@ login.post('/', async (req, res) => {
       res.status(200).json(authResponse)
     } else {
       // Invalid password
-      res.status(401).json(buildErrorDto(401, 'Invalid email or password'))
+      res.status(401).json(buildErrorDto('Invalid email or password'))
     }
   } catch (error) {
     return res.status(500).json(
-      buildErrorDto(500, 'Error logging in', {
+      buildErrorDto('Error logging in', {
         cause: error.message,
       })
     )
