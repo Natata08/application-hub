@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Box, Stack, Button, Alert } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { useIsMobileSmall } from '@/app/hooks/useIsMobile'
@@ -62,8 +62,16 @@ export default function Contacts() {
     fetchContacts()
   }, [applicationId])
 
-  const renderContacts = useMemo(
-    () => (
+  if (isLoading) {
+    return <Loader height="200px" />
+  }
+
+  if (error) {
+    return <Alert severity="error">{error}</Alert>
+  }
+
+  return (
+    <Box sx={{ padding: 1 }}>
       <Box sx={{ display: hasContent ? 'block' : 'none' }}>
         <Stack
           sx={{
@@ -98,21 +106,6 @@ export default function Contacts() {
           </Button>
         </Box>
       </Box>
-    ),
-    [contacts, handleOpenAddModal, handleContactEdited, hasContent, isMobile]
-  )
-
-  if (isLoading) {
-    return <Loader height="200px" />
-  }
-
-  if (error) {
-    return <Alert severity="error">{error}</Alert>
-  }
-
-  return (
-    <Box sx={{ padding: 1 }}>
-      {renderContacts}
       {!hasContent && (
         <EmptyState
           onAction={handleOpenAddModal}
