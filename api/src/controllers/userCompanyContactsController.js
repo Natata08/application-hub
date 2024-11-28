@@ -11,7 +11,7 @@ export const getCompanyContacts = async (req, res) => {
   const user_id = req.userInfo.userId
   const id = parseInt(req.params.id)
   if (!id || isNaN(id)) {
-    return res.status(400).json(buildErrorDto('Invalid company ID'))
+    return res.status(400).json(buildErrorDto('Invalid application ID'))
   }
 
   try {
@@ -105,7 +105,7 @@ export const patchCompanyContact = async (req, res) => {
   const userId = req.userInfo.userId
   const id = parseInt(req.params.id)
   if (!id || isNaN(id)) {
-    return res.status(400).json(buildErrorDto('Invalid user ID'))
+    return res.status(400).json(buildErrorDto('Invalid application ID'))
   }
   const { name, phone, email, role } = req.body
   let updateData = {}
@@ -199,7 +199,7 @@ export const deleteCompanyContact = async (req, res) => {
   const id = parseInt(req.params.id)
   const { contact_name } = req.body
   if (!id || isNaN(id)) {
-    return res.status(400).json(buildErrorDto('Invalid user ID'))
+    return res.status(400).json(buildErrorDto('Invalid application ID'))
   }
 
   if (!contact_name) {
