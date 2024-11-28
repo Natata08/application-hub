@@ -63,7 +63,6 @@ export default function AddApplicationForm() {
   }, [statuses, setValue])
 
   const handleAppFormSubmit = async (appData) => {
-    console.log(appData)
     setDirtyState(false)
     setLoading(true)
     setError('')
