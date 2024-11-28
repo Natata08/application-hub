@@ -51,9 +51,10 @@ const apiRequest = async ({
     if (!response.ok) {
       throw {
         status: 'error',
-        statusCode: response.status,
-        message: responseData.message || response.statusText,
-        details: responseData.details || {},
+        message: responseData.message || 'Unknown error occurred',
+        details: {
+          cause: response.statusText,
+        },
       }
     }
 
@@ -68,7 +69,6 @@ const apiRequest = async ({
     console.error('API Request Error:', error)
     throw {
       status: 'error',
-      statusCode: 500,
       message: 'An unexpected error occurred',
       details: {
         cause: error.message,
