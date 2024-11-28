@@ -14,7 +14,15 @@ export const getUserApplicationNote = async (req, res) => {
         .first()
 
       if (!note) {
-        return res.status(404).json({ message: 'Note not found' })
+        return res.json(
+          buildNoteDto({
+            note_id: null,
+            application_id: id,
+            content: '',
+            created_at: null,
+            updated_at: null,
+          })
+        )
       }
 
       return res.json(buildNoteDto(note))
