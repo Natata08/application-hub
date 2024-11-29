@@ -10,6 +10,7 @@ import refreshToken from './routers/refreshToken.js'
 import user from './routers/user.js'
 import publicApi from './routers/publicApi.js'
 import config from './config.js'
+import { buildErrorDto } from './dtos/errorDto.js'
 
 const app = express()
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
@@ -35,12 +36,12 @@ apiRouter.get('/check-db', async (req, res) => {
     await knex.raw('SELECT 1')
     res.status(200).json({ message: 'Database connection is successful' })
   } catch (error) {
-    console.error('Database connection error:', error.message)
-    res.status(500).json({
-      message: 'Failed to connect to the database',
-      error: error.message,
-    })
-    console.error('Database connection error :', error)
+    console.error('Database connection error:', error)
+    res.status(500).json(
+      buildErrorDto('Failed to connect to the database', {
+        cause: error.message,
+      })
+    )
   }
 })
 app.listen(config.PORT, () => {
