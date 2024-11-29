@@ -176,3 +176,29 @@ export const deleteNote = (id) =>
     url: `/user/applications/${id}/note`,
     method: 'DELETE',
   })
+
+export const getContactsByApplicationId = (id) =>
+  apiRequest({
+    url: `/user/applications/${id}/company/contacts`,
+  })
+
+export const addContactByApplicationId = (id, contactData) =>
+  apiRequest({
+    url: `/user/applications/${id}/company/contact`,
+    method: 'POST',
+    data: contactData,
+  })
+
+export const patchContactByApplicationId = (id, updateData, currentName) =>
+  apiRequest({
+    url: `/user/applications/${id}/company/contact`,
+    method: 'PATCH',
+    data: { currentName, ...updateData },
+  })
+
+export const deleteContactByApplicationId = (id, currentName) =>
+  apiRequest({
+    url: `/user/applications/${id}/company/contact`,
+    method: 'DELETE',
+    data: { currentName },
+  })

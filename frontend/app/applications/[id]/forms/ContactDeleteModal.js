@@ -2,18 +2,27 @@
 import { useState } from 'react'
 import { useNotification } from '@/components/Context/NotificationContext'
 import DeleteModal from '@/components/ui/DeleteModal'
-import { deleteContact } from '@/utils/api'
+import { deleteContactByApplicationId } from '@/utils/api'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
 
-export default function ContactDeleteModal({ openModal, onClose }) {
+export default function ContactDeleteModal({
+  openModal,
+  onClose,
+  currentName,
+  onContactDeleted,
+}) {
+  const { application } = useApplicationContext()
   const { showNotification } = useNotification()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const applicationId = application.application_id
 
   const handleDelete = async () => {
     setLoading(true)
     setError('')
     try {
-      await deleteContact()
+      await deleteContactByApplicationId(applicationId, currentName)
+      onContactDeleted(currentName)
       showNotification('Contact was deleted!')
       onClose()
     } catch (error) {

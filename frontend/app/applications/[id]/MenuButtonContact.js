@@ -14,7 +14,12 @@ const stylesIconButton = {
   marginRight: 2,
 }
 
-export default function MenuButtonContact() {
+export default function MenuButtonContact({
+  currentName,
+  onContactDeleted,
+  onContactEdited,
+  contact,
+}) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [openModalEdition, setOpenModalEdition] = useState(false)
   const [openModalDeletion, setOpenModalDeletion] = useState(false)
@@ -83,10 +88,15 @@ export default function MenuButtonContact() {
         mode="edit"
         openModal={openModalEdition}
         onClose={handleCloseEditionModal}
+        currentName={currentName}
+        onContactEdited={onContactEdited}
+        contact={contact}
       />
       <ContactDeleteModal
         openModal={openModalDeletion}
         onClose={handleCloseDeletionModal}
+        currentName={currentName}
+        onContactDeleted={onContactDeleted}
       />
     </>
   )

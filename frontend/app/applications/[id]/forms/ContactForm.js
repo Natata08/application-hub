@@ -6,11 +6,26 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
+import { useApplicationContext } from '@/components/Context/ApplicationContext'
+import {
+  addContactByApplicationId,
+  patchContactByApplicationId,
+} from '@/utils/api'
 
-export default function ContactForm({ openModal, onClose, mode }) {
+export default function ContactForm({
+  openModal,
+  onClose,
+  mode,
+  onContactAdd,
+  onContactEdited,
+  contact,
+  currentName,
+}) {
+  const { application } = useApplicationContext()
   const { showNotification } = useNotification()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const applicationId = application.application_id
 
   const {
     register,
@@ -18,20 +33,34 @@ export default function ContactForm({ openModal, onClose, mode }) {
     formState: { errors },
   } = useForm()
 
-  const handleSubmitForm = async (data) => {
+  const handleSubmitForm = async (contactData) => {
     setLoading(true)
     setError('')
     try {
       if (mode === 'edit') {
-        await patchContact(data)
+        const updatedContact = await patchContactByApplicationId(
+          applicationId,
+          contactData,
+          currentName
+        )
+        console.log(updatedContact)
+        if (onContactEdited) {
+          onContactEdited(updatedContact)
+        }
         showNotification('Contact updated successfully!')
       } else if (mode === 'add') {
-        await postContact(data)
+        const newContact = await addContactByApplicationId(
+          applicationId,
+          contactData
+        )
         showNotification('Contact added successfully!')
+        if (onContactAdd) {
+          onContactAdd(newContact)
+        }
       }
       onClose()
-    } catch (err) {
-      setError(err.message)
+    } catch (error) {
+      setError(error.message)
     } finally {
       setLoading(false)
     }
@@ -59,28 +88,28 @@ export default function ContactForm({ openModal, onClose, mode }) {
           id="name"
           label="Name"
           required
-          defaultValue={mode === 'edit' ? 'name' : ''}
+          defaultValue={mode === 'edit' ? contact.name : ''}
           register={register}
           errors={errors}
         />
         <InputField
           id="role"
           label="Position"
-          defaultValue={mode === 'edit' ? 'role' : ''}
+          defaultValue={mode === 'edit' ? contact.role : ''}
           register={register}
           errors={errors}
         />
         <InputField
           id="phone"
           label="Phone"
-          defaultValue={mode === 'edit' ? 'phone' : ''}
+          defaultValue={mode === 'edit' ? contact.phone : ''}
           register={register}
           errors={errors}
         />
         <InputField
           id="email"
           label="Email"
-          defaultValue={mode === 'edit' ? 'email' : ''}
+          defaultValue={mode === 'edit' ? contact.email : ''}
           register={register}
           errors={errors}
         />
