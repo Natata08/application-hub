@@ -40,24 +40,40 @@ const apiRequest = async ({
 
   try {
     const response = await fetch(absoluteUrl, config)
-    switch (response.status) {
-      case 401:
-        throw new Error('Session expired. Please login again.')
-      case 403:
-        throw new Error('You do not have permission to perform this action.')
-      case 404:
-        throw new Error('Resource not found.')
+    const responseData = await response.json()
+
+    // for standardized error format
+    if (responseData.status === 'error') {
+      throw responseData
     }
 
-    const data = await response.json()
-    if (response.ok) {
-      return data
+    // for not standardized error format
+    if (!response.ok) {
+      throw {
+        status: 'error',
+        statusCode: response.status,
+        message: responseData.message || response.statusText,
+        details: responseData.details || {},
+      }
     }
 
-    throw new Error(data.error || response.statusText || 'Request failed')
+    return responseData
   } catch (error) {
+    // for standardized error format
+    if (error.status === 'error') {
+      throw error
+    }
+
+    // convert any other errors to our format
     console.error('API Request Error:', error)
-    throw error
+    throw {
+      status: 'error',
+      statusCode: 500,
+      message: 'An unexpected error occurred',
+      details: {
+        cause: error.message,
+      },
+    }
   }
 }
 
