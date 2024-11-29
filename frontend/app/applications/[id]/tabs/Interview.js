@@ -12,7 +12,8 @@ import {
   Card,
 } from '@mui/material'
 import EmptyState from './EmptyState'
-import MenuButton from '../MenuButton'
+import MenuButtonApplication from '../MenuButtonApplication'
+import MenuButtonInterview from '../MenuButtonContactInterview'
 
 const Interview = () => {
   const [isEditing, setIsEditing] = useState(false)
@@ -40,7 +41,7 @@ const Interview = () => {
           }}
         >
           <Box sx={{ position: 'absolute', top: 10, right: 8 }}>
-            <MenuButton />
+            <MenuButtonInterview />
           </Box>
           <Stack
             sx={{
@@ -108,7 +109,7 @@ const Interview = () => {
           }}
         >
           <Box sx={{ position: 'absolute', top: 10, right: 8 }}>
-            <MenuButton />
+            <MenuButtonInterview />
           </Box>
           <Stack
             sx={{
@@ -172,102 +173,3 @@ const Interview = () => {
 }
 
 export default Interview
-
-{
-  /* <Paper sx={{padding: 4}}>
-<Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-    <Chip label={isVirtual ? "Online" : "In-person" } />
-  </Box>
-
- <Stack sx={{
-  alignItems: 'center',
-  flexDirection: 'row',
-  gap: 2 }}>
-      <Typography
-        variant='overline'
-        gutterBottom
-        sx={{ color: 'secondary.main', width: '150px' }}
-      >
-        Date Interview
-      </Typography>
-        <Typography variant='body1'>
-            28/11/2024
-        </Typography>
-    </Stack>
-    
-
-
-
-<Stack sx={{
-  alignItems: 'center',
-  flexDirection: 'row',
-  gap: 2}}>
-      <Typography
-        variant='overline'
-        gutterBottom
-        sx={{ color: 'secondary.main', width: '150px' }}
-      >
-        Type Interview
-      </Typography>
-        <Typography variant='body1' sx={{textTransform: 'uppercase'}}>
-            Initial
-        </Typography>
-    </Stack>
-
-
-<Stack sx={{
-  alignItems: isMobile ? 'start' : 'center' ,
-  flexDirection: isMobile ? 'column' : 'row',
-  gap: isMobile ? 0 : 2}}>
-      <Typography
-        variant="overline"
-        gutterBottom
-        sx={{ color: 'secondary.main', minWidth: '150px' }}
-      >
-        {isVirtual ? 'Meeting Link' : 'Location'}
-      </Typography>
-      {isVirtual ? 
-        (<Link
-      
-      href='https://github.com'
-            target="_blank"
-            sx={{ 
-              display: 'block',
-              color: 'inherit',
-              textDecoration: 'none',
-              '&:hover': { textDecoration: 'underline' },
-              wordBreak: 'break-word',
-              fontSize: '1rem'}}
-          >
-            https://github.com
-          </Link>) :
-           (<Typography variant='body1' sx={{textTransform: 'uppercase'}}>
-            Copenhagen
-        </Typography>)}
-      
-    </Stack>
-
-
-
-    
-
-
-    <Stack sx={{ mt: 2, flexDirection: 'row', justifyContent: 'flex-end', gap: 1 }}>
-    <Button
-  variant="outlined"
-  color="error"
-  size="small"
->
-  Delete
-</Button>
-<Button variant="contained" size="small">
-  Edit
-</Button>
-    </Stack>
-    
-
-
-
-
-</Paper> */
-}
