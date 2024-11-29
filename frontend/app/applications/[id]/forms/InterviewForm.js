@@ -27,6 +27,7 @@ import InputField from '@/components/ui/InputField'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
+import { ContentCutOutlined } from '@mui/icons-material'
 
 const interviewTypes = [
   { value: 'Initial Screening' },
@@ -63,24 +64,11 @@ export default function InterviewForm({ openModal, onClose, mode }) {
     setError('')
     try {
       if (mode === 'edit') {
-        const updatedContact = await patchContactByApplicationId(
-          applicationId,
-          contactData,
-          currentName
-        )
-        if (onContactEdited) {
-          onContactEdited(updatedContact)
-        }
+        console.log('function edit')
         showNotification('Interview updated successfully!')
       } else if (mode === 'add') {
-        const newContact = await addContactByApplicationId(
-          applicationId,
-          contactData
-        )
+        console.log('function add')
         showNotification('Interview added successfully!')
-        if (onContactAdd) {
-          onContactAdd(newContact)
-        }
       }
       onClose()
     } catch (error) {

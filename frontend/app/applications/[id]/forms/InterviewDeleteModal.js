@@ -12,8 +12,7 @@ export default function InterviewDeleteModal({ openModal, onClose }) {
     setLoading(true)
     setError('')
     try {
-      await deleteContactByApplicationId(applicationId, currentName)
-      onContactDeleted(currentName)
+      console.log('function delete')
       showNotification('Contact was deleted!')
       onClose()
     } catch (error) {
