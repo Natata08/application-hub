@@ -25,6 +25,8 @@ import {
 import {
   getUserInterviews,
   postUserInterview,
+  deleteUserInterview,
+  patchUserInterview,
 } from '../controllers/interviewController.js'
 
 const user = express.Router()
@@ -69,6 +71,8 @@ user.delete(
   deleteCompanyContact
 )
 
-user.get('/applications/:id/interview', verifyAuthToken, getUserInterviews)
+user.get('/applications/:id/interviews', verifyAuthToken, getUserInterviews)
 user.post('/applications/:id/interview', verifyAuthToken, postUserInterview)
+user.delete('/applications/:id/interview', verifyAuthToken, deleteUserInterview)
+user.patch('/applications/:id/interview', verifyAuthToken, patchUserInterview)
 export default user
