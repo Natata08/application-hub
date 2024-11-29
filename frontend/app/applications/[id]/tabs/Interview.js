@@ -1,174 +1,200 @@
 'use client'
 import { useState, useCallback } from 'react'
-import { useIsMobileSmall } from '@/app/hooks/useIsMobile'
-import {
-  Box,
-  Typography,
-  Paper,
-  Link,
-  Chip,
-  Button,
-  Stack,
-  Card,
-} from '@mui/material'
-import EmptyState from './EmptyState'
-import MenuButtonApplication from '../MenuButtonApplication'
+import { Box, Typography, Link, Chip, Button, Stack, Card } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add'
 import MenuButtonInterview from '../MenuButtonContactInterview'
+import { useIsMobile } from '@/app/hooks/useIsMobile'
+import InterviewForm from '../forms/InterviewForm'
 
 const Interview = () => {
-  const [isEditing, setIsEditing] = useState(false)
   const [isVirtual, setIsVirtual] = useState(true)
-  const [value, setValue] = useState('')
-  const isMobile = useIsMobileSmall()
-  const hasContent = value
-  const handleEdit = useCallback(() => {
-    setIsEditing(true)
+  const isMobile = useIsMobile()
+  const [openModalAdd, setOpenModalAdd] = useState(false)
+
+  const handleOpenAddModal = useCallback(() => {
+    setOpenModalAdd(true)
   }, [])
+  const handleCloseAddModal = () => setOpenModalAdd(false)
 
   return (
-    <>
-      <Box sx={{ marginTop: 4 }}>
-        {/* {!hasContent && !isEditing && (
-        <EmptyState onAction={handleEdit} subject="interview" buttonText="Add Interview" />
-      )} */}
-
-        <Card
+    <Box sx={{ marginTop: 4 }}>
+      <Card
+        sx={{
+          padding: 2,
+          marginBottom: 1,
+          position: 'relative',
+          paddingRight: 8,
+        }}
+      >
+        <Box sx={{ position: 'absolute', top: 10, right: 8 }}>
+          <MenuButtonInterview />
+        </Box>
+        <Stack
           sx={{
-            padding: 2,
-            marginBottom: 1,
-            position: 'relative',
-            paddingRight: 8,
+            alignItems: 'center',
+            flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: isMobile ? 'center' : 'start',
+            alignItems: 'center',
+            paddingBottom: 1,
+            gap: isMobile ? 1 : 2,
           }}
         >
-          <Box sx={{ position: 'absolute', top: 10, right: 8 }}>
-            <MenuButtonInterview />
-          </Box>
-          <Stack
+          <Typography
+            variant="body1"
             sx={{
-              alignItems: 'center',
-              flexDirection: isMobile ? 'column' : 'row',
-              justifyContent: isMobile ? 'center' : 'space-between',
-              alignItems: isMobile ? 'center' : 'center',
-              width: '100%',
+              textAlign: { xs: 'center', sm: 'left' },
+              minWidth: isMobile ? 'auto' : '150px',
             }}
           >
-            <Typography
-              variant="body1"
-              sx={{ textAlign: { xs: 'center', sm: 'left' } }}
+            02/12/2024 12:00
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              textTransform: 'uppercase',
+              textAlign: { xs: 'center', sm: 'left' },
+              minWidth: isMobile ? 'auto' : '300px',
+            }}
+          >
+            Case Study/Take-Home Assignment
+          </Typography>
+          <Chip
+            label={isVirtual ? 'Online' : 'In-person'}
+            sx={{
+              minWidth: isMobile ? 'auto' : '100px',
+            }}
+          />
+        </Stack>
+
+        <Box>
+          {isVirtual === true ? (
+            <Link
+              href="https://meet.google.com/tnu-dzqg-rwr"
+              target="_blank"
+              sx={{
+                display: 'block',
+                color: 'inherit',
+                textDecoration: 'none',
+                '&:hover': { textDecoration: 'underline' },
+                wordBreak: 'break-word',
+                fontSize: '1rem',
+                textAlign: isMobile ? 'center' : 'left',
+              }}
             >
-              28/11/2024
-            </Typography>
+              https://meet.google.com/tnu-dzqg-rwr
+              https://meet.google.com/tnu-dzqg-rwr
+            </Link>
+          ) : (
             <Typography
               variant="body1"
               sx={{
-                textTransform: 'uppercase',
-                textAlign: { xs: 'center', sm: 'left' },
+                textAlign: isMobile ? 'center' : 'left',
               }}
             >
-              Initial Screening
+              Copenhagen
             </Typography>
-            <Chip label={isVirtual ? 'Online' : 'In-person'} />
-            <Box>
-              {isVirtual === true ? (
-                <Link
-                  href="https://github.com"
-                  target="_blank"
-                  sx={{
-                    display: 'block',
-                    color: 'inherit',
-                    textDecoration: 'none',
-                    '&:hover': { textDecoration: 'underline' },
-                    wordBreak: 'break-word',
-                    fontSize: '1rem',
-                    textAlign: { xs: 'center', sm: 'left' },
-                  }}
-                >
-                  https://github.com
-                </Link>
-              ) : (
-                <Typography
-                  variant="body1"
-                  sx={{
-                    textTransform: 'uppercase',
-                    textAlign: { xs: 'center', sm: 'left' },
-                  }}
-                >
-                  Copenhagen
-                </Typography>
-              )}
-            </Box>
-          </Stack>
-        </Card>
+          )}
+        </Box>
+      </Card>
 
-        <Card
+      <Card
+        sx={{
+          padding: 2,
+          marginBottom: 1,
+          position: 'relative',
+          paddingRight: 8,
+        }}
+      >
+        <Box sx={{ position: 'absolute', top: 10, right: 8 }}>
+          <MenuButtonInterview />
+        </Box>
+        <Stack
           sx={{
-            padding: 2,
-            marginBottom: 1,
-            position: 'relative',
-            paddingRight: 8,
+            alignItems: 'center',
+            flexDirection: isMobile ? 'column' : 'row',
+            justifyContent: isMobile ? 'center' : 'start',
+            alignItems: 'center',
+            paddingBottom: 1,
+            gap: isMobile ? 1 : 2,
           }}
         >
-          <Box sx={{ position: 'absolute', top: 10, right: 8 }}>
-            <MenuButtonInterview />
-          </Box>
-          <Stack
+          <Typography
+            variant="body1"
             sx={{
-              alignItems: 'center',
-              flexDirection: isMobile ? 'column' : 'row',
-              justifyContent: isMobile ? 'center' : 'space-between',
-              alignItems: isMobile ? 'center' : 'center',
-              width: '100%',
+              textAlign: { xs: 'center', sm: 'left' },
+              minWidth: isMobile ? 'auto' : '150px',
             }}
           >
-            <Typography
-              variant="body1"
-              sx={{ textAlign: { xs: 'center', sm: 'left' } }}
+            28/11/2024 10:00
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              textTransform: 'uppercase',
+              textAlign: { xs: 'center', sm: 'left' },
+              minWidth: isMobile ? 'auto' : '300px',
+            }}
+          >
+            Initial Screening
+          </Typography>
+          <Chip
+            label={isVirtual === false ? 'Online' : 'In-Person'}
+            sx={{
+              minWidth: isMobile ? 'auto' : '100px',
+            }}
+          />
+        </Stack>
+
+        <Box>
+          {isVirtual === false ? (
+            <Link
+              href="https://meet.google.com/tnu-dzqg-rwr"
+              target="_blank"
+              sx={{
+                display: 'block',
+                color: 'inherit',
+                textDecoration: 'none',
+                '&:hover': { textDecoration: 'underline' },
+                wordBreak: 'break-word',
+                fontSize: '1rem',
+                textAlign: isMobile ? 'center' : 'left',
+              }}
             >
-              28/11/2024
-            </Typography>
+              https://meet.google.com/tnu-dzqg-rwr
+              https://meet.google.com/tnu-dzqg-rwr
+            </Link>
+          ) : (
             <Typography
               variant="body1"
               sx={{
-                textTransform: 'uppercase',
-                textAlign: { xs: 'center', sm: 'left' },
+                textAlign: isMobile ? 'center' : 'left',
               }}
             >
-              Initial Screening
+              Copenhagen
             </Typography>
-            <Chip label={isVirtual === false ? 'Online' : 'In-person'} />
-            <Box>
-              {isVirtual === false ? (
-                <Link
-                  href="https://github.com"
-                  target="_blank"
-                  sx={{
-                    display: 'block',
-                    color: 'inherit',
-                    textDecoration: 'none',
-                    '&:hover': { textDecoration: 'underline' },
-                    wordBreak: 'break-word',
-                    fontSize: '1rem',
-                    textAlign: { xs: 'center', sm: 'left' },
-                  }}
-                >
-                  https://github.com
-                </Link>
-              ) : (
-                <Typography
-                  variant="body1"
-                  sx={{
-                    textTransform: 'uppercase',
-                    textAlign: { xs: 'center', sm: 'left' },
-                  }}
-                >
-                  Copenhagen
-                </Typography>
-              )}
-            </Box>
-          </Stack>
-        </Card>
+          )}
+        </Box>
+      </Card>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          onClick={handleOpenAddModal}
+          variant="outlined"
+          startIcon={<AddIcon />}
+          sx={{
+            textTransform: 'none',
+            width: isMobile ? '100%' : 'auto',
+          }}
+        >
+          Add Interview
+        </Button>
       </Box>
-    </>
+
+      <InterviewForm
+        mode="add"
+        openModal={openModalAdd}
+        onClose={handleCloseAddModal}
+      />
+    </Box>
   )
 }
 
