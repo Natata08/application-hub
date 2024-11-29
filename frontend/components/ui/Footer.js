@@ -34,12 +34,12 @@ export default function Footer() {
             justifyContent: { xs: 'space-between', sm: 'none' },
           }}
         >
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <Box paddingX="10px" marginTop="20px">
               <Logo />
             </Box>
           </Grid>
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <Box paddingX="10px">
               <Link
                 href="/"
