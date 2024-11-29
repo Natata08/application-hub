@@ -29,7 +29,7 @@ export const getUserInterviews = async (req, res) => {
       return res.json(buildInterviewsDto(interviews))
     } catch (error) {
       console.error('Database error:', error)
-      return res.status(500).json({ error: 'Database error' })
+      return res.status(500).json(buildErrorDto('Database error'))
     }
   } catch (error) {
     console.error('Problem with id', error)
@@ -186,6 +186,6 @@ export const patchUserInterview = async (req, res) => {
     res.status(200).json(updatedRows)
   } catch (error) {
     console.error('error', error)
-    return res.status(500).json({ message: 'internal error' })
+    return res.status(500).json(buildErrorDto('Internal error'))
   }
 }
