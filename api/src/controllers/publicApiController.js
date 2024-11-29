@@ -1,4 +1,5 @@
 import knex from '../database_client.js'
+import { buildErrorDto } from '../dtos/errorDto.js'
 
 export const getApplicationStatuses = async (req, res) => {
   try {
@@ -17,8 +18,10 @@ export const getApplicationStatuses = async (req, res) => {
     res.json(statuses)
   } catch (error) {
     console.error(error)
-    res
-      .status(500)
-      .json({ message: 'An error occurred while fetching statuses' })
+    res.status(500).json(
+      buildErrorDto('Error fetching statuses', {
+        cause: error.message,
+      })
+    )
   }
 }

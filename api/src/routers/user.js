@@ -61,12 +61,12 @@ user.post(
   postCompanyContact
 )
 user.patch(
-  '/applications/:id/company/contacts',
+  '/applications/:id/company/contact',
   verifyAuthToken,
   patchCompanyContact
 )
 user.delete(
-  '/applications/:id/company/contacts',
+  '/applications/:id/company/contact',
   verifyAuthToken,
   deleteCompanyContact
 )
