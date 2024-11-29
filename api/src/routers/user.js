@@ -22,7 +22,10 @@ import {
   postCompanyContact,
 } from '../controllers/userCompanyContactsController.js'
 
-import { getUserInterviews } from '../controllers/interviewController.js'
+import {
+  getUserInterviews,
+  postUserInterview,
+} from '../controllers/interviewController.js'
 
 const user = express.Router()
 
@@ -67,4 +70,5 @@ user.delete(
 )
 
 user.get('/applications/:id/interview', verifyAuthToken, getUserInterviews)
+user.post('/applications/:id/interview', verifyAuthToken, postUserInterview)
 export default user
