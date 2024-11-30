@@ -175,7 +175,11 @@ const Notes = () => {
     <Box sx={{ padding: 1 }}>
       {renderEditor}
       {!hasContent && !isEditing && (
-        <EmptyState onAction={handleEdit} subject="notes" buttonText="Add" />
+        <EmptyState
+          onAction={handleEdit}
+          subject="notes"
+          buttonText="Add Note"
+        />
       )}
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
         {isEditing ? renderEditButtons : hasContent && renderViewButtons}
