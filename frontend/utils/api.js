@@ -51,9 +51,10 @@ const apiRequest = async ({
     if (!response.ok) {
       throw {
         status: 'error',
-        statusCode: response.status,
-        message: responseData.message || response.statusText,
-        details: responseData.details || {},
+        message: responseData.message || 'Unknown error occurred',
+        details: {
+          cause: response.statusText,
+        },
       }
     }
 
@@ -68,7 +69,6 @@ const apiRequest = async ({
     console.error('API Request Error:', error)
     throw {
       status: 'error',
-      statusCode: 500,
       message: 'An unexpected error occurred',
       details: {
         cause: error.message,
@@ -175,4 +175,30 @@ export const deleteNote = (id) =>
   apiRequest({
     url: `/user/applications/${id}/note`,
     method: 'DELETE',
+  })
+
+export const getContactsByApplicationId = (id) =>
+  apiRequest({
+    url: `/user/applications/${id}/company/contacts`,
+  })
+
+export const addContactByApplicationId = (id, contactData) =>
+  apiRequest({
+    url: `/user/applications/${id}/company/contact`,
+    method: 'POST',
+    data: contactData,
+  })
+
+export const patchContactByApplicationId = (id, updateData, currentName) =>
+  apiRequest({
+    url: `/user/applications/${id}/company/contact`,
+    method: 'PATCH',
+    data: { currentName, ...updateData },
+  })
+
+export const deleteContactByApplicationId = (id, currentName) =>
+  apiRequest({
+    url: `/user/applications/${id}/company/contact`,
+    method: 'DELETE',
+    data: { currentName },
   })
