@@ -43,7 +43,7 @@ export default function ContactForm({
           contactData,
           currentName
         )
-        console.log(updatedContact)
+
         if (onContactEdited) {
           onContactEdited(updatedContact)
         }
