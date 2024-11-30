@@ -19,3 +19,16 @@ export const checkApplicationExist = async (
     )
   }
 }
+
+export const checkApplicationExistByUserId = async (
+  application_id,
+  user_id
+) => {
+  const existingApplication = await knex('application')
+    .where({
+      application_id: application_id,
+      user_id: user_id,
+    })
+    .first()
+  return existingApplication
+}

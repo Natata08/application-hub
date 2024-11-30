@@ -22,6 +22,13 @@ import {
   postCompanyContact,
 } from '../controllers/userCompanyContactsController.js'
 
+import {
+  getUserInterviews,
+  postUserInterview,
+  deleteUserInterview,
+  patchUserInterview,
+} from '../controllers/interviewController.js'
+
 const user = express.Router()
 
 // The endpoints for getting user information in a safe way
@@ -63,4 +70,9 @@ user.delete(
   verifyAuthToken,
   deleteCompanyContact
 )
+
+user.get('/applications/:id/interviews', verifyAuthToken, getUserInterviews)
+user.post('/applications/:id/interview', verifyAuthToken, postUserInterview)
+user.delete('/applications/:id/interview', verifyAuthToken, deleteUserInterview)
+user.patch('/applications/:id/interview', verifyAuthToken, patchUserInterview)
 export default user
