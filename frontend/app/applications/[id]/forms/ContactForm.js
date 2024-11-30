@@ -1,7 +1,7 @@
 'use client'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
-import { Typography, Button, Stack, Box } from '@mui/material'
+import { Button, Stack, Box, Alert } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
 import { useNotification } from '@/components/Context/NotificationContext'
@@ -43,7 +43,6 @@ export default function ContactForm({
           contactData,
           currentName
         )
-        console.log(updatedContact)
         if (onContactEdited) {
           onContactEdited(updatedContact)
         }
@@ -78,38 +77,34 @@ export default function ContactForm({
         noValidate
         autoComplete="off"
       >
-        {error && (
-          <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
-            {error}
-          </Typography>
-        )}
+        {error && <Alert severity="error">{error}</Alert>}
 
         <InputField
           id="name"
           label="Name"
           required
-          defaultValue={mode === 'edit' ? contact.name : ''}
+          defaultValue={mode === 'edit' ? contact.name : null}
           register={register}
           errors={errors}
         />
         <InputField
           id="role"
           label="Position"
-          defaultValue={mode === 'edit' ? contact.role : ''}
+          defaultValue={mode === 'edit' ? contact.role : null}
           register={register}
           errors={errors}
         />
         <InputField
           id="phone"
           label="Phone"
-          defaultValue={mode === 'edit' ? contact.phone : ''}
+          defaultValue={mode === 'edit' ? contact.phone : null}
           register={register}
           errors={errors}
         />
         <InputField
           id="email"
           label="Email"
-          defaultValue={mode === 'edit' ? contact.email : ''}
+          defaultValue={mode === 'edit' ? contact.email : null}
           register={register}
           errors={errors}
         />
