@@ -167,13 +167,20 @@ export const patchCompanyContact = async (req, res) => {
 
   try {
     if (Object.keys(updateData).length > 0) {
-      await knex('company_contact')
+      const [updatedContact] = await knex('company_contact')
         .where({
           contact_id: contactId,
           company_id: companyId,
           application_id: id,
         })
         .update(updateData)
+        .returning(['contact_id', 'name', 'role', 'email', 'phone'])
+
+      if (!updatedContact || updatedContact.length === 0) {
+        return res.status(404).json(buildErrorDto('Contact not found'))
+      }
+
+      res.status(200).json(buildCompanyContactDto(updatedContact))
     }
 
     if (Object.keys(updateData).length === 0) {
@@ -181,8 +188,6 @@ export const patchCompanyContact = async (req, res) => {
         .status(400)
         .json(buildErrorDto('No valid fields provided for update.'))
     }
-
-    res.status(200).json(buildCompanyContactDto(updateData))
   } catch (error) {
     res.status(500).json(
       buildErrorDto('Error updating contact', {
