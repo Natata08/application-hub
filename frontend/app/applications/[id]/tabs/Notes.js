@@ -52,7 +52,7 @@ const Notes = () => {
 
   const handleSave = useCallback(async () => {
     if (!hasContent) {
-      showNotification('Note content cannot be empty.', 'warning')
+      showNotification('Note content cannot be empty', 'warning')
       return
     }
 
@@ -98,7 +98,7 @@ const Notes = () => {
       setLastSavedContent(null)
       setIsEditing(false)
       setIsDeleteModalOpen(false)
-      showNotification('Note deleted successfully.', 'success')
+      showNotification('Note deleted successfully!', 'success')
     } catch (error) {
       console.error('Error deleting note:', error)
       setDeleteError(error.message)
