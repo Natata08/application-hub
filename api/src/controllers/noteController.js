@@ -127,12 +127,25 @@ export const postUserApplicationNote = async (req, res) => {
 
 export const deleteUserApplicationNote = async (req, res) => {
   try {
+    const user_id = req.userInfo.userId
     const application_id = parseInt(req.params.id)
+
     if (!application_id || isNaN(application_id)) {
       return res.status(400).json(buildErrorDto('Invalid application ID'))
     }
 
     try {
+      const isApplicationExist = await checkApplicationExistByUserId(
+        application_id,
+        user_id
+      )
+
+      if (!isApplicationExist) {
+        return res
+          .status(401)
+          .json(buildErrorDto('Application not found with this user'))
+      }
+
       const deleted = await knex('application_note')
         .where('application_id', application_id)
         .delete()
