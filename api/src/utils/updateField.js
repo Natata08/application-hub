@@ -6,6 +6,10 @@ export const updateField = (
   isInt = false
 ) => {
   if (value !== undefined && value !== null) {
+    if (typeof value === 'boolean') {
+      data[key] = value
+      return
+    }
     const trimmedValue = value.trim()
     if (trimmedValue === '') {
       data[key] = null
