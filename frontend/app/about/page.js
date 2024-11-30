@@ -1,9 +1,13 @@
 import { Box, Card, CardContent, Typography } from '@mui/material'
-import CardLeftCurve from '@/components/ui/CardLeftCurve'
+import AboutUs from './aboutUs'
+import Vision from './OurVision'
 
 export default function About() {
   return (
-    <Box margin="20px">
+    <Box
+      margin="20px"
+      sx={{ fontSize: { xs: '0.8rem', sm: '1rem', md: '2rem' } }}
+    >
       <Typography
         variant="h4"
         component="h1"
@@ -11,7 +15,8 @@ export default function About() {
         sx={{
           fontWeight: 'bold',
           mb: 2,
-          fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+          mt: 10,
+          fontSize: { xs: '1rem', sm: '2rem', md: '3rem' },
         }}
       >
         Application Hub
@@ -19,39 +24,53 @@ export default function About() {
       <Typography
         textAlign="center"
         gutterBottom
-        margin="20px"
         color="text.footer"
+        sx={{ mt: 4, mb: 8 }}
       >
         Welcome to Application Hub, your ultimate companion in managing your job
         applications effortlessly and effectively.
       </Typography>
 
-      <CardLeftCurve backgroundColor={'background.cardBlue'}>
+      <AboutUs />
+
+      <Box
+        sx={{
+          color: 'text.secondary',
+          display: 'flex',
+          justifyContent: 'center',
+          overflow: 'hidden',
+
+          mt: { xs: 1, sm: 3, md: 8 },
+        }}
+      >
         <Card
           style={{
             maxWidth: '1000px',
-            margin: '30px',
+            margin: '30px auto',
             padding: '20px',
             borderRadius: '15px',
             boxShadow: '0px 4px 12px rgba(0,0,0,0.1)',
-            maxHeight: '100%',
           }}
         >
           <CardContent>
             <Typography
-              color="text.primary"
+              variant="h5"
+              component="h5"
+              textAlign="left"
+              color="text.footer"
               gutterBottom
               sx={{
                 fontWeight: 'bold',
-                mb: 2,
+                mb: 3,
+                mt: 3,
+                typography: { xs: 'h6', sm: 'h5', md: 'h4' },
               }}
             >
-              Searching for a job can be overwhelming, but staying organized
-              should not be. With Application Hub, you can:
+              <strong>What We Offer:</strong>
             </Typography>
             <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
               <li>
-                <Typography>
+                <Typography sx={{ mb: 2 }}>
                   <Box component="span" sx={{ color: 'text.footer' }}>
                     <strong>Track Your Applications:</strong>
                   </Box>{' '}
@@ -62,7 +81,7 @@ export default function About() {
                 </Typography>
               </li>
               <li>
-                <Typography>
+                <Typography sx={{ mb: 2 }}>
                   <Box component="span" sx={{ color: 'text.footer' }}>
                     <strong>Maintain Company Details:</strong>
                   </Box>{' '}
@@ -74,7 +93,7 @@ export default function About() {
                 </Typography>
               </li>
               <li>
-                <Typography>
+                <Typography sx={{ mb: 2 }}>
                   <Box component="span" sx={{ color: 'text.footer' }}>
                     <strong>Add Personal Notes:</strong>
                   </Box>{' '}
@@ -86,7 +105,7 @@ export default function About() {
                 </Typography>
               </li>
             </ul>
-            <Typography color="text.primary" margin="20px" gutterBottom>
+            <Typography color="text.primary" margin="30px" gutterBottom>
               Whether you are actively job hunting or simply preparing for the
               next step in your career, Application Hub helps you stay on top of
               your progress. Designed with simplicity and functionality in mind,
@@ -99,7 +118,8 @@ export default function About() {
             </Typography>
           </CardContent>
         </Card>
-      </CardLeftCurve>
+      </Box>
+      <Vision />
     </Box>
   )
 }
