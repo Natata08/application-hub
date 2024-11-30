@@ -8,6 +8,7 @@ export const getUserApplicationNote = async (req, res) => {
   try {
     const user_id = req.userInfo.userId
     const application_id = parseInt(req.params.id)
+
     if (!application_id || isNaN(application_id)) {
       return res.status(400).json(buildErrorDto('Invalid application ID'))
     }
@@ -61,12 +62,15 @@ export const getUserApplicationNote = async (req, res) => {
 
 export const postUserApplicationNote = async (req, res) => {
   try {
+    const user_id = req.userInfo.userId
     const application_id = parseInt(req.params.id)
+
     if (!application_id || isNaN(application_id)) {
       return res.status(400).json(buildErrorDto('Invalid application ID'))
     }
 
     const { content } = req.body
+
     if (!content) {
       return res.status(400).json(buildErrorDto('Content is required'))
     }
@@ -74,6 +78,17 @@ export const postUserApplicationNote = async (req, res) => {
     const sanitizedContent = sanitizeData(content)
 
     try {
+      const isApplicationExist = await checkApplicationExistByUserId(
+        application_id,
+        user_id
+      )
+
+      if (!isApplicationExist) {
+        return res
+          .status(401)
+          .json(buildErrorDto('Application not found with this user'))
+      }
+
       const [note] = await knex('application_note')
         .insert({
           application_id,
