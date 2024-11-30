@@ -1,16 +1,17 @@
 'use client'
-import { Box, Button, Alert, Stack } from '@mui/material'
+import { Box, Button, Alert } from '@mui/material'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import EmptyState from './EmptyState'
 import RichTextEditor from '@/components/ui/RichTextEditor'
 import Loader from '@/components/ui/Loader'
-import { ModalWrapper } from '@/components/ui/ModalWrapper'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import {
   getNoteByApplicationId,
   createOrUpdateNote,
   deleteNote,
 } from '@/utils/api'
+import { useNotification } from '@/components/Context/NotificationContext'
+import DeleteModal from '@/components/ui/DeleteModal'
 
 const Notes = () => {
   const [value, setValue] = useState('')
@@ -20,9 +21,13 @@ const Notes = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [deleteError, setDeleteError] = useState(null)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const { application } = useApplicationContext()
   const applicationId = application.application_id
+
+  const { showNotification } = useNotification()
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -46,6 +51,11 @@ const Notes = () => {
   const hasContent = value && value !== '<p><br></p>'
 
   const handleSave = useCallback(async () => {
+    if (!hasContent) {
+      showNotification('Note content cannot be empty.', 'warning')
+      return
+    }
+
     setIsSaving(true)
     try {
       await createOrUpdateNote({
@@ -60,7 +70,7 @@ const Notes = () => {
     } finally {
       setIsSaving(false)
     }
-  }, [value, applicationId])
+  }, [value, applicationId, hasContent, showNotification])
 
   const handleEdit = useCallback(() => {
     setIsEditing(true)
@@ -80,17 +90,22 @@ const Notes = () => {
   }, [])
 
   const handleDeleteConfirm = useCallback(async () => {
+    setIsDeleting(true)
+    setDeleteError(null)
     try {
       await deleteNote(applicationId)
       setValue('')
       setLastSavedContent(null)
       setIsEditing(false)
       setIsDeleteModalOpen(false)
+      showNotification('Note deleted successfully.', 'success')
     } catch (error) {
       console.error('Error deleting note:', error)
-      setError(error.message)
+      setDeleteError(error.message)
+    } finally {
+      setIsDeleting(false)
     }
-  }, [applicationId])
+  }, [applicationId, showNotification])
 
   const handleDeleteCancel = useCallback(() => {
     setIsDeleteModalOpen(false)
@@ -148,46 +163,6 @@ const Notes = () => {
     [handleDeleteClick, handleEdit]
   )
 
-  const renderDeleteModal = useMemo(
-    () => (
-      <ModalWrapper
-        open={isDeleteModalOpen}
-        handleClose={handleDeleteCancel}
-        title="Are you sure you want to delete this note?"
-      >
-        <Stack
-          sx={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: { xs: 'column', sm: 'row' },
-            gap: 4,
-            paddingBottom: 2,
-          }}
-        >
-          <Button
-            variant="outlined"
-            onClick={handleDeleteCancel}
-            sx={{
-              width: { xs: '100%', sm: 'auto' },
-            }}
-          >
-            No, keep the note
-          </Button>
-          <Button
-            variant="contained"
-            sx={{
-              width: { xs: '100%', sm: 'auto' },
-            }}
-            onClick={handleDeleteConfirm}
-          >
-            Yes, delete the note
-          </Button>
-        </Stack>
-      </ModalWrapper>
-    ),
-    [isDeleteModalOpen, handleDeleteCancel, handleDeleteConfirm]
-  )
-
   if (isLoading) {
     return <Loader height="200px" />
   }
@@ -205,7 +180,16 @@ const Notes = () => {
       <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
         {isEditing ? renderEditButtons : hasContent && renderViewButtons}
       </Box>
-      {renderDeleteModal}
+      <DeleteModal
+        openModal={isDeleteModalOpen}
+        onClose={handleDeleteCancel}
+        title="Are you sure you want to delete this note?"
+        error={deleteError}
+        loading={isDeleting}
+        onConfirm={handleDeleteConfirm}
+        cancelLabel="No, keep the note"
+        confirmLabel="Yes, delete the note"
+      />
     </Box>
   )
 }
