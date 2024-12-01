@@ -8,9 +8,11 @@ export const useNotification = () => useContext(NotificationContext)
 export const NotificationProvider = ({ children }) => {
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
+  const [severity, setSeverity] = useState('success')
 
-  const showNotification = (msg) => {
+  const showNotification = (msg, severity = 'success') => {
     setMessage(msg)
+    setSeverity(severity)
     setOpen(true)
   }
 
@@ -18,7 +20,7 @@ export const NotificationProvider = ({ children }) => {
 
   return (
     <NotificationContext.Provider
-      value={{ open, message, showNotification, hideNotification }}
+      value={{ open, message, severity, showNotification, hideNotification }}
     >
       {children}
     </NotificationContext.Provider>
