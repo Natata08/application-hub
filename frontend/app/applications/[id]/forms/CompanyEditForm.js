@@ -1,7 +1,7 @@
 'use client'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
-import { Typography, Button, Stack, Box } from '@mui/material'
+import { Typography, Button, Stack, Box, Alert } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
 import { patchCompany } from '@/utils/api'
@@ -51,11 +51,7 @@ export default function CompanyEditForm({ openModal, onClose }) {
         noValidate
         autoComplete="off"
       >
-        {error && (
-          <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
-            {error}
-          </Typography>
-        )}
+        {error && <Alert severity="error">{error}</Alert>}
 
         <InputField
           id="company_name"
