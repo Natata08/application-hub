@@ -202,3 +202,29 @@ export const deleteContactByApplicationId = (id, currentName) =>
     method: 'DELETE',
     data: { currentName },
   })
+
+export const getInterviewsByApplicationId = (id) =>
+  apiRequest({
+    url: `/user/applications/${id}/interviews`,
+  })
+
+export const addInterviewByApplicationId = (id, interviewData) =>
+  apiRequest({
+    url: `/user/applications/${id}/interview`,
+    method: 'POST',
+    data: interviewData,
+  })
+
+export const patchInterviewByApplicationId = (id, updateData, currentName) =>
+  apiRequest({
+    url: `/user/applications/${id}/interview`,
+    method: 'PATCH',
+    data: { currentName, ...updateData },
+  })
+
+export const deleteInterviewByApplicationId = (id, currentName) =>
+  apiRequest({
+    url: `/user/applications/${id}/interview`,
+    method: 'DELETE',
+    data: { currentName },
+  })

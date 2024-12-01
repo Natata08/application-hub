@@ -21,13 +21,14 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormHelperText,
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
-import { ContentCutOutlined } from '@mui/icons-material'
+import { addInterviewByApplicationId } from '@/utils/api'
 
 const interviewTypes = [
   { value: 'Initial Screening' },
@@ -40,35 +41,49 @@ const interviewTypes = [
   { value: 'Other' },
 ]
 
-export default function InterviewForm({ openModal, onClose, mode }) {
+export default function InterviewForm({
+  openModal,
+  onClose,
+  mode,
+  onInterviewAdd,
+}) {
   const { application } = useApplicationContext()
   const { showNotification } = useNotification()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [isVirtual, setIsVirtual] = useState(true)
+  const [isVirtual, setIsVirtual] = useState(false)
   const applicationId = application.application_id
 
   const {
-    register,
     handleSubmit,
     control,
+    register,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      is_virtual: true,
-    },
-  })
+  } = useForm()
 
-  const handleSubmitForm = async (contactData) => {
+  const handleSubmitForm = async (interviewData) => {
+    console.log('Form Data:', interviewData)
     setLoading(true)
     setError('')
     try {
+      const formattedData = {
+        ...interviewData,
+        scheduled_at: interviewData.scheduledAt.toISOString(),
+        is_virtual: isVirtual,
+      }
+
       if (mode === 'edit') {
         console.log('function edit')
         showNotification('Interview updated successfully!')
       } else if (mode === 'add') {
-        console.log('function add')
+        const newInterview = await addInterviewByApplicationId(
+          applicationId,
+          formattedData
+        )
         showNotification('Interview added successfully!')
+        if (onInterviewAdd) {
+          onInterviewAdd(newInterview)
+        }
       }
       onClose()
     } catch (error) {
@@ -94,8 +109,9 @@ export default function InterviewForm({ openModal, onClose, mode }) {
           {error && <Alert severity="error">{error}</Alert>}
 
           <Controller
-            name="scheduled_at"
+            name="scheduledAt"
             control={control}
+            rules={{ required: 'Interview type is required' }}
             render={({ field }) => (
               <DateTimePicker
                 sx={{ width: '100%' }}
@@ -106,31 +122,46 @@ export default function InterviewForm({ openModal, onClose, mode }) {
                   minutes: renderTimeViewClock,
                   seconds: renderTimeViewClock,
                 }}
+                slotProps={{
+                  textField: {
+                    helperText: errors.message,
+                  },
+                }}
                 TextFieldComponent={(params) => (
                   <InputField
                     {...params}
                     errors={errors}
                     required
-                    id="scheduled_at"
+                    id="scheduledAt"
+                    // helperText={errors.scheduledAt ? errors.scheduledAt.message : ''}
+                    // error={!!errors.scheduledAt}
                   />
                 )}
               />
             )}
           />
 
-          <FormControl fullWidth margin="normal" required error={!!errors.type}>
-            <InputLabel id="type">Type Interview</InputLabel>
+          <FormControl fullWidth required margin="normal" error={!!errors.type}>
+            <InputLabel required id="type-label">
+              Type Interview
+            </InputLabel>
             <Controller
               name="type"
               control={control}
+              defaultValue={
+                interviewTypes.length > 0 ? interviewTypes[0].value : ''
+              }
               rules={{ required: 'Interview type is required' }}
               render={({ field }) => (
-                <Select labelId="type" label="Type Interview" {...field}>
+                <Select labelId="type-label" label="Type Interview" {...field}>
                   {interviewTypes.map((type) => (
                     <MenuItem key={type.value} value={type.value}>
                       {type.value}
                     </MenuItem>
                   ))}
+                  {errors.type && (
+                    <FormHelperText>{errors.type.message}</FormHelperText>
+                  )}
                 </Select>
               )}
             />
@@ -138,7 +169,7 @@ export default function InterviewForm({ openModal, onClose, mode }) {
 
           <FormControl>
             <FormLabel
-              id="is_virtual"
+              id="isVirtual"
               color="accent.main"
               sx={{ paddingLeft: 2, paddingTop: 1 }}
             >
@@ -146,9 +177,11 @@ export default function InterviewForm({ openModal, onClose, mode }) {
             </FormLabel>
             <RadioGroup
               row
-              aria-labelledby="is_virtual"
+              aria-labelledby="isVirtual"
               value={isVirtual}
-              onChange={(e) => setIsVirtual(e.target.value === 'true')}
+              onChange={(e) => {
+                setIsVirtual(e.target.value === 'true')
+              }}
               sx={{ paddingLeft: 2, paddingTop: 1 }}
             >
               <FormControlLabel
@@ -169,7 +202,7 @@ export default function InterviewForm({ openModal, onClose, mode }) {
           </FormControl>
 
           <InputField
-            id={isVirtual ? 'link' : 'location'}
+            id="location"
             label={isVirtual ? 'Meeting Link' : 'Location'}
             register={register}
             errors={errors}
