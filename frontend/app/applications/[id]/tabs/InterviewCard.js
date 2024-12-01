@@ -81,7 +81,7 @@ export default function InterviewCard({
             minWidth: isMobile ? 'auto' : '150px',
           }}
         >
-          {formatDate(interview.scheduledAt)}
+          {new Date(interview.scheduledAt).toLocaleString('en-GB')}
         </Typography>
         <Typography
           variant="body1"

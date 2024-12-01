@@ -32,6 +32,7 @@ import {
   addInterviewByApplicationId,
   patchInterviewByApplicationId,
 } from '@/utils/api'
+import { formatDate } from '@/utils/formatDate'
 
 const interviewTypes = [
   { value: 'Initial Screening' },
@@ -51,12 +52,13 @@ export default function InterviewForm({
   onInterviewAdd,
   onInterviewEdited,
   interviewId,
+  interview,
 }) {
   const { application } = useApplicationContext()
   const { showNotification } = useNotification()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [isVirtual, setIsVirtual] = useState(false)
+  const [isVirtual, setIsVirtual] = useState(null)
   const applicationId = application.application_id
 
   const {
@@ -80,7 +82,7 @@ export default function InterviewForm({
       if (mode === 'edit') {
         const updatedInterview = await patchInterviewByApplicationId(
           applicationId,
-          interviewData,
+          formattedData,
           interviewId
         )
         if (onInterviewEdited) {
@@ -123,7 +125,9 @@ export default function InterviewForm({
           <Controller
             name="scheduledAt"
             control={control}
-            rules={{ required: 'Interview type is required' }}
+            defaultValue={
+              mode === 'edit' ? new Date(interview.scheduledAt) : null
+            }
             render={({ field }) => (
               <DateTimePicker
                 sx={{ width: '100%' }}
@@ -134,17 +138,17 @@ export default function InterviewForm({
                   minutes: renderTimeViewClock,
                   seconds: renderTimeViewClock,
                 }}
-                slotProps={{
-                  textField: {
-                    helperText: errors.message,
-                  },
-                }}
+                // slotProps={{
+                //   textField: {
+                //     helperText: errors.message,
+                //   },
+                // }}
                 TextFieldComponent={(params) => (
                   <InputField
                     {...params}
                     errors={errors}
-                    required
                     id="scheduledAt"
+
                     // helperText={errors.scheduledAt ? errors.scheduledAt.message : ''}
                     // error={!!errors.scheduledAt}
                   />
@@ -160,9 +164,7 @@ export default function InterviewForm({
             <Controller
               name="type"
               control={control}
-              defaultValue={
-                interviewTypes.length > 0 ? interviewTypes[0].value : ''
-              }
+              defaultValue={mode === 'edit' ? interview.type : ''}
               rules={{ required: 'Interview type is required' }}
               render={({ field }) => (
                 <Select labelId="type-label" label="Type Interview" {...field}>
@@ -198,6 +200,7 @@ export default function InterviewForm({
             >
               <FormControlLabel
                 value={true}
+                defaultValue={mode === 'edit' ? interview.isVirtual : ''}
                 control={
                   <Radio sx={{ '&.Mui-checked': { color: 'accent.main' } }} />
                 }
@@ -205,6 +208,7 @@ export default function InterviewForm({
               />
               <FormControlLabel
                 value={false}
+                defaultValue={mode === 'edit' ? interview.isVirtual : ''}
                 control={
                   <Radio sx={{ '&.Mui-checked': { color: 'accent.main' } }} />
                 }
@@ -218,6 +222,7 @@ export default function InterviewForm({
             label={isVirtual ? 'Meeting Link' : 'Location'}
             register={register}
             errors={errors}
+            defaultValue={mode === 'edit' ? interview.location : ''}
           />
 
           <Stack
