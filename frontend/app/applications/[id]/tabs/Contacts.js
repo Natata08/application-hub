@@ -34,6 +34,7 @@ export default function Contacts() {
       prevContacts.filter((contact) => contact.name !== currentName)
     )
   }
+
   const handleContactEdited = (updatedContact) => {
     setContacts((prevContacts) => {
       const updatedContacts = prevContacts.map((contact) =>
