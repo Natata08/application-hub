@@ -4,7 +4,7 @@ import Alert from '@mui/material/Alert'
 import { useNotification } from '../Context/NotificationContext'
 
 export default function Notification() {
-  const { open, message, hideNotification } = useNotification()
+  const { open, message, severity, hideNotification } = useNotification()
 
   return (
     <Snackbar
@@ -15,7 +15,7 @@ export default function Notification() {
     >
       <Alert
         onClose={hideNotification}
-        severity="success"
+        severity={severity}
         sx={{ width: '100%' }}
       >
         {message}
