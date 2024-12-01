@@ -1,9 +1,13 @@
 import { Box, Card, CardContent, Typography } from '@mui/material'
-import CardLeftCurve from '@/components/ui/CardLeftCurve'
+import AboutUs from './aboutUs'
+import Vision from './OurVision'
 
 export default function About() {
   return (
-    <Box margin="20px">
+    <Box
+      margin="20px"
+      sx={{ fontSize: { xs: '0.8rem', sm: '1rem', md: '2rem' } }}
+    >
       <Typography
         variant="h4"
         component="h1"
@@ -11,7 +15,8 @@ export default function About() {
         sx={{
           fontWeight: 'bold',
           mb: 2,
-          fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+          mt: 10,
+          fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
         }}
       >
         Application Hub
@@ -19,42 +24,63 @@ export default function About() {
       <Typography
         textAlign="center"
         gutterBottom
-        margin="20px"
         color="text.footer"
+        sx={{ mt: 4, mb: 8 }}
       >
         Welcome to Application Hub, your ultimate companion in managing your job
         applications effortlessly and effectively.
       </Typography>
 
-      <CardLeftCurve backgroundColor={'background.cardBlue'}>
+      <AboutUs />
+
+      <Box
+        sx={{
+          color: 'text.secondary',
+          display: 'flex',
+          justifyContent: 'center',
+          overflow: 'hidden',
+
+          mt: { xs: 1, sm: 3, md: 8 },
+        }}
+      >
         <Card
           style={{
             maxWidth: '1000px',
-            margin: '30px',
+            margin: '30px auto',
             padding: '20px',
             borderRadius: '15px',
             boxShadow: '0px 4px 12px rgba(0,0,0,0.1)',
-            maxHeight: '100%',
           }}
         >
           <CardContent>
             <Typography
-              color="text.primary"
+              variant="h5"
+              component="h5"
+              textAlign="left"
+              color="text.footer"
               gutterBottom
               sx={{
                 fontWeight: 'bold',
-                mb: 2,
+                mb: 3,
+                mt: 3,
+                typography: { xs: 'h5', sm: 'h5', md: 'h4' },
               }}
             >
-              Searching for a job can be overwhelming, but staying organized
-              should not be. With Application Hub, you can:
+              What We Offer:
             </Typography>
             <ul style={{ paddingLeft: '20px', lineHeight: '1.8' }}>
               <li>
-                <Typography>
-                  <Box component="span" sx={{ color: 'text.footer' }}>
-                    <strong>Track Your Applications:</strong>
-                  </Box>{' '}
+                <Typography sx={{ mb: 2 }}>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: 'text.footer',
+                      marginRight: '4px',
+                    }}
+                  >
+                    Track Your Applications:
+                  </Box>
                   <Box component="span" sx={{ color: 'text.primary' }}>
                     Keep a detailed record of every job you apply for, from
                     application date to current status.
@@ -62,24 +88,36 @@ export default function About() {
                 </Typography>
               </li>
               <li>
-                <Typography>
-                  <Box component="span" sx={{ color: 'text.footer' }}>
-                    <strong>Maintain Company Details:</strong>
-                  </Box>{' '}
-                  <Box component="span" sx={{ color: 'text.primary' }}>
-                    {' '}
+                <Typography sx={{ mb: 2 }}>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: 'text.footer',
+                      marginRight: '4px',
+                    }}
+                  >
+                    Maintain Company Details:
+                  </Box>
+                  <Box component="span">
                     Store important information about the companies you are
                     applying to, all in one place.
                   </Box>
                 </Typography>
               </li>
               <li>
-                <Typography>
-                  <Box component="span" sx={{ color: 'text.footer' }}>
-                    <strong>Add Personal Notes:</strong>
-                  </Box>{' '}
-                  <Box component="span" sx={{ color: 'text.primary' }}>
-                    {' '}
+                <Typography sx={{ mb: 2 }}>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontWeight: 'bold',
+                      color: 'text.footer',
+                      marginRight: '4px',
+                    }}
+                  >
+                    Add Personal Notes:
+                  </Box>
+                  <Box component="span">
                     Note down specific details or reminders about each job to
                     stay prepared and informed.
                   </Box>
@@ -99,7 +137,8 @@ export default function About() {
             </Typography>
           </CardContent>
         </Card>
-      </CardLeftCurve>
+      </Box>
+      <Vision />
     </Box>
   )
 }

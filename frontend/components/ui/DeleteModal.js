@@ -1,5 +1,5 @@
 'use client'
-import { Typography, Button, Stack, Box } from '@mui/material'
+import { Typography, Button, Stack, Box, Alert } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
 
@@ -16,11 +16,7 @@ export default function DeleteModal({
   return (
     <ModalWrapper open={openModal} handleClose={onClose} title={title}>
       <Box>
-        {error && (
-          <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
-            {error}
-          </Typography>
-        )}
+        {error && <Alert severity="error">{error}</Alert>}
         <Stack
           sx={{
             justifyContent: 'center',

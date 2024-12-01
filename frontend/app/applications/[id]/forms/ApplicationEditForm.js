@@ -5,7 +5,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { enGB } from 'date-fns/locale'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import {
-  Typography,
   Button,
   Box,
   Select,
@@ -13,6 +12,7 @@ import {
   InputLabel,
   MenuItem,
   Stack,
+  Alert,
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
@@ -80,11 +80,7 @@ export default function ApplicationEditForm({ openModal, onClose }) {
           noValidate
           autoComplete="off"
         >
-          {error && (
-            <Typography color="error" textAlign="center" sx={{ mb: 2 }}>
-              {error}
-            </Typography>
-          )}
+          {error && <Alert severity="error">{error}</Alert>}
 
           <InputField
             id="job_title"
