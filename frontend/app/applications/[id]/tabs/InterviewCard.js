@@ -3,7 +3,11 @@ import { Stack, Card, Typography, Box, Chip, Link } from '@mui/material'
 import MenuButtonInterview from '../MenuButtonInterview'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { formatDate } from '@/utils/formatDate'
-export default function InterviewCard({ interview }) {
+export default function InterviewCard({
+  interview,
+  onInterviewDeleted,
+  interviewId,
+}) {
   const isMobile = useIsMobile()
   const MeetingLink = ({ link }) => {
     return (
@@ -52,7 +56,11 @@ export default function InterviewCard({ interview }) {
       }}
     >
       <Box sx={{ position: 'absolute', top: 10, right: 8 }}>
-        <MenuButtonInterview interview={interview} />
+        <MenuButtonInterview
+          interview={interview}
+          onInterviewDeleted={onInterviewDeleted}
+          interviewId={interviewId}
+        />
       </Box>
       <Stack
         sx={{

@@ -14,7 +14,11 @@ const stylesIconButton = {
   marginRight: 2,
 }
 
-export default function MenuButtonInterview() {
+export default function MenuButtonInterview({
+  onInterviewDeleted,
+  interview,
+  interviewId,
+}) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [openModalEdition, setOpenModalEdition] = useState(false)
   const [openModalDeletion, setOpenModalDeletion] = useState(false)
@@ -87,6 +91,8 @@ export default function MenuButtonInterview() {
       <InterviewDeleteModal
         openModal={openModalDeletion}
         onClose={handleCloseDeletionModal}
+        interviewId={interviewId}
+        onInterviewDeleted={onInterviewDeleted}
       />
     </>
   )

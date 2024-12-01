@@ -11,7 +11,6 @@ import {
   Alert,
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import MenuButtonInterview from '../MenuButtonInterview'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import InterviewForm from '../forms/InterviewForm'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
@@ -38,6 +37,13 @@ const Interview = () => {
 
   const handleAddInterviewSuccess = (newInterview) => {
     setInterviews((prevInterviews) => [...prevInterviews, newInterview])
+  }
+  const handleInterviewDeleted = (interviewId) => {
+    setInterviews((prevInterviews) =>
+      prevInterviews.filter(
+        (interview) => interview.interviewId !== interviewId
+      )
+    )
   }
 
   useEffect(() => {
@@ -70,7 +76,12 @@ const Interview = () => {
     <Box sx={{ padding: 1 }}>
       <Box sx={{ display: hasContent ? 'block' : 'none' }}>
         {interviews.map((interview) => (
-          <InterviewCard key={interview.interviewId} interview={interview} />
+          <InterviewCard
+            key={interview.interviewId}
+            interview={interview}
+            onInterviewDeleted={handleInterviewDeleted}
+            interviewId={interview.interviewId}
+          />
         ))}
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>

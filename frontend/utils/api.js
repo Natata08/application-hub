@@ -215,16 +215,16 @@ export const addInterviewByApplicationId = (id, interviewData) =>
     data: interviewData,
   })
 
-export const patchInterviewByApplicationId = (id, updateData, currentName) =>
+export const patchInterviewByApplicationId = (id, updateData, interview_id) =>
   apiRequest({
     url: `/user/applications/${id}/interview`,
     method: 'PATCH',
-    data: { currentName, ...updateData },
+    data: { interview_id, ...updateData },
   })
 
-export const deleteInterviewByApplicationId = (id, currentName) =>
+export const deleteInterviewByApplicationId = (id, interview_id) =>
   apiRequest({
     url: `/user/applications/${id}/interview`,
     method: 'DELETE',
-    data: { currentName },
+    data: { interview_id },
   })
