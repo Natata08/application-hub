@@ -36,7 +36,7 @@ export default function Contacts() {
   }
   const handleContactEdited = (updatedContact) => {
     const updatedContacts = contacts.map((contact) => {
-      if (contact.contact_id === updatedContact.contact_id) {
+      if (contact.contact_id === updatedContact.contactId) {
         return { ...contact, ...updatedContact }
       }
       return contact
