@@ -28,7 +28,10 @@ import InputField from '@/components/ui/InputField'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
-import { addInterviewByApplicationId } from '@/utils/api'
+import {
+  addInterviewByApplicationId,
+  patchInterviewByApplicationId,
+} from '@/utils/api'
 
 const interviewTypes = [
   { value: 'Initial Screening' },
@@ -46,6 +49,8 @@ export default function InterviewForm({
   onClose,
   mode,
   onInterviewAdd,
+  onInterviewEdited,
+  interviewId,
 }) {
   const { application } = useApplicationContext()
   const { showNotification } = useNotification()
@@ -73,7 +78,14 @@ export default function InterviewForm({
       }
 
       if (mode === 'edit') {
-        console.log('function edit')
+        const updatedInterview = await patchInterviewByApplicationId(
+          applicationId,
+          interviewData,
+          interviewId
+        )
+        if (onInterviewEdited) {
+          onInterviewEdited(updatedInterview)
+        }
         showNotification('Interview updated successfully!')
       } else if (mode === 'add') {
         const newInterview = await addInterviewByApplicationId(

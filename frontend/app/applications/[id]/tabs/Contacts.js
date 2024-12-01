@@ -35,13 +35,14 @@ export default function Contacts() {
     )
   }
   const handleContactEdited = (updatedContact) => {
-    const updatedContacts = contacts.map((contact) => {
-      if (contact.contact_id === updatedContact.contact_id) {
-        return { ...contact, ...updatedContact }
-      }
-      return contact
+    setContacts((prevContacts) => {
+      const updatedContacts = prevContacts.map((contact) =>
+        contact.contactId === updatedContact.contactId
+          ? { ...contact, ...updatedContact }
+          : contact
+      )
+      return updatedContacts
     })
-    setContacts(updatedContacts)
   }
 
   useEffect(() => {

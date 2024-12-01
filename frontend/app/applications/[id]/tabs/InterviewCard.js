@@ -7,6 +7,7 @@ export default function InterviewCard({
   interview,
   onInterviewDeleted,
   interviewId,
+  onInterviewEdited,
 }) {
   const isMobile = useIsMobile()
   const MeetingLink = ({ link }) => {
@@ -59,6 +60,7 @@ export default function InterviewCard({
         <MenuButtonInterview
           interview={interview}
           onInterviewDeleted={onInterviewDeleted}
+          onInterviewEdited={onInterviewEdited}
           interviewId={interviewId}
         />
       </Box>

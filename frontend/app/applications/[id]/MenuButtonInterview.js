@@ -18,6 +18,7 @@ export default function MenuButtonInterview({
   onInterviewDeleted,
   interview,
   interviewId,
+  onInterviewEdited,
 }) {
   const [anchorEl, setAnchorEl] = useState(null)
   const [openModalEdition, setOpenModalEdition] = useState(false)
@@ -87,6 +88,9 @@ export default function MenuButtonInterview({
         mode="edit"
         openModal={openModalEdition}
         onClose={handleCloseEditionModal}
+        onInterviewEdited={onInterviewEdited}
+        interviewId={interviewId}
+        interview={interview}
       />
       <InterviewDeleteModal
         openModal={openModalDeletion}

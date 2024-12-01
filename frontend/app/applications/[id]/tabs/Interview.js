@@ -46,6 +46,17 @@ const Interview = () => {
     )
   }
 
+  const handleInterviewEdited = (updatedInterview) => {
+    setInterviews((prevInterviews) => {
+      const updatedInterviews = prevInterviews.map((interview) =>
+        interview.interviewId === updatedInterview.interviewId
+          ? { ...interview, ...updatedInterview }
+          : interview
+      )
+      return updatedInterviews
+    })
+  }
+
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
@@ -80,6 +91,7 @@ const Interview = () => {
             key={interview.interviewId}
             interview={interview}
             onInterviewDeleted={handleInterviewDeleted}
+            onInterviewEdited={handleInterviewEdited}
             interviewId={interview.interviewId}
           />
         ))}
