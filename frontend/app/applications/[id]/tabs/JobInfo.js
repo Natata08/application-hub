@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import RichText from '@/components/ui/RichText'
+import { formatDate } from '@/utils/formatDate'
 
 export default function JobInfo() {
   const { application } = useApplicationContext()
@@ -32,12 +33,87 @@ export default function JobInfo() {
     textDecoration: 'none',
     '&:hover': { textDecoration: 'underline' },
     wordBreak: 'break-word',
-    fontSize: isMobile ? '0.875rem' : '1rem',
+    fontSize: '1rem',
   }
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Accordion>
+      <Accordion defaultExpanded>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="dates-content"
+          id="dates-header"
+          sx={accordionSummaryStyles}
+        >
+          Dates
+        </AccordionSummary>
+        <AccordionDetails>
+          <Stack
+            sx={{
+              justifyContent: 'start',
+              alignItems: 'start',
+              flexDirection: 'column',
+              gap: 1,
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                gap: 1,
+              }}
+            >
+              <Typography
+                variant="body1"
+                sx={{ color: 'secondary.main', minWidth: '120px' }}
+              >
+                Applied Date
+              </Typography>
+
+              {application.applied_date ? (
+                <Typography variant="body1">
+                  {formatDate(application.applied_date)}
+                </Typography>
+              ) : (
+                <Typography variant="overline" color="comment.main">
+                  date
+                </Typography>
+              )}
+            </Box>
+
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                gap: 1,
+              }}
+            >
+              <Typography
+                variant="body1"
+                sx={{ color: 'secondary.main', minWidth: '120px' }}
+              >
+                Deadline Date
+              </Typography>
+
+              {application.deadline_date ? (
+                <Typography variant="body1">
+                  {formatDate(application.deadline_date)}
+                </Typography>
+              ) : (
+                <Typography variant="overline" color="comment.main">
+                  date
+                </Typography>
+              )}
+            </Box>
+          </Stack>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion defaultExpanded>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="job_link-content"
@@ -60,75 +136,6 @@ export default function JobInfo() {
               job link
             </Typography>
           )}
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="dates-content"
-          id="dates-header"
-          sx={accordionSummaryStyles}
-        >
-          Dates
-        </AccordionSummary>
-        <AccordionDetails>
-          <Stack
-            sx={{
-              justifyContent: 'start',
-              alignItems: 'center',
-              flexDirection: 'row',
-              gap: 4,
-            }}
-          >
-            <Box
-              sx={{
-                p: 0,
-              }}
-            >
-              <Typography
-                variant="body2"
-                gutterBottom
-                sx={{ color: 'secondary.main' }}
-              >
-                Applied Date
-              </Typography>
-
-              {application.applied_date ? (
-                <Typography variant={isMobile ? 'body2' : 'body1'}>
-                  {new Date(application.applied_date).toLocaleDateString(
-                    'en-GB'
-                  )}
-                </Typography>
-              ) : (
-                <Typography variant="overline" color="comment.main">
-                  no date
-                </Typography>
-              )}
-            </Box>
-
-            <Box sx={{ p: 0 }}>
-              <Typography
-                variant="body2"
-                gutterBottom
-                sx={{ color: 'secondary.main' }}
-              >
-                Deadline Date
-              </Typography>
-
-              {application.deadline_date ? (
-                <Typography variant={isMobile ? 'body2' : 'body1'}>
-                  {new Date(application.deadline_date).toLocaleDateString(
-                    'en-GB'
-                  )}
-                </Typography>
-              ) : (
-                <Typography variant="overline" color="comment.main">
-                  no date
-                </Typography>
-              )}
-            </Box>
-          </Stack>
         </AccordionDetails>
       </Accordion>
 

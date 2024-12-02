@@ -89,7 +89,11 @@ export default function ApplicationHeader() {
               {application.company_location}
             </Typography>
           ) : (
-            <Typography variant="overline" color="comment.main">
+            <Typography
+              variant="overline"
+              color="comment.main"
+              sx={{ height: '24px' }}
+            >
               location
             </Typography>
           )}
@@ -109,7 +113,12 @@ export default function ApplicationHeader() {
               {application.company_website}
             </Link>
           ) : (
-            <Typography variant="overline" component="div" color="comment.main">
+            <Typography
+              variant="overline"
+              component="div"
+              color="comment.main"
+              sx={{ height: '24px' }}
+            >
               Website
             </Typography>
           )}

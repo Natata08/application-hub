@@ -1,7 +1,7 @@
 'use client'
 import { Stack, Card, Typography, Box, Chip, Link } from '@mui/material'
 import MenuButtonInterview from '../MenuButtonInterview'
-import { formatDate } from '@/utils/formatDate'
+import { formatDateTime } from '@/utils/formatDate'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 
@@ -126,7 +126,7 @@ export default function InterviewCard({
               width: { xs: 'auto', sm: '200px' },
             }}
           >
-            {formatDate(interview.scheduledAt)}
+            {formatDateTime(interview.scheduledAt)}
           </Typography>
           <Typography
             variant="body1"

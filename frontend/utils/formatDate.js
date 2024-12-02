@@ -12,7 +12,7 @@ export const formatRelativeTime = (date) => {
   return `${Math.round(diffDays / 365)}y ago`
 }
 
-export const formatDate = (dateString) => {
+export const formatDateTime = (dateString) => {
   const date = new Date(dateString)
   return date.toLocaleString('en-US', {
     weekday: 'short',
@@ -22,5 +22,15 @@ export const formatDate = (dateString) => {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false,
+  })
+}
+
+export const formatDate = (dateString) => {
+  const date = new Date(dateString)
+  return date.toLocaleString('en-US', {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
   })
 }
