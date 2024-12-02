@@ -3,10 +3,10 @@ import { Stack, Card, Typography, Box, Chip, Link } from '@mui/material'
 import MenuButtonInterview from '../MenuButtonInterview'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { formatDate } from '@/utils/formatDate'
+
 export default function InterviewCard({
   interview,
   onInterviewDeleted,
-  interviewId,
   onInterviewEdited,
 }) {
   const isMobile = useIsMobile()
@@ -61,7 +61,7 @@ export default function InterviewCard({
           interview={interview}
           onInterviewDeleted={onInterviewDeleted}
           onInterviewEdited={onInterviewEdited}
-          interviewId={interviewId}
+          interviewId={interview.interviewId}
         />
       </Box>
       <Stack
@@ -81,7 +81,7 @@ export default function InterviewCard({
             minWidth: isMobile ? 'auto' : '150px',
           }}
         >
-          {new Date(interview.scheduledAt).toLocaleString('en-GB')}
+          {formatDate(interview.scheduledAt)}
         </Typography>
         <Typography
           variant="body1"

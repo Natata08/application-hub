@@ -18,10 +18,9 @@ import {
   FormControlLabel,
   FormLabel,
   FormControl,
-  InputLabel,
-  Select,
   MenuItem,
   FormHelperText,
+  TextField,
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import InputField from '@/components/ui/InputField'
@@ -32,17 +31,16 @@ import {
   addInterviewByApplicationId,
   patchInterviewByApplicationId,
 } from '@/utils/api'
-import { formatDate } from '@/utils/formatDate'
 
 const interviewTypes = [
-  { value: 'Initial Screening' },
-  { value: 'Technical' },
-  { value: 'Behavioral' },
-  { value: 'Case Study/Take-Home Assignment' },
-  { value: 'Panel' },
-  { value: 'Cultural Fit/HR' },
-  { value: 'Final' },
-  { value: 'Other' },
+  'Initial Screening',
+  'Technical',
+  'Behavioral',
+  'Case Study/Take-Home Assignment',
+  'Panel',
+  'Cultural Fit/HR',
+  'Final',
+  'Other',
 ]
 
 export default function InterviewForm({
@@ -58,7 +56,9 @@ export default function InterviewForm({
   const { showNotification } = useNotification()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [isVirtual, setIsVirtual] = useState(null)
+  const [isVirtual, setIsVirtual] = useState(
+    mode === 'edit' ? interview.isVirtual : true
+  )
   const applicationId = application.application_id
 
   const {
@@ -94,10 +94,10 @@ export default function InterviewForm({
           applicationId,
           formattedData
         )
-        showNotification('Interview added successfully!')
         if (onInterviewAdd) {
           onInterviewAdd(newInterview)
         }
+        showNotification('Interview added successfully!')
       }
       onClose()
     } catch (error) {
@@ -121,108 +121,132 @@ export default function InterviewForm({
           autoComplete="off"
         >
           {error && <Alert severity="error">{error}</Alert>}
-
           <Controller
-            name="scheduledAt"
             control={control}
+            name="scheduledAt"
             defaultValue={
               mode === 'edit' ? new Date(interview.scheduledAt) : null
             }
+            rules={{
+              required: {
+                value: true,
+                message: 'Interview Date is required',
+              },
+            }}
             render={({ field }) => (
-              <DateTimePicker
-                sx={{ width: '100%' }}
-                {...field}
-                label="Interview Date"
-                viewRenderers={{
-                  hours: renderTimeViewClock,
-                  minutes: renderTimeViewClock,
-                  seconds: renderTimeViewClock,
-                }}
-                // slotProps={{
-                //   textField: {
-                //     helperText: errors.message,
-                //   },
-                // }}
-                TextFieldComponent={(params) => (
-                  <InputField
-                    {...params}
-                    errors={errors}
-                    id="scheduledAt"
-
-                    // helperText={errors.scheduledAt ? errors.scheduledAt.message : ''}
-                    // error={!!errors.scheduledAt}
-                  />
-                )}
-              />
+              <>
+                <DateTimePicker
+                  closeOnSelect
+                  label="Interview Date*"
+                  value={field.value}
+                  defaultValue={field.value}
+                  onChange={(date) => {
+                    field.onChange(date)
+                  }}
+                  viewRenderers={{
+                    hours: renderTimeViewClock,
+                    minutes: renderTimeViewClock,
+                    seconds: renderTimeViewClock,
+                  }}
+                  slotProps={{
+                    textField: {
+                      id: 'scheduledAt',
+                      variant: 'outlined',
+                      fullWidth: true,
+                      helperText: errors.scheduledAt?.message,
+                      error: !!errors.scheduledAt,
+                      onBlur: field.onBlur,
+                    },
+                  }}
+                />
+              </>
             )}
           />
 
-          <FormControl fullWidth required margin="normal" error={!!errors.type}>
-            <InputLabel required id="type-label">
-              Type Interview
-            </InputLabel>
+          <TextField
+            id="type"
+            select
+            label="Interview Type"
+            fullWidth
+            required
+            defaultValue={mode === 'edit' ? interview.type : ''}
+            {...register('type', {
+              required: 'Interview Type is required',
+            })}
+            helperText={errors.type?.message}
+            error={errors.type}
+          >
+            {interviewTypes.map((type) => (
+              <MenuItem key={type} value={type}>
+                {type}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <FormControl>
+            <FormLabel
+              id="isVirtual-label"
+              color="accent.main"
+              sx={{ paddingLeft: 2, paddingTop: 1 }}
+            >
+              Interview Format*
+            </FormLabel>
             <Controller
-              name="type"
+              name="isVirtual"
               control={control}
-              defaultValue={mode === 'edit' ? interview.type : ''}
-              rules={{ required: 'Interview type is required' }}
+              defaultValue={mode === 'edit' ? interview.isVirtual : true}
               render={({ field }) => (
-                <Select labelId="type-label" label="Type Interview" {...field}>
-                  {interviewTypes.map((type) => (
-                    <MenuItem key={type.value} value={type.value}>
-                      {type.value}
-                    </MenuItem>
-                  ))}
-                  {errors.type && (
-                    <FormHelperText>{errors.type.message}</FormHelperText>
+                <>
+                  <RadioGroup
+                    {...field}
+                    value={isVirtual}
+                    onChange={(e) => {
+                      setIsVirtual(e.target.value === 'true')
+                    }}
+                    row
+                    aria-labelledby="isVirtual-label"
+                    sx={{ paddingLeft: 2, paddingTop: 1 }}
+                  >
+                    <FormControlLabel
+                      value={true}
+                      control={
+                        <Radio
+                          sx={{ '&.Mui-checked': { color: 'accent.main' } }}
+                        />
+                      }
+                      label="Online"
+                    />
+                    <FormControlLabel
+                      value={false}
+                      control={
+                        <Radio
+                          sx={{ '&.Mui-checked': { color: 'accent.main' } }}
+                        />
+                      }
+                      label="In-Person"
+                    />
+                  </RadioGroup>
+                  {!!errors.isVirtual && (
+                    <FormHelperText>{errors.isVirtual.message}</FormHelperText>
                   )}
-                </Select>
+                </>
               )}
             />
           </FormControl>
 
-          <FormControl>
-            <FormLabel
-              id="isVirtual"
-              color="accent.main"
-              sx={{ paddingLeft: 2, paddingTop: 1 }}
-            >
-              Format Interview
-            </FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="isVirtual"
-              value={isVirtual}
-              onChange={(e) => {
-                setIsVirtual(e.target.value === 'true')
-              }}
-              sx={{ paddingLeft: 2, paddingTop: 1 }}
-            >
-              <FormControlLabel
-                value={true}
-                defaultValue={mode === 'edit' ? interview.isVirtual : ''}
-                control={
-                  <Radio sx={{ '&.Mui-checked': { color: 'accent.main' } }} />
-                }
-                label="Online"
+          <Controller
+            name="location"
+            control={control}
+            defaultValue={mode === 'edit' ? interview.location : null}
+            render={({ field }) => (
+              <InputField
+                {...field}
+                id="location"
+                label={isVirtual ? 'Meeting Link' : 'Location'}
+                register={register}
+                errors={errors}
               />
-              <FormControlLabel
-                value={false}
-                defaultValue={mode === 'edit' ? interview.isVirtual : ''}
-                control={
-                  <Radio sx={{ '&.Mui-checked': { color: 'accent.main' } }} />
-                }
-                label="In-Person"
-              />
-            </RadioGroup>
-          </FormControl>
-
-          <InputField
-            id="location"
-            label={isVirtual ? 'Meeting Link' : 'Location'}
-            register={register}
-            errors={errors}
-            defaultValue={mode === 'edit' ? interview.location : ''}
+            )}
           />
 
           <Stack
