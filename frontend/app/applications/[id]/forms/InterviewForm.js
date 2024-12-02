@@ -31,6 +31,7 @@ import {
   addInterviewByApplicationId,
   patchInterviewByApplicationId,
 } from '@/utils/api'
+import { isValidURL } from '@/utils/validators'
 
 const interviewTypes = [
   'Initial Screening',
@@ -60,18 +61,6 @@ export default function InterviewForm({
     mode === 'edit' ? interview.isVirtual : true
   )
   const applicationId = application.application_id
-
-  const isValidURL = (value) => {
-    try {
-      if (value && value !== '') {
-        new URL(value)
-        return true
-      }
-      return true
-    } catch (_) {
-      return 'Please enter a valid link'
-    }
-  }
 
   const {
     handleSubmit,
@@ -249,16 +238,6 @@ export default function InterviewForm({
             name="location"
             control={control}
             defaultValue={mode === 'edit' ? interview.location : null}
-            rules={{
-              validate: {
-                locationValidation: (value) => {
-                  if (isVirtual) {
-                    return isValidURL(value) || 'Please enter a valid link'
-                  }
-                  return true
-                },
-              },
-            }}
             render={({ field }) => (
               <InputField
                 {...field}
@@ -266,6 +245,15 @@ export default function InterviewForm({
                 label={isVirtual ? 'Meeting Link' : 'Location'}
                 register={register}
                 errors={errors}
+                validationRules={
+                  isVirtual
+                    ? {
+                        validate: {
+                          isValidURL: (value) => isValidURL(value),
+                        },
+                      }
+                    : {}
+                }
               />
             )}
           />
