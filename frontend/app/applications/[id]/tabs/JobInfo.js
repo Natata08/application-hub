@@ -36,7 +36,7 @@ export default function JobInfo() {
   }
 
   return (
-    <Box sx={{ padding: isMobile ? 1 : 2 }}>
+    <Box sx={{ padding: 2 }}>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

@@ -172,7 +172,7 @@ const Notes = () => {
   }
 
   return (
-    <Box sx={{ padding: 1 }}>
+    <Box sx={{ padding: 2 }}>
       {renderEditor}
       {!hasContent && !isEditing && (
         <EmptyState

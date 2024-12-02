@@ -27,11 +27,6 @@ export const getUserInterviews = async (req, res) => {
       )
       .where('interview.application_id', application_id)
       .andWhere('application.user_id', user_id)
-    if (interviews.length === 0) {
-      return res.status(200).json({
-        message: 'No interviews found for the specified application and user ',
-      })
-    }
 
     return res.json(buildInterviewsDto(interviews))
   } catch (error) {
@@ -48,7 +43,7 @@ export const postUserInterview = async (req, res) => {
     if (!application_id || isNaN(application_id)) {
       return res.status(400).json(buildErrorDto('Invalid application ID'))
     }
-    if (!scheduled_at && !is_virtual) {
+    if (!scheduled_at && !type) {
       return res.status(400).json(buildErrorDto('Interview details required'))
     }
     try {
@@ -161,7 +156,7 @@ export const patchUserInterview = async (req, res) => {
     if (scheduled_at) {
       updateField(dataToUpdate, 'scheduled_at', scheduled_at, true) // Update 'scheduled_at' field as a date
     }
-    if (location) {
+    if (location !== undefined && location !== null) {
       updateField(dataToUpdate, 'location', location) // Update 'location' field
     }
     if (is_virtual !== undefined) {
@@ -169,7 +164,7 @@ export const patchUserInterview = async (req, res) => {
     }
 
     // Update the interview in the database
-    const updatedRows = await knex('interview')
+    const [updatedRows] = await knex('interview')
       .where('interview_id', interview_id)
       .andWhere('application_id', application_id)
       .update(dataToUpdate)
@@ -191,7 +186,7 @@ export const patchUserInterview = async (req, res) => {
         .json(buildErrorDto('Interview not found or update failed'))
     }
 
-    res.status(200).json(updatedRows)
+    res.status(200).json(buildInterviewDto(updatedRows))
   } catch (error) {
     console.error('error', error)
     return res.status(500).json(buildErrorDto('Internal error'))

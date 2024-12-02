@@ -36,7 +36,7 @@ const interviewTypes = [
   'Initial Screening',
   'Technical',
   'Behavioral',
-  'Case Study/Take-Home Assignment',
+  'Take-Home Assignment',
   'Panel',
   'Cultural Fit/HR',
   'Final',
@@ -61,6 +61,18 @@ export default function InterviewForm({
   )
   const applicationId = application.application_id
 
+  const isValidURL = (value) => {
+    try {
+      if (value && value !== '') {
+        new URL(value)
+        return true
+      }
+      return true
+    } catch (_) {
+      return 'Please enter a valid link'
+    }
+  }
+
   const {
     handleSubmit,
     control,
@@ -69,7 +81,6 @@ export default function InterviewForm({
   } = useForm()
 
   const handleSubmitForm = async (interviewData) => {
-    console.log('Form Data:', interviewData)
     setLoading(true)
     setError('')
     try {
@@ -238,6 +249,16 @@ export default function InterviewForm({
             name="location"
             control={control}
             defaultValue={mode === 'edit' ? interview.location : null}
+            rules={{
+              validate: {
+                locationValidation: (value) => {
+                  if (isVirtual) {
+                    return isValidURL(value) || 'Please enter a valid link'
+                  }
+                  return true
+                },
+              },
+            }}
             render={({ field }) => (
               <InputField
                 {...field}
@@ -248,7 +269,6 @@ export default function InterviewForm({
               />
             )}
           />
-
           <Stack
             spacing={2}
             direction="row"

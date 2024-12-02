@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import { Box, Button, Alert } from '@mui/material'
+import { Box, Button, Alert, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import { useIsMobile } from '@/app/hooks/useIsMobile'
 import InterviewForm from '../forms/InterviewForm'
@@ -74,16 +74,26 @@ const Interview = () => {
   }
 
   return (
-    <Box sx={{ padding: 1 }}>
+    <Box sx={{ padding: 2 }}>
       <Box sx={{ display: hasContent ? 'block' : 'none' }}>
-        {interviews.map((interview) => (
-          <InterviewCard
-            key={interview.interviewId}
-            interview={interview}
-            onInterviewDeleted={handleInterviewDeleted}
-            onInterviewEdited={handleInterviewEdited}
-          />
-        ))}
+        <Stack
+          sx={{
+            flexDirection: 'column',
+            gap: { xs: 1, sm: 2 },
+            justifyContent: 'stretch',
+            alignItems: { xs: 'stretch', sm: 'start' },
+            pb: 2,
+          }}
+        >
+          {interviews.map((interview) => (
+            <InterviewCard
+              key={interview.interviewId}
+              interview={interview}
+              onInterviewDeleted={handleInterviewDeleted}
+              onInterviewEdited={handleInterviewEdited}
+            />
+          ))}
+        </Stack>
 
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
@@ -92,7 +102,7 @@ const Interview = () => {
             startIcon={<AddIcon />}
             sx={{
               textTransform: 'none',
-              width: isMobile ? '100%' : 'auto',
+              width: { xs: '100%', sm: 'auto' },
             }}
           >
             Add Interview

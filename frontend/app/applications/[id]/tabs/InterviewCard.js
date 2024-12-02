@@ -1,62 +1,103 @@
 'use client'
 import { Stack, Card, Typography, Box, Chip, Link } from '@mui/material'
 import MenuButtonInterview from '../MenuButtonInterview'
-import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { formatDate } from '@/utils/formatDate'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+
+const styles = {
+  card: {
+    padding: 2,
+    position: 'relative',
+    paddingRight: 6,
+    flex: '1 1 100%',
+    width: { xs: '100%', md: '80%' },
+  },
+  menuButton: {
+    position: 'absolute',
+    top: 10,
+    right: 8,
+  },
+  stack: {
+    alignItems: { xs: 'center', sm: 'start' },
+    flexDirection: 'column',
+    justifyContent: { xs: 'center', sm: 'start' },
+    gap: { xs: 1, sm: 2 },
+  },
+  rowStack: {
+    flexDirection: 'row',
+    gap: { xs: 1, sm: 2 },
+  },
+  text: {
+    textAlign: { xs: 'center', sm: 'left' },
+  },
+}
+
+const MeetingLink = ({ link }) => (
+  <Box>
+    <Link
+      href={link}
+      target="_blank"
+      sx={{
+        display: 'flex',
+        alignItems: 'start',
+        color: 'inherit',
+        textDecoration: 'none',
+        '&:hover': { textDecoration: 'underline' },
+        wordBreak: 'break-word',
+        fontSize: '1rem',
+      }}
+    >
+      <OpenInNewIcon sx={{ fontSize: 16, marginRight: '8px' }} />
+      <Typography
+        sx={{
+          fontSize: '1rem',
+          color: 'inherit',
+          textOverflow: 'ellipsis',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          maxWidth: {
+            xs: '200px',
+            sm: '300px',
+            md: '400px',
+          },
+        }}
+      >
+        {link}
+      </Typography>
+    </Link>
+  </Box>
+)
 
 export default function InterviewCard({
   interview,
   onInterviewDeleted,
   onInterviewEdited,
 }) {
-  const isMobile = useIsMobile()
-  const MeetingLink = ({ link }) => {
-    return (
-      <Link
-        href={link}
-        target="_blank"
-        sx={{
-          display: 'block',
-          color: 'inherit',
-          textDecoration: 'none',
-          '&:hover': { textDecoration: 'underline' },
-          wordBreak: 'break-word',
-          fontSize: '1rem',
-          textAlign: isMobile ? 'center' : 'left',
-        }}
-      >
-        {link}
-      </Link>
+  const renderLocation = () => {
+    if (interview.isVirtual) {
+      return interview.location ? (
+        <MeetingLink link={interview.location} />
+      ) : (
+        <Typography component="p" variant="overline" color="comment.main">
+          Meeting Link
+        </Typography>
+      )
+    }
+    return interview.location ? (
+      <Typography variant="body1" sx={styles.text}>
+        <LocationOnIcon sx={{ fontSize: 16 }} /> {interview.location}
+      </Typography>
+    ) : (
+      <Typography component="p" variant="overline" color="comment.main">
+        Location
+      </Typography>
     )
   }
 
-  const renderFormat = (isVirtual) => {
-    if (isVirtual === null) {
-      return (
-        <Typography component="p" variant="overline" color="comment.main">
-          Format
-        </Typography>
-      )
-    } else {
-      return (
-        <Chip
-          label={isVirtual ? 'Online' : 'In-Person'}
-          sx={{ minWidth: isMobile ? 'auto' : '100px' }}
-        />
-      )
-    }
-  }
-
   return (
-    <Card
-      sx={{
-        padding: 2,
-        marginBottom: 1,
-        position: 'relative',
-        paddingRight: 8,
-      }}
-    >
-      <Box sx={{ position: 'absolute', top: 10, right: 8 }}>
+    <Card sx={styles.card}>
+      <Box sx={styles.menuButton}>
         <MenuButtonInterview
           interview={interview}
           onInterviewDeleted={onInterviewDeleted}
@@ -64,61 +105,39 @@ export default function InterviewCard({
           interviewId={interview.interviewId}
         />
       </Box>
-      <Stack
-        sx={{
-          alignItems: 'center',
-          flexDirection: isMobile ? 'column' : 'row',
-          justifyContent: isMobile ? 'center' : 'start',
-          alignItems: 'center',
-          paddingBottom: 1,
-          gap: isMobile ? 1 : 2,
-        }}
-      >
-        <Typography
-          variant="body1"
-          sx={{
-            textAlign: { xs: 'center', sm: 'left' },
-            minWidth: isMobile ? 'auto' : '150px',
-          }}
-        >
-          {formatDate(interview.scheduledAt)}
-        </Typography>
-        <Typography
-          variant="body1"
-          sx={{
-            textTransform: 'uppercase',
-            textAlign: { xs: 'center', sm: 'left' },
-            minWidth: isMobile ? 'auto' : '300px',
-          }}
-        >
-          {interview.type}
-        </Typography>
-
-        {renderFormat(interview.isVirtual)}
-      </Stack>
-
-      <Box>
-        {interview.isVirtual ? (
-          interview.location ? (
-            <MeetingLink link={interview.location} />
-          ) : (
-            <Typography component="p" variant="overline" color="comment.main">
-              Meeting Link
-            </Typography>
-          )
-        ) : interview.location ? (
+      <Stack sx={styles.stack}>
+        <Stack sx={styles.rowStack}>
           <Typography
             variant="body1"
-            sx={{ textAlign: isMobile ? 'center' : 'left' }}
+            sx={{
+              fontWeight: 600,
+              ...styles.text,
+              width: { xs: 'auto', sm: '200px' },
+            }}
           >
-            {interview.location}
+            {formatDate(interview.scheduledAt)}
           </Typography>
-        ) : (
-          <Typography component="p" variant="overline" color="comment.main">
-            Location
+          <Typography
+            variant="body1"
+            sx={{
+              color: 'secondary.main',
+              textTransform: 'uppercase',
+              ...styles.text,
+            }}
+          >
+            {interview.type}
           </Typography>
-        )}
-      </Box>
+        </Stack>
+        <Stack
+          sx={{ ...styles.stack, flexDirection: { xs: 'column', sm: 'row' } }}
+        >
+          <Chip
+            label={interview.isVirtual ? 'Online' : 'In-Person'}
+            sx={{ minWidth: '100px' }}
+          />
+          {renderLocation()}
+        </Stack>
+      </Stack>
     </Card>
   )
 }
