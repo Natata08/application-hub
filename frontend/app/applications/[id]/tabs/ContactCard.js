@@ -35,26 +35,53 @@ export default function ContactCard({
           />
         </Stack>
 
-        <Typography
-          sx={{
-            color: 'text.secondary',
-            fontSize: { xs: '0.875rem', sm: '1rem' },
-          }}
-        >
-          {contact.role}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
-        >
-          {contact.phone}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
-        >
-          {contact.email}
-        </Typography>
+        {contact.role ? (
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+            }}
+          >
+            {contact.role}
+          </Typography>
+        ) : (
+          <Typography component="p" variant="overline" color="comment.main">
+            position
+          </Typography>
+        )}
+
+        {contact.phone ? (
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+            }}
+          >
+            {contact.phone}
+          </Typography>
+        ) : (
+          <Typography component="p" variant="overline" color="comment.main">
+            phone
+          </Typography>
+        )}
+
+        {contact.email ? (
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+            }}
+          >
+            {contact.email}
+          </Typography>
+        ) : (
+          <Typography component="p" variant="overline" color="comment.main">
+            email
+          </Typography>
+        )}
       </CardContent>
     </Card>
   )

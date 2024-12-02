@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Card, Typography, Box } from '@mui/material'
-import formatRelativeTime from '@/utils/formatDate'
+import { formatRelativeTime } from '@/utils/formatDate'
 import { memo } from 'react'
 export default memo(function ApplicationCard({ application }) {
   return (
