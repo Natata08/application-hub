@@ -4,7 +4,6 @@ import NextLink from 'next/link'
 import {
   Typography,
   Stack,
-  Link,
   Box,
   IconButton,
   Divider,
@@ -15,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import CompanyEditForm from './forms/CompanyEditForm'
 import MenuButtonApplication from './MenuButtonApplication'
+import ExternalLink from '@/components/ui/ExternalLink'
 
 export default function ApplicationHeader() {
   const { application } = useApplicationContext()
@@ -99,23 +99,10 @@ export default function ApplicationHeader() {
           )}
 
           {application.company_website ? (
-            <Link
-              href={application.company_website}
-              target="_blank"
-              sx={{
-                display: application.company_website ? 'block' : 'none',
-                color: 'inherit',
-                textDecoration: 'none',
-                '&:hover': { textDecoration: 'underline' },
-                wordBreak: 'break-word',
-              }}
-            >
-              {application.company_website}
-            </Link>
+            <ExternalLink link={application.company_website} />
           ) : (
             <Typography
               variant="overline"
-              component="div"
               color="comment.main"
               sx={{ height: '24px' }}
             >

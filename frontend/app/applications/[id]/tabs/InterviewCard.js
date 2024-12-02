@@ -1,9 +1,9 @@
 'use client'
-import { Stack, Card, Typography, Box, Chip, Link } from '@mui/material'
+import { Stack, Card, Typography, Box, Chip } from '@mui/material'
 import MenuButtonInterview from '../MenuButtonInterview'
 import { formatDateTime } from '@/utils/formatDate'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import ExternalLink from '@/components/ui/ExternalLink'
 
 const styles = {
   card: {
@@ -33,43 +33,6 @@ const styles = {
   },
 }
 
-const MeetingLink = ({ link }) => (
-  <Box>
-    <Link
-      href={link}
-      target="_blank"
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: 'inherit',
-        textDecoration: 'none',
-        '&:hover': { textDecoration: 'underline' },
-        wordBreak: 'break-word',
-        fontSize: '1rem',
-      }}
-    >
-      <OpenInNewIcon sx={{ fontSize: 16, marginRight: 1 }} />
-      <Typography
-        sx={{
-          fontSize: '1rem',
-          color: 'inherit',
-          textOverflow: 'ellipsis',
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-          maxWidth: {
-            xs: '200px',
-            sm: '300px',
-            md: '400px',
-          },
-        }}
-      >
-        {link}
-      </Typography>
-    </Link>
-  </Box>
-)
-
 export default function InterviewCard({
   interview,
   onInterviewDeleted,
@@ -78,7 +41,7 @@ export default function InterviewCard({
   const renderLocation = () => {
     if (interview.isVirtual) {
       return interview.location ? (
-        <MeetingLink link={interview.location} />
+        <ExternalLink link={interview.location} />
       ) : (
         <Typography component="p" variant="overline" color="comment.main">
           Meeting Link

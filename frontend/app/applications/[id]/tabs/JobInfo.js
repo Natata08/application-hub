@@ -4,19 +4,17 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Link,
   Typography,
   Stack,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import RichText from '@/components/ui/RichText'
 import { formatDate } from '@/utils/formatDate'
+import ExternalLink from '@/components/ui/ExternalLink'
 
 export default function JobInfo() {
   const { application } = useApplicationContext()
-  const isMobile = useIsMobile()
 
   const accordionSummaryStyles = {
     fontWeight: 600,
@@ -26,14 +24,6 @@ export default function JobInfo() {
     '& .MuiAccordionSummary-content': {
       margin: 0,
     },
-  }
-
-  const textLinkStyles = {
-    color: 'inherit',
-    textDecoration: 'none',
-    '&:hover': { textDecoration: 'underline' },
-    wordBreak: 'break-word',
-    fontSize: '1rem',
   }
 
   return (
@@ -124,13 +114,7 @@ export default function JobInfo() {
         </AccordionSummary>
         <AccordionDetails>
           {application.job_link ? (
-            <Link
-              href={application.job_link}
-              target="_blank"
-              sx={textLinkStyles}
-            >
-              {application.job_link}
-            </Link>
+            <ExternalLink link={application.job_link} />
           ) : (
             <Typography variant="overline" color="comment.main">
               job link
