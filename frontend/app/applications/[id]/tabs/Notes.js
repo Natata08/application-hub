@@ -1,5 +1,6 @@
 'use client'
 import { Box, Button, Alert } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import EmptyState from './EmptyState'
 import RichTextEditor from '@/components/ui/RichTextEditor'
@@ -131,14 +132,25 @@ const Notes = () => {
         <Button variant="outlined" size="small" onClick={handleCancel}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          size="small"
-          onClick={handleSave}
-          disabled={isSaving}
-        >
-          {isSaving ? 'Saving...' : 'Save'}
-        </Button>
+        {isSaving ? (
+          <LoadingButton
+            size="small"
+            loading={isSaving}
+            variant="outlined"
+            disabled
+          >
+            Saving...
+          </LoadingButton>
+        ) : (
+          <Button
+            variant="contained"
+            size="small"
+            onClick={handleSave}
+            sx={{ width: '92px' }}
+          >
+            Save
+          </Button>
+        )}
       </>
     ),
     [isSaving, handleCancel, handleSave]
