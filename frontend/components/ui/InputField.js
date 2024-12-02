@@ -16,6 +16,7 @@ export default function InputField({
   type = 'text',
   register,
   ref,
+  validationRules,
 }) {
   const [showPassword, setShowPassword] = useState(false)
 
@@ -41,6 +42,7 @@ export default function InputField({
       variant="outlined"
       ref={ref}
       {...register(id, {
+        ...validationRules,
         minLength: {
           value: minLength,
           message: `${label} must be at least ${minLength} characters long`,

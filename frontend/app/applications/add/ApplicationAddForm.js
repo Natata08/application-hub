@@ -21,6 +21,7 @@ import { fetchApplicationStatuses } from '@/utils/api'
 import { useRouter } from 'next/navigation'
 import UnsavedChangesModal from './UnsavedChangesModal'
 import TextEditorInputField from '@/components/ui/TextEditorInputField'
+import { isValidURL } from '@/utils/validators'
 
 export default function AddApplicationForm() {
   const theme = useTheme()
@@ -150,7 +151,15 @@ export default function AddApplicationForm() {
               label="Job Link"
               register={register}
               errors={errors}
-              minLength={2}
+              validationRules={{
+                minLength: {
+                  value: 2,
+                  message: 'Job Link must be at least 2 characters long',
+                },
+                validate: {
+                  isValidURL: (value) => isValidURL(value),
+                },
+              }}
             />
             {/* Date Picker Wrapper */}
             <Box
