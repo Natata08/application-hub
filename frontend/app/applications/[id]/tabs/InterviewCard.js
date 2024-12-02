@@ -21,7 +21,7 @@ const styles = {
   stack: {
     alignItems: { xs: 'center', sm: 'start' },
     flexDirection: 'column',
-    justifyContent: { xs: 'center', sm: 'start' },
+    justifyContent: { xs: 'center', sm: 'center' },
     gap: { xs: 1, sm: 2 },
   },
   rowStack: {
@@ -40,7 +40,8 @@ const MeetingLink = ({ link }) => (
       target="_blank"
       sx={{
         display: 'flex',
-        alignItems: 'start',
+        alignItems: 'center',
+        justifyContent: 'center',
         color: 'inherit',
         textDecoration: 'none',
         '&:hover': { textDecoration: 'underline' },
@@ -48,7 +49,7 @@ const MeetingLink = ({ link }) => (
         fontSize: '1rem',
       }}
     >
-      <OpenInNewIcon sx={{ fontSize: 16, marginRight: '8px' }} />
+      <OpenInNewIcon sx={{ fontSize: 16, marginRight: 1 }} />
       <Typography
         sx={{
           fontSize: '1rem',
@@ -85,9 +86,19 @@ export default function InterviewCard({
       )
     }
     return interview.location ? (
-      <Typography variant="body1" sx={styles.text}>
-        <LocationOnIcon sx={{ fontSize: 16 }} /> {interview.location}
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <LocationOnIcon sx={{ fontSize: 16, marginRight: 1 }} />
+        <Typography variant="body1" sx={styles.text}>
+          {' '}
+          {interview.location}
+        </Typography>
+      </Box>
     ) : (
       <Typography component="p" variant="overline" color="comment.main">
         Location
@@ -129,7 +140,11 @@ export default function InterviewCard({
           </Typography>
         </Stack>
         <Stack
-          sx={{ ...styles.stack, flexDirection: { xs: 'column', sm: 'row' } }}
+          sx={{
+            ...styles.stack,
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: 'center',
+          }}
         >
           <Chip
             label={interview.isVirtual ? 'Online' : 'In-Person'}
