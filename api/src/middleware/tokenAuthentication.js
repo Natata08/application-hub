@@ -18,20 +18,27 @@ const verifyAuthToken = async (req, res, next) => {
     // Decode and verify the JWT
     const decoded = jwt.verify(token, SECRET_KEY)
 
-    // Check if the token's JTI is invalidated
-    const isInvalidated = await knex('invalidated_token')
-      .where('jti', decoded.jti)
-      .first()
-      .then(Boolean)
+    try {
+      // Check if the token's JTI is invalidated
+      const isInvalidated = await knex('invalidated_token')
+        .where('jti', decoded.jti)
+        .first()
+        .then(Boolean)
 
-    if (isInvalidated) {
+      if (isInvalidated) {
+        return res
+          .status(401)
+          .json(buildErrorDto('Token has been invalidated. Please login again'))
+      }
+
+      req.userInfo = decoded
+      next()
+    } catch (dbError) {
+      console.error('Database error:', dbError)
       return res
-        .status(401)
-        .json(buildErrorDto('Token has been invalidated. Please login again'))
+        .status(500)
+        .json(buildErrorDto('Database error. Please try again later.'))
     }
-
-    req.userInfo = decoded
-    next()
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
       return res.status(401).json(buildErrorDto('Token has expired'))
