@@ -1,8 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import { Box, Stack, Button, Alert } from '@mui/material'
+import { Box, Stack, Button, Alert, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import { useIsMobileSmall } from '@/app/hooks/useIsMobile'
 import ContactForm from '../forms/ContactForm'
 import Loader from '@/components/ui/Loader'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
@@ -15,7 +14,6 @@ export default function Contacts() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [contacts, setContacts] = useState([])
-  const isMobile = useIsMobileSmall()
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const applicationId = application.application_id
   const hasContent = contacts.length > 0
@@ -74,6 +72,17 @@ export default function Contacts() {
 
   return (
     <Box sx={{ padding: 2 }}>
+      <Typography
+        component="h1"
+        sx={{
+          fontSize: '0.9rem',
+          textTransform: 'uppercase',
+          paddingBottom: 2,
+          display: { xs: 'block', sm: 'none' },
+        }}
+      >
+        contacts
+      </Typography>
       <Box sx={{ display: hasContent ? 'block' : 'none' }}>
         <Stack
           sx={{
@@ -101,7 +110,7 @@ export default function Contacts() {
             startIcon={<AddIcon />}
             sx={{
               textTransform: 'none',
-              width: isMobile ? '100%' : 'auto',
+              width: { xs: '100%', sm: 'auto' },
             }}
           >
             Add Contact

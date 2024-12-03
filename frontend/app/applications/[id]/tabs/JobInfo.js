@@ -14,8 +14,8 @@ import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import RichText from '@/components/ui/RichText'
 
 export default function JobInfo() {
-  const { application } = useApplicationContext()
   const isMobile = useIsMobile()
+  const { application } = useApplicationContext()
 
   const accordionSummaryStyles = {
     fontWeight: 600,
@@ -37,6 +37,17 @@ export default function JobInfo() {
 
   return (
     <Box sx={{ padding: 2 }}>
+      <Typography
+        component="h1"
+        sx={{
+          fontSize: '0.9rem',
+          textTransform: 'uppercase',
+          paddingBottom: 2,
+          display: { xs: 'block', sm: 'none' },
+        }}
+      >
+        Job info
+      </Typography>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}

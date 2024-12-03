@@ -1,5 +1,5 @@
 'use client'
-import { Box, Button, Alert } from '@mui/material'
+import { Box, Button, Alert, Typography } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import EmptyState from './EmptyState'
@@ -185,6 +185,17 @@ const Notes = () => {
 
   return (
     <Box sx={{ padding: 2 }}>
+      <Typography
+        component="h1"
+        sx={{
+          fontSize: '0.9rem',
+          textTransform: 'uppercase',
+          paddingBottom: 2,
+          display: { xs: 'block', sm: 'none' },
+        }}
+      >
+        notes
+      </Typography>
       {renderEditor}
       {!hasContent && !isEditing && (
         <EmptyState
