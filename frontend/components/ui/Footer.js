@@ -20,7 +20,7 @@ export default function Footer() {
         sx={{
           maxWidth: '1200px',
           margin: '5px auto',
-          padding: '10px',
+          padding: '10px 10px 0 10px',
           justifyContent: { xs: 'center', sm: 'space-between' },
           textAlign: { xs: 'center', sm: 'left' },
         }}

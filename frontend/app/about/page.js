@@ -1,6 +1,7 @@
 import { Box, Card, CardContent, Typography } from '@mui/material'
 import AboutUs from './aboutUs'
 import Vision from './OurVision'
+import TeamFona from './Team'
 
 export default function About() {
   return (
@@ -139,6 +140,7 @@ export default function About() {
         </Card>
       </Box>
       <Vision />
+      <TeamFona />
     </Box>
   )
 }
