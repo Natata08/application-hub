@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Box, Stack, Button, Alert } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import { useIsMobileSmall } from '@/app/hooks/useIsMobile'
 import ContactForm from '../forms/ContactForm'
 import Loader from '@/components/ui/Loader'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
@@ -15,7 +14,6 @@ export default function Contacts() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
   const [contacts, setContacts] = useState([])
-  const isMobile = useIsMobileSmall()
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const applicationId = application.application_id
   const hasContent = contacts.length > 0
@@ -101,7 +99,7 @@ export default function Contacts() {
             startIcon={<AddIcon />}
             sx={{
               textTransform: 'none',
-              width: isMobile ? '100%' : 'auto',
+              width: { xs: '100%', sm: 'auto' },
             }}
           >
             Add Contact

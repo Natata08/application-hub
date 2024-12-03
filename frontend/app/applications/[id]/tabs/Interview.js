@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Box, Button, Alert, Stack } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
-import { useIsMobile } from '@/app/hooks/useIsMobile'
 import InterviewForm from '../forms/InterviewForm'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { getInterviewsByApplicationId } from '@/utils/api'
@@ -15,7 +14,6 @@ const Interview = () => {
   const [interviews, setInterviews] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
-  const isMobile = useIsMobile()
   const [openModalAdd, setOpenModalAdd] = useState(false)
   const applicationId = application.application_id
   const hasContent = interviews.length > 0

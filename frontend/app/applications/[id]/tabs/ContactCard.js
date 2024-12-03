@@ -1,6 +1,8 @@
 'use client'
 import { Stack, Card, CardContent, Typography } from '@mui/material'
 import MenuButtonContact from '../MenuButtonContact'
+import PhoneIcon from '@mui/icons-material/Phone'
+import EmailIcon from '@mui/icons-material/Email'
 export default function ContactCard({
   contact,
   onContactDeleted,
@@ -20,7 +22,7 @@ export default function ContactCard({
             variant="h5"
             component="h5"
             sx={{
-              fontSize: { xs: '1rem', sm: '1.25rem' },
+              fontSize: '1.25rem',
               fontWeight: 600,
             }}
           >
@@ -39,46 +41,63 @@ export default function ContactCard({
           <Typography
             variant="body2"
             sx={{
-              color: 'text.secondary',
-              fontSize: { xs: '0.875rem', sm: '1rem' },
+              color: 'secondary.main',
+              fontSize: '1rem',
             }}
           >
             {contact.role}
           </Typography>
         ) : (
-          <Typography component="p" variant="overline" color="comment.main">
+          <Typography
+            component="p"
+            variant="overline"
+            color="comment.main"
+            sx={{ height: '24px' }}
+          >
             position
           </Typography>
         )}
 
         {contact.phone ? (
-          <Typography
-            variant="body2"
+          <Stack
             sx={{
-              color: 'text.secondary',
-              fontSize: { xs: '0.875rem', sm: '1rem' },
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'start',
             }}
           >
-            {contact.phone}
-          </Typography>
+            <PhoneIcon sx={{ fontSize: 20, marginRight: 1 }} />
+            <Typography variant="body1">{contact.phone}</Typography>
+          </Stack>
         ) : (
-          <Typography component="p" variant="overline" color="comment.main">
+          <Typography
+            component="p"
+            variant="overline"
+            color="comment.main"
+            sx={{ height: '24px' }}
+          >
             phone
           </Typography>
         )}
 
         {contact.email ? (
-          <Typography
-            variant="body2"
+          <Stack
             sx={{
-              color: 'text.secondary',
-              fontSize: { xs: '0.875rem', sm: '1rem' },
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'start',
             }}
           >
-            {contact.email}
-          </Typography>
+            <EmailIcon sx={{ fontSize: 20, marginRight: 1 }} />
+            <Typography variant="body1">{contact.email}</Typography>
+          </Stack>
         ) : (
-          <Typography component="p" variant="overline" color="comment.main">
+          <Typography
+            component="p"
+            variant="overline"
+            color="comment.main"
+            sx={{ height: '24px' }}
+          >
             email
           </Typography>
         )}
