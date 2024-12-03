@@ -14,41 +14,37 @@ const verifyAuthToken = async (req, res, next) => {
     return res.status(401).json(buildErrorDto('No token provided'))
   }
 
+  let decoded
+
   try {
-    // Decode and verify the JWT
-    const decoded = jwt.verify(token, SECRET_KEY)
-
-    try {
-      // Check if the token's JTI is invalidated
-      const isInvalidated = await knex('invalidated_token')
-        .where('jti', decoded.jti)
-        .first()
-        .then(Boolean)
-
-      if (isInvalidated) {
-        return res
-          .status(401)
-          .json(buildErrorDto('Token has been invalidated. Please login again'))
-      }
-
-      req.userInfo = decoded
-      next()
-    } catch (dbError) {
-      console.error('Database error:', dbError)
-      return res
-        .status(500)
-        .json(buildErrorDto('Database error. Please try again later.'))
-    }
+    decoded = jwt.verify(token, SECRET_KEY)
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
       return res.status(401).json(buildErrorDto('Token has expired'))
     }
-    return res.status(401).json(
-      buildErrorDto('Invalid token', {
-        cause: err.message,
-      })
-    )
+    return res.status(400).json(buildErrorDto('Invalid token'))
   }
+
+  try {
+    const isInvalidated = await knex('invalidated_token')
+      .where('jti', decoded.jti)
+      .first()
+      .then(Boolean)
+
+    if (isInvalidated) {
+      return res
+        .status(401)
+        .json(buildErrorDto('Token has been invalidated. Please login again'))
+    }
+  } catch (dbError) {
+    console.error('Database error:', dbError)
+    return res
+      .status(500)
+      .json(buildErrorDto('Authentication service temporarily unavailable'))
+  }
+
+  req.userInfo = decoded
+  next()
 }
 
 export default verifyAuthToken
