@@ -95,6 +95,7 @@ export default function ApplicationEditForm({ openModal, onClose }) {
           <InputField
             id="job_link"
             label="Job Link"
+            defaultValue={application.job_link}
             register={register}
             errors={errors}
             validationRules={{
