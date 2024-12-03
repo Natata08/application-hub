@@ -15,6 +15,7 @@ import Contacts from './tabs/Contacts'
 import Notes from './tabs/Notes'
 import Interview from './tabs/Interview'
 import { useThemeContext } from '@/components/styles/ThemeApp'
+import TitleTabMobile from './tabs/TitleTabMobile'
 
 export default function ManagePanel() {
   const { isLightMode } = useThemeContext()
@@ -97,6 +98,7 @@ export default function ManagePanel() {
         </Box>
         {tabs.map((item) => (
           <TabPanel key={item.value} value={item.value} sx={{ padding: 0 }}>
+            <TitleTabMobile title={item.value} />
             {item.component}
           </TabPanel>
         ))}
