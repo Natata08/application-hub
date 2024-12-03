@@ -63,17 +63,6 @@ export default function Footer() {
               >
                 About
               </Link>
-              <Link
-                href="/team"
-                color="inherit"
-                sx={{
-                  display: 'block',
-                  fontSize: { xs: '0.7rem', sm: '1rem' },
-                }}
-                underline="none"
-              >
-                Team
-              </Link>
             </Box>
 
             <Box paddingX="10px">
@@ -141,17 +130,6 @@ export default function Footer() {
               underline="none"
             >
               About
-            </Link>
-            <Link
-              href="/team"
-              color="inherit"
-              sx={{
-                display: 'block',
-                fontSize: { xs: '0.7rem', sm: '1rem' },
-              }}
-              underline="none"
-            >
-              Team
             </Link>
           </Box>
 
