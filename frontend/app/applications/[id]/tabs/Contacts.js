@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import { Box, Stack, Button, Alert, Typography } from '@mui/material'
+import { Box, Stack, Button, Alert } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import ContactForm from '../forms/ContactForm'
 import Loader from '@/components/ui/Loader'
@@ -72,17 +72,6 @@ export default function Contacts() {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography
-        component="h1"
-        sx={{
-          fontSize: '0.9rem',
-          textTransform: 'uppercase',
-          paddingBottom: 2,
-          display: { xs: 'block', sm: 'none' },
-        }}
-      >
-        contacts
-      </Typography>
       <Box sx={{ display: hasContent ? 'block' : 'none' }}>
         <Stack
           sx={{

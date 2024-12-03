@@ -37,17 +37,6 @@ export default function JobInfo() {
 
   return (
     <Box sx={{ padding: 2 }}>
-      <Typography
-        component="h1"
-        sx={{
-          fontSize: '0.9rem',
-          textTransform: 'uppercase',
-          paddingBottom: 2,
-          display: { xs: 'block', sm: 'none' },
-        }}
-      >
-        Job info
-      </Typography>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
