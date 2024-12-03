@@ -8,6 +8,7 @@ import { patchCompany } from '@/utils/api'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
+import { isValidURL } from '@/utils/validators'
 
 export default function CompanyEditForm({ openModal, onClose }) {
   const { application, updateApplication } = useApplicationContext()
@@ -74,6 +75,15 @@ export default function CompanyEditForm({ openModal, onClose }) {
           defaultValue={application.company_website}
           register={register}
           errors={errors}
+          validationRules={{
+            minLength: {
+              value: 2,
+              message: 'Job Link must be at least 2 characters long',
+            },
+            validate: {
+              isValidURL: (value) => isValidURL(value),
+            },
+          }}
         />
 
         <Typography

@@ -1,9 +1,10 @@
 'use client'
-import { Box } from '@mui/material'
+import { Box, Card } from '@mui/material'
 import DOMPurify from 'isomorphic-dompurify'
 import { useEffect, useMemo } from 'react'
 import { useTheme } from '@mui/material'
 import dynamic from 'next/dynamic'
+import Loader from './Loader'
 
 // Dynamically import Quill and its components
 const QuillWrapper = dynamic(
@@ -59,13 +60,18 @@ const QuillWrapper = dynamic(
 
       // Handle value updates
       useEffect(() => {
-        const sanitizedValue = DOMPurify.sanitize(value)
-        if (quill && sanitizedValue !== quill.root.innerHTML) {
-          quill.root.innerHTML = sanitizedValue || ''
+        if (quill && value !== undefined) {
+          const editorContent = quill.root.innerHTML
+          const sanitizedValue = DOMPurify.sanitize(value)
+
+          // Only update if content is different and editor is not focused
+          if (sanitizedValue !== editorContent && !quill.hasFocus()) {
+            quill.root.innerHTML = sanitizedValue || ''
+          }
         }
       }, [quill, value])
 
-      // Handle text changes
+      //Handle text changes
       useEffect(() => {
         if (quill) {
           const handleTextChange = () => {
@@ -102,7 +108,7 @@ const QuillWrapper = dynamic(
         themeConfig.palette.divider,
       ])
 
-      return <Box ref={quillRef}>{children}</Box>
+      return <Card ref={quillRef}>{children}</Card>
     }
 
     // Set the displayName
@@ -112,7 +118,7 @@ const QuillWrapper = dynamic(
   },
   {
     ssr: false,
-    loading: () => <Box>Loading editor...</Box>,
+    loading: () => <Loader />,
   }
 )
 
@@ -127,7 +133,7 @@ const RichTextEditor = ({ onChange, isEditing, sx, value, children }) => {
         borderRadius: '0 0 4px 4px',
         border: `1px solid ${theme.palette.divider}`,
         borderTop: 0,
-        fontSize: '0.8rem',
+        fontSize: '1rem',
       },
       '& .ql-editor': {
         minHeight: '200px',

@@ -73,7 +73,7 @@ export default function Contacts() {
   }
 
   return (
-    <Box sx={{ padding: 1 }}>
+    <Box sx={{ padding: 2 }}>
       <Box sx={{ display: hasContent ? 'block' : 'none' }}>
         <Stack
           sx={{

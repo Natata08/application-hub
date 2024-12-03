@@ -96,11 +96,7 @@ export default function ManagePanel() {
           </TabList>
         </Box>
         {tabs.map((item) => (
-          <TabPanel
-            key={item.value}
-            value={item.value}
-            sx={{ padding: 0, paddingTop: 2 }}
-          >
+          <TabPanel key={item.value} value={item.value} sx={{ padding: 0 }}>
             {item.component}
           </TabPanel>
         ))}
