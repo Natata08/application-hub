@@ -20,7 +20,7 @@ export default function Footer() {
         sx={{
           maxWidth: '1200px',
           margin: '5px auto',
-          padding: '10px',
+          padding: '10px 10px 0 10px',
           justifyContent: { xs: 'center', sm: 'space-between' },
           textAlign: { xs: 'center', sm: 'left' },
         }}
@@ -62,6 +62,17 @@ export default function Footer() {
                 underline="none"
               >
                 About
+              </Link>
+              <Link
+                href="/team"
+                color="inherit"
+                sx={{
+                  display: 'block',
+                  fontSize: { xs: '0.7rem', sm: '1rem' },
+                }}
+                underline="none"
+              >
+                Team
               </Link>
             </Box>
 
@@ -130,6 +141,17 @@ export default function Footer() {
               underline="none"
             >
               About
+            </Link>
+            <Link
+              href="/team"
+              color="inherit"
+              sx={{
+                display: 'block',
+                fontSize: { xs: '0.7rem', sm: '1rem' },
+              }}
+              underline="none"
+            >
+              Team
             </Link>
           </Box>
 
