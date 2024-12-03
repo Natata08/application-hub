@@ -1,5 +1,5 @@
 'use client'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { useState } from 'react'
 import { Button, Stack, Box, Alert } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -11,6 +11,7 @@ import {
   addContactByApplicationId,
   patchContactByApplicationId,
 } from '@/utils/api'
+import { MuiTelInput } from 'mui-tel-input'
 
 export default function ContactForm({
   openModal,
@@ -30,7 +31,9 @@ export default function ContactForm({
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
+    setValue,
   } = useForm()
 
   const handleSubmitForm = async (contactData) => {
@@ -94,13 +97,7 @@ export default function ContactForm({
           register={register}
           errors={errors}
         />
-        <InputField
-          id="phone"
-          label="Phone"
-          defaultValue={mode === 'edit' ? contact.phone : null}
-          register={register}
-          errors={errors}
-        />
+
         <InputField
           id="email"
           label="Email"
@@ -112,6 +109,23 @@ export default function ContactForm({
             message: 'Please enter a valid email address',
           }}
         />
+        <Controller
+          name="phone"
+          control={control}
+          defaultValue={mode === 'edit' ? contact.phone : null}
+          render={({ field }) => (
+            <MuiTelInput
+              {...field}
+              label="Phone"
+              fullWidth
+              error={!!errors.phone}
+              helperText={errors.phone?.message}
+              onChange={(value) => setValue('phone', value)}
+              defaultCountry="DK"
+            />
+          )}
+        />
+
         <Stack
           spacing={2}
           direction="row"
