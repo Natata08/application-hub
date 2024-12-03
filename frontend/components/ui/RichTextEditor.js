@@ -43,7 +43,6 @@ const QuillWrapper = dynamic(
                     background: false,
                     font: false,
                     size: false,
-                    indent: false,
                     align: false,
                   })
                 )
