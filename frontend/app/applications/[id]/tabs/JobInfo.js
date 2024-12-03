@@ -4,17 +4,16 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Link,
   Typography,
   Stack,
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { useIsMobile } from '@/app/hooks/useIsMobile'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import RichText from '@/components/ui/RichText'
+import { formatDate } from '@/utils/formatDate'
+import ExternalLink from '@/components/ui/ExternalLink'
 
 export default function JobInfo() {
-  const isMobile = useIsMobile()
   const { application } = useApplicationContext()
 
   const accordionSummaryStyles = {
@@ -27,43 +26,9 @@ export default function JobInfo() {
     },
   }
 
-  const textLinkStyles = {
-    color: 'inherit',
-    textDecoration: 'none',
-    '&:hover': { textDecoration: 'underline' },
-    wordBreak: 'break-word',
-    fontSize: isMobile ? '0.875rem' : '1rem',
-  }
-
   return (
     <Box sx={{ padding: 2 }}>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="job_link-content"
-          id="job_link-header"
-          sx={accordionSummaryStyles}
-        >
-          <Typography sx={{ fontWeight: 600 }}>Job Link</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {application.job_link ? (
-            <Link
-              href={application.job_link}
-              target="_blank"
-              sx={textLinkStyles}
-            >
-              {application.job_link}
-            </Link>
-          ) : (
-            <Typography variant="overline" color="comment.main">
-              job link
-            </Typography>
-          )}
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion>
+      <Accordion defaultExpanded>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="dates-content"
@@ -76,59 +41,85 @@ export default function JobInfo() {
           <Stack
             sx={{
               justifyContent: 'start',
-              alignItems: 'center',
-              flexDirection: 'row',
-              gap: 4,
+              alignItems: 'start',
+              flexDirection: 'column',
+              gap: 1,
             }}
           >
             <Box
               sx={{
-                p: 0,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                gap: 1,
               }}
             >
               <Typography
-                variant="body2"
-                gutterBottom
-                sx={{ color: 'secondary.main' }}
+                variant="body1"
+                sx={{ color: 'secondary.main', minWidth: '120px' }}
               >
                 Applied Date
               </Typography>
 
               {application.applied_date ? (
-                <Typography variant={isMobile ? 'body2' : 'body1'}>
-                  {new Date(application.applied_date).toLocaleDateString(
-                    'en-GB'
-                  )}
+                <Typography variant="body1">
+                  {formatDate(application.applied_date)}
                 </Typography>
               ) : (
                 <Typography variant="overline" color="comment.main">
-                  no date
+                  date
                 </Typography>
               )}
             </Box>
 
-            <Box sx={{ p: 0 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+                gap: 1,
+              }}
+            >
               <Typography
-                variant="body2"
-                gutterBottom
-                sx={{ color: 'secondary.main' }}
+                variant="body1"
+                sx={{ color: 'secondary.main', minWidth: '120px' }}
               >
                 Deadline Date
               </Typography>
 
               {application.deadline_date ? (
-                <Typography variant={isMobile ? 'body2' : 'body1'}>
-                  {new Date(application.deadline_date).toLocaleDateString(
-                    'en-GB'
-                  )}
+                <Typography variant="body1">
+                  {formatDate(application.deadline_date)}
                 </Typography>
               ) : (
                 <Typography variant="overline" color="comment.main">
-                  no date
+                  date
                 </Typography>
               )}
             </Box>
           </Stack>
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion defaultExpanded>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="job_link-content"
+          id="job_link-header"
+          sx={accordionSummaryStyles}
+        >
+          <Typography sx={{ fontWeight: 600 }}>Job Link</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          {application.job_link ? (
+            <ExternalLink link={application.job_link} />
+          ) : (
+            <Typography variant="overline" color="comment.main">
+              job link
+            </Typography>
+          )}
         </AccordionDetails>
       </Accordion>
 
