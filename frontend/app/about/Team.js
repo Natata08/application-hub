@@ -15,7 +15,7 @@ export default function TeamFona() {
     {
       name: 'Olha Sashchuk',
       role: 'Full Stack Developer',
-      image: '/team/Olha.JPG',
+      image: '/team/Olha.jpeg',
       linkedinUrl: 'https://www.linkedin.com/in/olha-sashchuk/',
     },
     {
