@@ -22,6 +22,7 @@ import { useApplicationContext } from '@/components/Context/ApplicationContext'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
 import TextEditorInputField from '@/components/ui/TextEditorInputField'
+import { isValidURL } from '@/utils/validators'
 
 export default function ApplicationEditForm({ openModal, onClose }) {
   const { application, updateApplication } = useApplicationContext()
@@ -94,10 +95,17 @@ export default function ApplicationEditForm({ openModal, onClose }) {
           <InputField
             id="job_link"
             label="Job Link"
-            defaultValue={application.job_link}
             register={register}
             errors={errors}
-            minLength={2}
+            validationRules={{
+              minLength: {
+                value: 2,
+                message: 'Job Link must be at least 2 characters long',
+              },
+              validate: {
+                isValidURL: (value) => isValidURL(value),
+              },
+            }}
           />
           <Box
             sx={{
