@@ -23,7 +23,6 @@ import {
   TextField,
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
-import InputField from '@/components/ui/InputField'
 import { useNotification } from '@/components/Context/NotificationContext'
 import { ModalWrapper } from '@/components/ui/ModalWrapper'
 import { useApplicationContext } from '@/components/Context/ApplicationContext'
@@ -174,7 +173,7 @@ export default function InterviewForm({
               required: 'Interview Type is required',
             })}
             helperText={errors.type?.message}
-            error={errors.type}
+            error={!!errors.type}
           >
             {interviewTypes.map((type) => (
               <MenuItem key={type} value={type}>
@@ -199,9 +198,11 @@ export default function InterviewForm({
                 <>
                   <RadioGroup
                     {...field}
-                    value={isVirtual}
+                    value={isVirtual ? 'true' : 'false'}
                     onChange={(e) => {
-                      setIsVirtual(e.target.value === 'true')
+                      const value = e.target.value === 'true'
+                      setIsVirtual(value)
+                      field.onChange(value)
                     }}
                     row
                     aria-labelledby="isVirtual-label"
@@ -234,28 +235,20 @@ export default function InterviewForm({
             />
           </FormControl>
 
-          <Controller
-            name="location"
-            control={control}
+          <TextField
+            id="location"
+            label={isVirtual ? 'Meeting Link' : 'Location'}
             defaultValue={mode === 'edit' ? interview.location : null}
-            render={({ field }) => (
-              <InputField
-                {...field}
-                id="location"
-                label={isVirtual ? 'Meeting Link' : 'Location'}
-                register={register}
-                errors={errors}
-                validationRules={
-                  isVirtual
-                    ? {
-                        validate: {
-                          isValidURL: (value) => isValidURL(value),
-                        },
-                      }
-                    : {}
-                }
-              />
-            )}
+            fullWidth
+            error={!!errors.location}
+            helperText={errors.location?.message}
+            {...register('location', {
+              validate: isVirtual
+                ? {
+                    isValidURL: (value) => isValidURL(value),
+                  }
+                : undefined,
+            })}
           />
           <Stack
             spacing={2}

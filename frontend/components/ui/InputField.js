@@ -15,7 +15,6 @@ export default function InputField({
   pattern,
   type = 'text',
   register,
-  ref,
   validationRules,
 }) {
   const [showPassword, setShowPassword] = useState(false)
@@ -40,7 +39,6 @@ export default function InputField({
       rows={rows}
       fullWidth
       variant="outlined"
-      ref={ref}
       {...register(id, {
         ...validationRules,
         minLength: {
