@@ -79,7 +79,7 @@ const apiRequest = async ({
 
 export const fetchQuote = () =>
   apiRequest({
-    url: 'https://api.api-ninjas.com/v1/quotes?category=success',
+    url: 'https://api.api-ninjas.com/v1/quotes',
     isAuthenticated: false,
     customHeaders: {
       'X-Api-Key': process.env.NEXT_PUBLIC_API_NINJAS_KEY,
