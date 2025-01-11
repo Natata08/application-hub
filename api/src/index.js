@@ -44,6 +44,9 @@ apiRouter.get('/check-db', async (req, res) => {
     )
   }
 })
+
 app.listen(config.PORT, () => {
   console.log(`API listening on port ${config.PORT}`)
 })
+
+export default app;
